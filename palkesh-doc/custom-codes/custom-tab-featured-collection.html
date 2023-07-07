@@ -1,0 +1,367 @@
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"> {% endcomment %}
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+<div class="section-id-{{ section.id }} collection-slider-row {% if section.settings.use_alt_bg %}use-alt-bg{% endif %}" data-section-type="featured-collection" data-components="accordion,modal,price-range">
+{% if section.settings.title-main != blank %}
+  <div class="container">
+    <div class="align-center spaced-column">
+        <h2 class="majortitle in-content h1-style">{{ section.settings.title-main | escape }}</h2>
+    </div>
+  </div>
+{% endif %}
+ <div class="featured-collection-tabs">
+
+
+        <ul class="title-tab">
+          {%- for block in section.blocks -%}
+            <li class="tab-item {% if forloop.index == 1 %}active{% endif %}" target-wrapper="first-dynamic-table" target-tab="{{ block.settings.title }}">{{ block.settings.title }}</li>
+         
+             {%- endfor -%}
+        </ul>
+        <div id="first-dynamic-table">
+          {%- for block in section.blocks -%}
+            {%- liquid
+  if block.settings.enable_carousel-1
+    assign product_limit = 20
+  else
+    assign product_limit = block.settings.grid | times: block.settings.rows
+  endif
+  assign collection = collections[block.settings.collection]
+-%}
+
+  <div class="tab-content {% if forloop.index == 1 %}active{% endif %}" id="{{ block.settings.title }}">
+     <div class="container{% if block.settings.enable_carousel-1 %} container--not-mobile{% endif %}{% if section.settings.full_width %} container--no-max{% endif %}">
+    <div class="{% if block.settings.enable_carousel-1 %}collection-slider{% endif %}">
+      <h2 class="hometitle h4-style align-center has-paging" data-cc-animate data-cc-animate-delay="0.3s">
+        {% if block.settings.enable_carousel-1 %}<a class="customPreviousBtn ltr-icon" href="javascript:void(0)">{% render 'svg-chevron-left' %}</a>{% endif %}
+        <a class="has-paging__title" href="{{ collection.url }}">
+          <span>{% if section.settings.title1 != blank %}{{ block.settings.title1 | escape }}{% else %}{{ collection.title }}{% endif %}</span>
+        </a>
+        {% if block.settings.enable_carousel-1 %}<a class="customNextBtn ltr-icon" href="javascript:void(0)">{% render 'svg-chevron-right' %}</a>{% endif %}
+      </h2>
+               
+                <div class="collection-listing" data-cc-animate="cc-fade-in-up">
+        <div class="product-list product-list--per-row-{{ block.settings.grid }} product-list--per-row-mob-{{ settings.prod_thumb_mob_per_row }} product-list--image-shape-{{ settings.prod_thumb_shape }}  {% if block.settings.enable_carousel-1 %}owl-carousel carousel-1 carousel--fixed-grid-mode{% endif %}">
+          {% if block.settings.collection == blank %}
+            {% for i in (1..product_limit) %}
+              {% render 'onboarding-product-block', forloop: forloop %}
+            {% endfor %}
+          {% else %}
+            {%- liquid
+              if settings.prod_thumb_shape == 'portrait-23'
+                assign chosen_aspect_ratio = 0.67
+              elsif settings.prod_thumb_shape == 'portrait-45'
+                assign chosen_aspect_ratio = 0.8
+              elsif settings.prod_thumb_shape == 'square'
+                assign chosen_aspect_ratio = 1.0
+              elsif settings.prod_thumb_shape == 'landscape-54'
+                assign chosen_aspect_ratio = 1.25
+              elsif settings.prod_thumb_shape == 'landscape-32'
+                assign chosen_aspect_ratio = 1.50
+              elsif settings.prod_thumb_shape == 'tallest'
+                assign chosen_aspect_ratio = 99
+                for product in collection.products limit: product_limit
+                  if product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
+                    assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                  endif
+                endfor
+              else
+                assign chosen_aspect_ratio = 0
+                for product in collection.products limit: product_limit
+                  if product.featured_media.preview_image.aspect_ratio > chosen_aspect_ratio
+                    assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                  endif
+                endfor
+              endif
+            -%}
+            {% for product in collection.products limit: product_limit %}
+              {% render 'product-block', product: product, manual_image_load: block.settings.enable_carousel-1, custom_aspect_ratio: chosen_aspect_ratio, no_swiping: block.settings.enable_carousel-1, no_quick_buy_markup: block.settings.enable_carousel-1 %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      {%- if block.settings.show_view_all -%}
+        <div class="view-all align-center" data-cc-animate data-cc-animate-delay="0.3s">
+          <a class="btn btn--primary button-row__button" href="{{ collection.url }}">{{ 'collections.general.view_all' | t }}</a>
+        </div>
+      {%- endif -%}
+            </div>
+                      </div>
+  </div>
+           {%- endfor -%}
+        </div>
+    </div>
+
+    
+      
+    
+  
+
+  {% if settings.quickbuy_style != 'off' and block.settings.enable_carousel-1 %}
+    <div class="quickbuy-container">
+      <a href="#" class="close-detail" aria-label="{{ 'products.quick_buy.close' | t }}" tabindex="-1">{% render 'svg-x' %}</a>
+      <div class="inner"></div>
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+  {
+    "name": "Featured collection tabs",
+    "class": "section-featured-collection",
+    "settings": [
+     
+      {
+            "type": "text",
+            "id": "title-main",
+            "label": "Title"
+          },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendor",
+        "default": false
+      },
+     
+      
+         
+      {
+        "type": "checkbox",
+        "id": "use_alt_bg",
+        "label": "Use alternate section color",
+        "default": true
+      },
+   
+      {
+        "type": "header",
+        "content": "Custom"
+      },
+      {
+        "id": "hide_price",
+        "type": "checkbox",
+        "label": "Hide Price",
+        "default": true
+      }
+    ],
+     "blocks": [
+      {
+        "type": "question",
+        "name": "Question",
+        "settings": [
+           {
+        "type": "text",
+        "id": "title1",
+        "label": "Heading"
+      },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question"
+          },
+           {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      },
+          {
+        "type": "checkbox",
+        "id": "enable_carousel-1",
+        "label": "Enable carousel",
+        "default": true
+      },
+        {
+        "type": "range",
+        "id": "grid",
+        "label": "Products per row",
+        "min": 2,
+        "max": 5,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "rows",
+        "label": "Rows",
+        "info": "Does not apply to carousel layout",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 1
+      },
+             {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show 'View all' link",
+        "default": true
+      }
+        ]
+      }
+      
+    ],
+    "presets": [
+      {
+        "name": "Featured collection tabs"
+        
+      }
+    ]
+  }
+{% endschema %}
+<script>
+  let tabSwitchers = document.querySelectorAll('[target-wrapper]')
+        tabSwitchers.forEach(item => {
+            item.addEventListener('click', (e)=> {
+                let currentWrapperId = item.getAttribute('target-wrapper')
+                let currentWrapperTargetId = item.getAttribute('target-tab')
+                
+                let currentWrapper =  document.querySelector(`#${currentWrapperId}`)
+                let currentWrappersTarget = document.querySelector(`#${currentWrapperTargetId}`)
+
+                let allCurrentTabItem = document.querySelectorAll(`[target-wrapper='${currentWrapperId}']`)
+                let allCurrentWrappersTarget = document.querySelectorAll(`#${currentWrapperId} .tab-content`)
+              
+                if(currentWrappersTarget) {
+                    if(!currentWrappersTarget.classList.contains('active')) {
+                        allCurrentWrappersTarget.forEach(tabItem => {
+                            tabItem.classList.remove('active')
+                        })
+                        allCurrentTabItem.forEach(item => {
+                            item.classList.remove('active')
+                        })
+                        item.classList.add('active')
+                        currentWrappersTarget.classList.add('active')
+                    }
+                }
+            })
+        })
+</script>
+<!--                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+ -->
+
+
+
+
+
+<style type="text/css">
+   .featured-collection-tabs {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 100%;
+            margin: 10px auto;
+        }
+
+.featured-collection-tabs ul.title-tab {
+                width: 50% !important;
+    margin-left: auto;
+    margin-right: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+.featured-collection-tabs ul.title-tab li {
+            padding: 14px 10px;
+            background: white;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            list-style-type: none;
+            box-shadow: 0px 0px 3px rgb(194 186 186 / 30%);
+            cursor: pointer;
+            border-radius: 0px;
+            transition: all 0.3s ease;
+      border: 1px solid #202223;
+  color: #202223;
+        }
+
+.featured-collection-tabs ul.title-tab li:not(:last-of-type) {
+            /* add border beside last element */
+            border-right: 1px solid white;
+        }
+
+.featured-collection-tabs ul.title-tab li:hover {
+            background: #000;
+            color: #FFF;
+            transition: all 0.3s ease;
+        }
+
+.featured-collection-tabs   #first-dynamic-table {
+            width: 100%;
+            background: #ffffff;
+            box-shadow: 0px 0px 3px rgb(18 16 16 / 30%);
+            padding: 35px 15px;
+             olor: #36494f;
+        }
+
+
+
+        /*Main Style*/
+.featured-collection-tabs .tab-item.active {
+            background: #202223;
+            color: white;
+        }
+
+.featured-collection-tabs  .tab-content {
+            width: 100%;
+            display: none;
+        }
+
+.featured-collection-tabs  .tab-content.active {
+            display: block;
+        }
+
+        /*Main Style*/
+.featured-collection-tabs a.btn.btn--primary.button-row__button {
+    margin-top: 50px;
+}
+.featured-collection-tabs li.tab-item:first-child {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+.featured-collection-tabs li.tab-item:last-child {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+@media only screen and (max-width: 767px) {
+.featured-collection-tabs ul.title-tab {
+    width: 90% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+}
+</style>
+
+ <script type="text/javascript">
+   <script>
+  let tabSwitchers = document.querySelectorAll('[target-wrapper]')
+        tabSwitchers.forEach(item => {
+            item.addEventListener('click', (e)=> {
+                let currentWrapperId = item.getAttribute('target-wrapper')
+                let currentWrapperTargetId = item.getAttribute('target-tab')
+                
+                let currentWrapper =  document.querySelector(`#${currentWrapperId}`)
+                let currentWrappersTarget = document.querySelector(`#${currentWrapperTargetId}`)
+
+                let allCurrentTabItem = document.querySelectorAll(`[target-wrapper='${currentWrapperId}']`)
+                let allCurrentWrappersTarget = document.querySelectorAll(`#${currentWrapperId} .tab-content`)
+              
+                if(currentWrappersTarget) {
+                    if(!currentWrappersTarget.classList.contains('active')) {
+                        allCurrentWrappersTarget.forEach(tabItem => {
+                            tabItem.classList.remove('active')
+                        })
+                        allCurrentTabItem.forEach(item => {
+                            item.classList.remove('active')
+                        })
+                        item.classList.add('active')
+                        currentWrappersTarget.classList.add('active')
+                    }
+                }
+            })
+        })
+</script>
+ </script>

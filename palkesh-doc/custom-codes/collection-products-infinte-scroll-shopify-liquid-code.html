@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div id="AjaxinateContainer" >
+	<!-- ---- Product loop code here-- -->
+
+	<div id="AjaxinateContainer" >
+  {%- for item in items -%}
+    {%- if item.object_type == 'product' -%}
+      {%- render 'product-grid-item', product: item, grid_item_width: grid_item_width -%}
+    {%- else -%}
+      {%- render 'search-grid-item', item: item, grid_item_width: grid_item_width -%}
+    {%- endif -%}
+  {%- else -%}
+    <div class="grid__item">
+      <p>{{ 'collections.general.no_matches' | t }}</p>
+    </div>
+  {%- endfor -%}
+</div>
+
+    	<!-- ---- Product loop code here-- -->
+</div>
+
+
+<div id="AjaxinatePagination">
+      {% if paginate.next %}
+        <a href="{{ paginate.next.url }}">Loading More</a>
+      {% endif %}
+    </div>
+
+
+    
+{{ 'ajaxinate.min.js' | asset_url | script_tag }} ------ below script
+ <script>
+ function callbackInfiniteScroll(){}
+     document.addEventListener("DOMContentLoaded", function() {
+    var endlessScroll = new Ajaxinate({
+      container: '#AjaxinateContainer',
+    pagination: '#AjaxinatePagination',
+      loadingText: '<center><img src="//cdn.shopify.com/s/files/1/0382/4185/files/loading.gif?100"></center>',
+      callback: callbackInfiniteScroll
+    });
+  });
+  </script>
+
+<script>
+	"use strict";var Ajaxinate=function(e){var i=e||{},n={pagination:"#AjaxinatePagination",method:"scroll",container:"#AjaxinateContainer",offset:0,loadingText:"Loading",callback:null};this.settings=Object.assign(n,i),this.addScrollListeners=this.addScrollListeners.bind(this),this.addClickListener=this.addClickListener.bind(this),this.checkIfPaginationInView=this.checkIfPaginationInView.bind(this),this.stopMultipleClicks=this.stopMultipleClicks.bind(this),this.destroy=this.destroy.bind(this),this.containerElement=document.querySelector(this.settings.container),this.paginationElement=document.querySelector(this.settings.pagination),this.initialize()};Ajaxinate.prototype.initialize=function(){if(this.containerElement){var e={click:this.addClickListener,scroll:this.addScrollListeners};e[this.settings.method]()}},Ajaxinate.prototype.addScrollListeners=function(){this.paginationElement&&(document.addEventListener("scroll",this.checkIfPaginationInView),window.addEventListener("resize",this.checkIfPaginationInView),window.addEventListener("orientationchange",this.checkIfPaginationInView))},Ajaxinate.prototype.addClickListener=function(){this.paginationElement&&(this.nextPageLinkElement=this.paginationElement.querySelector("a"),this.clickActive=!0,this.nextPageLinkElement!==null&&this.nextPageLinkElement.addEventListener("click",this.stopMultipleClicks))},Ajaxinate.prototype.stopMultipleClicks=function(e){e.preventDefault(),this.clickActive&&(this.nextPageLinkElement.innerHTML=this.settings.loadingText,this.nextPageUrl=this.nextPageLinkElement.href,this.clickActive=!1,this.loadMore())},Ajaxinate.prototype.checkIfPaginationInView=function(){var e=this.paginationElement.getBoundingClientRect().top-this.settings.offset,i=this.paginationElement.getBoundingClientRect().bottom+this.settings.offset;e<=window.innerHeight&&i>=0&&(this.nextPageLinkElement=this.paginationElement.querySelector("a"),this.removeScrollListener(),this.nextPageLinkElement&&(this.nextPageLinkElement.innerHTML=this.settings.loadingText,this.nextPageUrl=this.nextPageLinkElement.href,this.loadMore()))},Ajaxinate.prototype.loadMore=function(){this.request=new XMLHttpRequest,this.request.onreadystatechange=function(){if(this.request.readyState===4&&this.request.status===200){var i=this.request.responseXML.querySelectorAll(this.settings.container)[0],n=this.request.responseXML.querySelectorAll(this.settings.pagination)[0];this.containerElement.insertAdjacentHTML("beforeend",i.innerHTML),this.paginationElement.innerHTML=n.innerHTML,this.settings.callback&&typeof this.settings.callback=="function"&&this.settings.callback(this.request.responseXML),this.initialize()}}.bind(this),this.request.open("GET",this.nextPageUrl),this.request.responseType="document",this.request.send()},Ajaxinate.prototype.removeClickListener=function(){this.nextPageLinkElement.addEventListener("click",this.stopMultipleClicks)},Ajaxinate.prototype.removeScrollListener=function(){document.removeEventListener("scroll",this.checkIfPaginationInView),window.removeEventListener("resize",this.checkIfPaginationInView),window.removeEventListener("orientationchange",this.checkIfPaginationInView)},Ajaxinate.prototype.destroy=function(){var e={click:this.removeClickListener,scroll:this.removeScrollListener};return e[this.settings.method](),this};
+//# sourceMappingURL=/s/files/1/0382/4185/files/ajaxinate.js.map?937=
+</script>
+</body>
+</html>

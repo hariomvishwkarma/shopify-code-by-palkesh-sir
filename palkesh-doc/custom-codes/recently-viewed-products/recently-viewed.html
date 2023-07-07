@@ -1,0 +1,119 @@
+{% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> {% endcomment %}
+
+{{ '//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js' | script_tag }}
+
+{{ 'jquery.products.min.js' | asset_url | script_tag }}
+
+<div id="recently-viewed-products" class="collection recntview clearfix" style="display:none">
+  
+</div>
+
+{% raw %}
+<script id="recently-viewed-product-template"  type="text/x-jquery-tmpl">
+<div id="product-${handle}" class="product">
+  <div class="image cus_img_size">
+    <a href="${url}">
+      <img src="${Shopify.Products.resizeImage(featured_image, "master")}" />
+    </a>
+  </div>
+  <div class="details cus_t">
+    <a href="${url}">
+      <h3 class="card__heading h5"><span class="title">${title}</span></h3>
+  <div class="cus-card-information custom price__sale price--on-sale price">
+        <span class="visually-hidden visually-hidden--inline">정가</span>
+        <span>
+          <s class="price-item price-item--regular">
+            
+              <span class="etrans-money">${Shopify.formatMoney(compare_at_price)}</span>
+            
+          </s>
+      <span class="price-item price-item--sale price-item--last">
+        <span class="etrans-money">${Shopify.formatMoney(price)}</span>
+      </span>
+    </div>
+      
+    </a>
+  </div>
+</div>
+</script>
+{% endraw %}
+
+<script>
+Shopify.Products.showRecentlyViewed( { howManyToShow:10 } );
+</script>
+
+<style>
+
+/* Some styles to get you started */
+
+.collection {
+clear: both;
+padding-top: 50px;
+}
+
+.collection .product {
+float: left;
+/* text-align: center; */
+width:20%; /* 160px + 1px + 1px for the borders on either side */
+margin: 0 0px 0px 0;
+padding: 0;
+position: relative; /* used to display absolutely positioned sale tag */
+overflow: hidden;
+  padding-right: 7px;
+}
+
+.collection .product.last {
+margin-right: 0;
+}
+
+.collection .product .image {
+/* border: 1px solid #E0E0E0;
+margin-bottom: 10px;
+height: 160px; */
+overflow: hidden;
+}
+
+.collection .product .cy {
+display: block;
+margin: 0 auto;
+}
+
+/* .collection .product .image img {
+max-width: 160px;
+} */
+
+/* .collection .product .title {
+display: block;
+line-height: 16px;
+font-size: 12px;
+color: #222;
+font-weight: 700;
+} */
+
+/* .collection .product .price {
+display: block;
+line-height: 16px;
+font-size: 11px;
+color: #777;
+font-weight: normal;
+} */
+.custom.price__sale {
+    display: block !important;
+}
+/* new clearfix */
+.clearfix:after {
+visibility: hidden;
+display: block;
+font-size: 0;
+content: " ";
+clear: both;
+height: 0;
+}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+@media only screen and (max-width: 767px) {
+.collection .product {
+width:50%; 
+}
+}
+</style>

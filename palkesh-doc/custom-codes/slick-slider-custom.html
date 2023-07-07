@@ -1,0 +1,90 @@
+<!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div class="announcement announcement_slider">
+      {% for block in section.blocks %}
+      <div class="announcement__wrapper">
+        {%- if block.settings.announcement_link != blank -%}
+          <a href="{{ block.settings.announcement_link }}" class="announcement__link">
+        {%- endif -%}
+
+        <div class="announcement__text" data-text="{{ block.settings.announcement_text | strip_html | handle }}">
+          {{ block.settings.announcement_text | strip_html }}
+        </div>
+
+        {%- if block.settings.announcement_link != blank -%}
+          </a>
+        {%- endif -%}
+      </div>
+       {% endfor %}
+    </div>
+
+ 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+jQuery(document).ready(function($) {
+
+      $('.announcement_slider').slick({
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        arrows: true, 
+//      fade: true,
+//      focusOnSelect: true,
+//      lazyLoad: 'ondemand',
+        responsive: [{
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        },
+        {
+           breakpoint: 400,
+           settings: {
+              arrows: true,
+              slidesToShow: 1,
+              slidesToScroll: 1
+           }
+        }]
+    });
+});
+</script>
+
+<style>
+.slick-prev {
+    left: 35px;
+}
+  .slick-next {
+    right: 35px;
+}
+.announcement_slider{
+   opacity: 0;
+   visibility: hidden;
+   transition: opacity 1 s ease; -webkit - transition: opacity 1 s ease;
+}
+.announcement_slider.slick-initialized {
+   visibility: visible;
+   opacity: 1;
+}
+  .slick-prev:before {
+    content: '\f104';
+    font-family: FontAwesome;
+}
+    .slick-next:before {
+    content: '\f105';
+    font-family: FontAwesome;
+}
+</style>
+
+

@@ -1,0 +1,92 @@
+ 
+
+             <select class="variant-group Allmainvariant" style="display: none;" name="id">
+              {%- for variant in product.variants -%}
+               <option value="{{ variant.id }}" vprice="{{ variant.price | money_with_currency }}" vcheck="{{ variant.inventory_quantity }}" data-image="{{variant.image | img_url: '1024x'}}">{{ variant.title }}</option>
+                  {% endfor %}
+             </select>
+            {%- when 'variant_picker' -%}
+
+
+
+
+
+
+ <input type="hidden" id="BackorderGet" value="{{ section.settings.cus_backorder }}">
+               {% if product.selected_or_first_available_variant.available and product.selected_or_first_available_variant.inventory_quantity <= 0 %}
+                <span class="statusBackorder" Id="Backorder">{{ section.settings.cus_backorder }}</span>
+                 {% else %}
+                 <span class="statusBackorder" Id="Backorder"></span>
+                 {% endif %}
+                  {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ product.selected_or_first_available_variant.id }}"
+                      disabled
+                    >
+                    <div class="product-form__buttons">
+                      <button data-available-variant="{{ product.selected_or_first_available_variant.id }}"
+                        type="submit"
+                        name="add"
+                        class="product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+                        {% if product.selected_or_first_available_variant.available == false %}
+                          disabled
+                        {% endif %}
+                      >
+                         <span id="add_to_cart_text">
+                        {%- if product.selected_or_first_available_variant.available -%}
+                           {% if product.selected_or_first_available_variant.available and product.selected_or_first_available_variant.inventory_quantity <= 0 %}
+                              Backorder
+                           {% else %}
+                          {{ 'products.product.add_to_cart' | t }}
+                          {% endif %}
+                        {%- else -%}
+                          {{ 'products.product.sold_out' | t }}
+                        {%- endif -%}
+                  </span>
+                  
+                        <div class="loading-overlay__spinner hidden">
+                          <svg
+                            aria-hidden="true"
+                            focusable="false"
+                            role="presentation"
+                            class="spinner"
+                            viewBox="0 0 66 66"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                          </svg>
+                        </div>
+                      </button>
+                      {%- if block.settings.show_dynamic_checkout -%}
+                        {{ form | payment_button }}
+                      {%- endif -%}
+                    </div>
+                  {%- endform -%}
+
+
+
+<script>
+renderProductInfo() ---- in this function
+
+ this.toggleAddButton(!this.currentVariant.available, window.variantStrings.soldOut);----------- below this line Dawn theme
+
+   var curr_id= this.currentVariant.id;
+      var curr_avi= this.currentVariant.available;
+      
+       document.querySelector('.Allmainvariant').forEach(function(options){
+              if(curr_id == options.value){
+            var var_qut= options.getAttribute('vcheck');
+            if(var_qut <= 0 && curr_avi == true){
+              document.getElementById('add_to_cart_text').innerHTML= "Backorder";
+              var gettextmessage =  document.getElementById("BackorderGet").value; 
+               document.getElementById('Backorder').innerHTML = gettextmessage;
+              
+            } else{
+              document.getElementById('Backorder').innerHTML = "";
+            }
+           
+          }
+        });
+</script>

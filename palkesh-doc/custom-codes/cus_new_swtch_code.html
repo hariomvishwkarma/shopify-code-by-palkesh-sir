@@ -1,0 +1,382 @@
+{% comment %}
+  Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
+{% endcomment %}
+
+{% assign file_extension = 'png' %}
+
+{% if swatch == blank %}
+<div class="swatch error">
+  <p>You must include the snippet swatch.liquid with the name of a product option.</p> 
+  <p>Use: <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+</div>
+{% else %}
+
+{% assign found_option = false %}
+{% assign is_color = false %}
+{% assign option_index = 0 %}
+
+{% for option in product.options %}
+  {% if option == swatch %}
+    {% assign found_option = true %}
+    {% assign option_index = forloop.index0 %}
+    <style>
+      label[for="product-select-option-{{ option_index }}"] { display: none; }
+      #product-select-option-{{ option_index }} { display: none; }
+      #product-select-option-{{ option_index }} + .custom-style-select-box { display: none !important; }
+    </style>
+    <script defer="defer">
+    themeJS.addEventListener('load', function () {
+      $(window).on('load', function() { 
+        $('.selector-wrapper:eq({{ option_index }})').hide(); 
+      });
+    });
+    </script>
+    {% assign downcased_option = swatch | downcase %}
+  {% endif %}
+{% endfor %}
+
+{% unless found_option %}
+<div class="swatch error">
+  <p>You included the snippet swatch.liquid with the name of a product option — <code>'{{ swatch }}'</code> — that does not belong to your product.</p>
+  <p>Use <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+  <p><strong>This is case-sensitive!</strong> Do not put in <code>'color'</code> if your product option name is <code>'Color'</code>.</p>
+</div>
+{% else %}
+{% unless is_color or product.has_only_default_variant %}
+<div class="swatch swatch-container clearfix" data-index="{{ option_index }}">
+  <div class="title-container">
+    <div class="variant-title">{{ swatch }} <span class="selected-option"></span></div>
+    {% if swatch contains 'size' or swatch contains 'Size' %}
+      <div class="variant-title small-headline">
+        <div data-app="eastsideco_sizeGuides"
+                     data-shop="{{ shop.permanent_domain }}"
+                     data-tags="{{ product.tags | join:',' | escape }}"
+                     data-metafields="{{ product.metafields.esc-size-matters.tag }}"
+                     data-popup="link" data-trigger-text="SEE SIZE CHART" class="size-link">
+        </div>
+      </div>
+    {% endif %}
+  </div>
+  {% assign values = '' %}
+  {% unless product.has_only_default_variant %}
+    <div class="button-style">
+      {% for variant in product.variants %}
+        {% assign value = variant.options[option_index] %}
+        {% unless values contains value %}
+          {% assign values = values | join: '||' %}
+          {% assign values = values | append: '||' | append: value %} 
+          {% assign values = values | split: '||' %}
+          <div data-value="{{ value | escape }}" class="swatch-element {% if is_color %}color {% endif %}{{ value | handle }} {% if variant.available %}available{% else %}soldout{% endif %}">
+            {% if is_color %}
+            <div class="tooltip">{{ value }}</div>
+            {% endif %}
+            <input id="swatch-{{ option_index }}-{{ value | handle }}" type="radio" name="option-{{ option_index }}" value="{{ value | escape }}" {% if variant.selected %}checked {% else %} class="not-first-checked"{% endif %} />
+            {% if is_color %}
+            <label class="radio-label{% if variant.available %} available{% else %} soldout{% endif %}{% if variant.selected %} active{% endif %}" for="swatch-{{ option_index }}-{{ value | handle }}" style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ value | handle | append: '.' | append: file_extension | asset_url }})">
+              {% comment %}<img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />{% endcomment %}
+            </label>
+            {% else %}
+            <label class="radio-label{% if variant.selected %} active{% endif %}{% comment %}{% if variant.available %}available{% else %}soldout{% endif %}{% endcomment %}" for="swatch-{{ option_index }}-{{ value | handle }}">
+              {{ value }}
+              {% comment %}<img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />{% endcomment %}
+            </label>
+            {% endif %}
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  {% endunless %}
+</div>
+{% endunless %}
+
+{% endunless %}
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  if($("[data-single-option-selector]").length) {
+
+    jQuery(function() {
+      jQuery('.swatch :radio').change(function() {
+        var optionIndex = jQuery(this).closest('.swatch').attr('data-index');
+        var optionValue = jQuery(this).val();
+        jQuery(this)
+          .closest('form')
+          .find('.single-option-selector')
+          .eq(optionIndex)
+          .val(optionValue)
+          .trigger('change');
+      });
+    });
+
+    /*
+    $("[data-single-option-selector]").each(function(i) {
+      var $thisSelect = $(this);
+      var $newClass = "js-option-selector-" + i;
+      var $newOptions = '<ul class="new-variant-swatches">';
+      var $currentOption = $thisSelect.val();
+
+      $thisSelect.find("option").each(function() {
+        var $this = $(this);
+        var $optionText = $this.text();
+        var $optionVal = $this.val();
+        var $soldOut = $this.hasClass("is-soldout");
+        var $optionStatus = $this.data("status");
+
+        $newOptions += '<li class="new-variant-swatch js-new-variant-swatch' +
+          ($currentOption == $optionVal ? ' is-active' : '') +
+          //($soldOut ? ' is-soldout' : '') +
+          '" data-val="' + $optionVal + '" data-select="' + $newClass + '">' +
+          $optionText +
+          '</li>';
+      });
+
+      $thisSelect.addClass("visually-hidden").addClass($newClass).after($newOptions + '</ul>');
+    });
+    */
+
+    $(document).on("click", ".radio-label", function() {
+
+      if(!$(this).hasClass("is-soldout")) {
+        var $this = $(this);
+        var $select = $this.attr("data-select");
+        var $val = $this.attr("data-val");
+        var $parent = $this.closest('.button-style');
+
+        $parent.find('.radio-label').removeClass("active");
+        $(this).addClass("active");
+      }
+    });
+  }
+</script>
+
+
+
+<style>
+  .swatch-element.soldout {
+    pointer-events: none;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+  //$(".swatch-element label.active").click();
+ setTimeout(function(){ 
+       //$(".swatch-snippet .swatch.swatch-container:nth-child(3) .swatch-element.available label").click();
+ //$(".swatch-snippet .swatch.swatch-container:nth-child(6) .swatch-element.available label").click();
+var i=0;
+   var j=0;
+   $(".swatch-snippet .swatch.swatch-container:nth-child(3) .swatch-element").each(function(){
+     if($(this).hasClass("available")){
+       if(i == 0){
+       $(this).find("label").click();
+         i=1;
+       }
+     }
+   });
+$(".swatch-snippet .swatch.swatch-container:nth-child(6) .swatch-element").each(function(){
+     if($(this).hasClass("available")){
+       if(j == 0){
+       $(this).find("label").click();
+         j=1;
+       }
+     }
+   });
+   
+ }, 500);
+
+    $(document).on("click", ".swatch-element label", function(){
+      var click_val = $(this).text().trim();
+      $("select#product-select option").each(function(){
+        var option_val = $(this).text().trim();
+          var str1 = option_val;
+          var str2 = click_val;
+          if(str1.indexOf(str2) != -1){
+              //console.log(str1 + " found");
+            var str3 = str1.replace(str2,"");
+             str3 = str3.replace(" / ","");
+            str3 = str3.trim();
+            console.log(str3);
+
+            var var_quantity = $(this).attr("available-quantity");
+            
+            $(".swatch-element label").each(function(){
+              var label_text = $(this).text().trim();
+              if(label_text == str3){
+                if(var_quantity > 0){
+                console.log(var_quantity);
+                  $(this).parent(".swatch-element").removeClass("soldout");
+                  $(this).parent(".swatch-element").removeClass("available");
+                  $(this).parent(".swatch-element").addClass("available");
+                }
+                else{
+                  $(this).parent(".swatch-element").removeClass("soldout");
+                  $(this).parent(".swatch-element").removeClass("available");
+                  $(this).parent(".swatch-element").addClass("soldout");
+                }
+              }
+            });
+          }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+
+{% unless product.has_only_default_variant %}
+                  {% for option in product.options_with_values %}
+                      <div class="selector-wrapper">
+                        <label for="SingleOptionSelector-{{ forloop.index0 }}">
+                          {{ option.name }}<span class="selected-swatch"></span>
+                        </label>
+
+                        <select
+                          class="single-option-selector"
+                          id="SingleOptionSelector-{{ forloop.index0 }}"
+                          data-single-option-selector
+                          data-index="option{{ option.position }}">
+                          {% for value in option.values %}
+                            <option
+                              value="{{ value | escape }}"
+                              {% if option.selected_value == value %}selected="selected"{% endif %}>
+                                {{ value }}
+                            </option>
+                          {% endfor %}
+                        </select> 
+                      </div>
+                  {% endfor %}
+                {% endunless %}
+
+                <select name="id" class="no-js" id="product-select" data-product-select>
+                  {% for variant in product.variants %}
+                    <option
+                      {% if variant == current_variant %}selected="selected"{% endif %}
+                      variant-price="{{ variant.price | money }}"
+                      {% unless variant.available %}disabled="disabled"{% endunless %}
+                      value="{{ variant.id }}"
+                    available-quantity="{{ variant.inventory_quantity }}">
+                        {{ variant.title }}
+                    </option>
+                  {% endfor %}
+                </select>
+
+                {% if product.variants.size > 1 %}
+                  <div class="swatch-snippet">
+                    {% render 'swatch' for product.options as swatch %}
+                  </div>
+                {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+                .swatch-element.grid {
+  margin-left: 0;
+}
+.button-style {
+  margin-bottom: 15px;
+}
+.swatch-element {
+  display: inline-block;
+}
+.swatch-element input {
+  display: none;
+}
+.swatch-element.soldout {
+  color: var(--color-border);
+}
+.radio-label {
+  display: inline-block;
+  box-shadow: 0 0 0 1px var(--color-border);
+  padding: 23px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-family: var(--font-stack-header);
+  font-weight: var(--font-weight-header);
+  text-transform: uppercase;
+  min-width: 125px;
+  text-align: center;
+}
+.radio-label.active, .swatch-element[checked] + .radio-label {
+  box-shadow: 0 0 0 1px var(--color-body-text);
+}
+.new-variant-swatch[data-status="unavailable"] {
+  box-shadow: 0 0 0 1px var(--color-border);
+  color: var(--color-border);
+}
+
+.new-variant-swatch.is-active {
+  box-shadow: 0 0 0 1px var(--color-body-text);
+}
+
+.new-variant-swatch[data-status="unavailable"].is-active {
+  box-shadow: 0 0 0 3px var(--color-border);
+}
+
+.new-variant-swatches {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+  font-size: 14px;
+  letter-spacing: 2px;
+  line-height: 18px;
+}
+
+.new-variant-swatch {
+  display: inline-block;
+  box-shadow: 0 0 0 1px var(--color-border);
+  padding: 20px 5px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-family: var(--font-stack-header);
+  font-weight: var(--font-weight-header);
+  text-transform: uppercase;
+  min-width: 30%;
+  text-align: center;
+}
+
+.new-variant-swatch[data-status="unavailable"] {
+  box-shadow: 0 0 0 1px var(--color-border);
+  color: var(--color-border);
+}
+
+.new-variant-swatch.is-active {
+  box-shadow: 0 0 0 1px var(--color-body-text);
+}
+
+.new-variant-swatch[data-status="unavailable"].is-active {
+  box-shadow: 0 0 0 3px var(--color-border);
+}

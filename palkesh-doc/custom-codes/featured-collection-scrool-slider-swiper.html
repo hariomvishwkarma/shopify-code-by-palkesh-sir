@@ -1,0 +1,205 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/css/swiper.min.css" rel="stylesheet" type="text/css" media="all">
+
+{% assign collection_main = collections[section.settings.collection_main] %}
+{% assign collection_limit = section.settings.collection_limit %}
+
+
+
+<div class="slider cus-slider-1">
+  <div>
+<h2 class="text-title text-center" style="margin-bottom:{{ section.settings.title_mb }}px">{{ section.settings.title }}</h2>
+</div>
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+  {% for product in collection_main.products limit: collection_limit %}
+{%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
+{% assign first_variant = product.selected_or_first_available_variant %}
+{% assign featured_img_src = first_variant.featured_img.src | default: product.featured_image.src %}
+{% assign price = first_variant.price %}
+{% assign compare_at_price = first_variant.compare_at_price %}    
+      <div class="swiper-slide">
+        
+        <a href="{{ product.url }}">
+<img class="lazy2" src="{{ featured_img_src | img_url: 'master' }}" alt="{{ product.featured_img.alt }}" />
+</a>
+        <div class="product__title product__title--card text-center">
+<a href="{{ product.url }}">
+{{ product.title }}
+</a>
+        </div>
+{% if compare_at_price > price %}
+<s class="product__compare-at-price">{{ compare_at_price | money }}</s>
+<p class="product__product-price">{{ price | money }}</p>
+{% else %}
+<p class="product__product-price">{{ price | money }}</p>
+{% endif %}
+      
+      </div>
+     {% endfor %}
+    </div>
+
+    <!-- pagination -->
+    <div class="swiper-pagination"></div>
+
+    <!-- scrollbar -->
+    <div class="swiper-scrollbar"></div>
+
+    <!-- buttons -->
+<!--     <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div> -->
+  </div> 
+</div>
+
+{% schema %}
+{
+"name": "FeaturedCollection Slider",
+"settings": [
+{
+"type": "collection",
+"id": "collection_main",
+"label": "Choose a Collection"
+},
+{
+"type": "range",
+"id": "collection_limit",
+"min": 2,
+"max": 50,
+"step": 1,
+"unit": ".",
+"label": "How many products to show",
+"default": 4
+},
+{
+"type": "color",
+"id": "bg",
+"label": "Background Color"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Title",
+"default": "Featured Collection Slider"
+},
+
+
+{
+"type": "range",
+"id": "title_mb",
+"min": 30,
+"max": 120,
+"step": 1,
+"unit": "px",
+"label": "Title Margin Bottom",
+"default": 48
+}
+
+],
+"presets": [
+{
+"name": "Featured Collection Slider",
+"category": "Slider"
+}
+]
+}
+{% endschema %}
+<style>
+/* .cus-slider-1.slider {
+  max-width: 1200px;
+  margin: 0 auto;
+} */
+
+.cus-slider-1 .swiper-container {
+  padding-bottom: 20px;
+}
+
+.cus-slider-1 .swiper-scrollbar {
+  background: #d6d6d6;
+}
+
+.cus-slider-1 .swiper-container-horizontal > .cus-slider-1 .swiper-scrollbar {
+  border-radius: 2px;
+  height: 5px;
+  width: 200px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cus-slider-1 .swiper-wrapper img {
+  width: 100%;
+}
+.cus-slider-1 .swiper-wrapper  a {
+    display: inline-block;
+}
+.cus-slider-1  .swiper-container-horizontal>.swiper-scrollbar {
+    border-radius: 0;
+    height: 17px;
+}
+.cus-slider-1  .swiper-scrollbar-drag {
+    border-radius: 0;
+}
+.cus-slider-1  .swiper-slide {
+      text-align: center;
+}
+  @media only screen and (max-width: 767px) {
+
+.cus-slider-1 .product__title.product__title--card.text-center{
+   font-size: 15px;
+}
+.cus-slider-1    p.product__product-price {
+    font-size: 15px;
+}
+    .cus-slider-1 .swiper-container-horizontal>.swiper-scrollbar {
+    border-radius: 0;
+    height: 9px;
+}
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/js/swiper.min.js"></script>
+<script>
+var $swiperSelector = $('.swiper-container');
+
+$swiperSelector.each(function(index) {
+    var $this = $(this);
+    $this.addClass('swiper-slider-' + index);
+    
+    var dragSize = $this.data('drag-size') ? $this.data('drag-size') : 200;
+    var freeMode = $this.data('free-mode') ? $this.data('free-mode') : false;
+    var loop = $this.data('loop') ? $this.data('loop') : false;
+    var slidesDesktop = $this.data('slides-desktop') ? $this.data('slides-desktop') : 3.5;
+    var slidesTablet = $this.data('slides-tablet') ? $this.data('slides-tablet') : 3.5;
+    var slidesMobile = $this.data('slides-mobile') ? $this.data('slides-mobile') : 2.5;
+    var spaceBetween = $this.data('space-between') ? $this.data('space-between'): 10;
+    var watchOverflow = $this.data('watch-overflow') ? $this.data('watch-overflow') : true;
+  
+    var swiper = new Swiper('.swiper-slider-' + index, {
+      direction: 'horizontal',
+      loop: loop,
+      freeMode: freeMode,
+      watchOverflow: watchOverflow,
+      spaceBetween: spaceBetween,
+      breakpoints: {
+        1920: {
+          slidesPerView: slidesDesktop
+        },
+        992: {
+          slidesPerView: slidesTablet
+        },
+        767: {
+           slidesPerView: slidesMobile
+        }
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      scrollbar: {
+        el: '.swiper-scrollbar',
+        draggable: true,
+        dragSize: dragSize
+      }
+   });
+});
+</script>

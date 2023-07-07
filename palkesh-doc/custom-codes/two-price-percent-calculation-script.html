@@ -1,0 +1,76 @@
+  {%if template.name == "product"%}
+    <script>
+           
+      $(document).ready(function() {
+        var as = $('.opt__bundles .fake_select ul li').first().text();
+        var Aprecent = parseInt(as.replace(/[^0-9]/g, ""));
+        
+        if(!isNaN(Aprecent)) {
+          $('.onsale .text').html(Aprecent + "% OFF");
+        }
+        
+        $('.option_title').click(function(){
+          var current_percent = $(this).text();
+          var Cprecent = parseInt(current_percent.replace(/[^0-9]/g, ""));
+          if(!isNaN(Aprecent)) {
+             $('.onsale .text').html(Cprecent + "% OFF");
+          }
+          setTimeout(function(){ 
+            var priceval = document.getElementById('price').innerText;
+            var diffpriceval = document.getElementById('diff_price').innerText;
+            var priceval1 = parseInt(priceval.replace(/[^0-9]/g, ""));
+            var diffpriceval1 = parseInt(diffpriceval.replace(/[^0-9]/g, ""));
+            
+            var finalDiffer = parseFloat(diffpriceval1) - parseFloat(priceval1);
+            var save_money = finalDiffer/100;
+            var saveMoney = save_money.toFixed(2);
+            
+           
+            var currency_symbol =  $('#current_currency').val();
+            $('.you-save').html("You Save "+currency_symbol + saveMoney );
+                        
+          }, 800);
+       
+        });
+      });
+    </script>
+
+       <script>
+           
+      $(document).ready(function() {
+        // var as = $('.opt__size .fake_select ul li').first().text();
+        // var Aprecent = parseInt(as.replace(/[^0-9]/g, ""));
+        
+        // if(!isNaN(Aprecent)) {
+        //   $('.onsale .text').html(Aprecent + "% OFF");
+        // }
+        
+        $('.opt__size .option_title').click(function(){
+          // var current_percent = $(this).text();
+          // var Cprecent = parseInt(current_percent.replace(/[^0-9]/g, ""));
+          // if(!isNaN(Aprecent)) {
+          //    $('.onsale .text').html(Cprecent + "% OFF");
+          // }
+          setTimeout(function(){ 
+            var priceval = document.getElementById('price').innerText;
+            var diffpriceval = document.getElementById('diff_price').innerText;
+            var priceval1 = parseInt(priceval.replace(/[^0-9]/g, ""));
+            var diffpriceval1 = parseInt(diffpriceval.replace(/[^0-9]/g, ""));
+            
+            var finalDiffer = parseFloat(diffpriceval1) - parseFloat(priceval1);
+            // var save_money = finalDiffer/100;
+            // var saveMoney = save_money.toFixed(2);
+      
+         var percentValue = (finalDiffer / diffpriceval1) * 100;
+         var percentValuefinal = percentValue.toFixed(0);
+          // alert(percentValuefinal);
+            $('.onsale .text').html(percentValuefinal + "% OFF");
+            // var currency_symbol =  $('#current_currency').val();
+            // $('.you-save').html("You Save "+currency_symbol + saveMoney );
+                        
+          }, 800);
+         
+        });
+      });
+    </script>
+    {%endif%}

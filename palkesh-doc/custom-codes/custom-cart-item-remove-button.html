@@ -1,0 +1,32 @@
+
+   <div class="cart__remove">
+          <a href="{{ routes.cart_change_url }}?id={{ product.key }}&amp;quantity=0" class="text-link" data-id="{{ product.id }}">
+
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon- 
+          close" viewBox="0 0 64 64"><path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"> 
+          </path></svg>
+remove
+          </a>
+</div>
+
+ <script>
+      jQuery(document).on("click", '.cart__remove a', function(e) {
+    e.preventDefault();
+    var variant_id = jQuery(this).attr('data-id');
+    // console.log(variant_id);
+    var obj = {};
+    obj[variant_id]= 0;
+    removem_data = { updates: obj };
+    jQuery.ajax({
+        url: "/cart/update.js",
+        type: "POST",
+        data: JSON.stringify(removem_data), 
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(responce) {
+		  $('.cart__item[data-id="'+variant_id+'"]').remove();
+          location.reload(true);
+        }            
+      });
+  });  
+  </script>

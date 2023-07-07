@@ -1,0 +1,643 @@
+https://shopify.github.io/liquid-code-examples/example/breadcrumb-navigation-------------breadcrumb-navigation
+
+https://codepen.io/deanha/pen/ZpYbgy---------- page to page link scrool ID
+
+https://codepen.io/solona/pen/vJJpwY---------------- form valiadtion
+
+https://codepen.io/shoha-kh/pen/abbjZba ----------- image zoom product
+
+https://codepen.io/alexd2/pen/PRbjxz----------------- cart drawer hover open
+
+https://ajaxinate.elkfox.io/ ------------------------ product infine scroll shopify
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+https://codepen.io/tjbenton21/pen/nXxLMO-------------- timer
+https://codepen.io/piotrswioklo/pen/AGNdoq-------------- timer
+
+
+https://codepen.io/lexa2guy/pen/XwzRWa
+https://codepen.io/ReGGae/full/QZxdVX/
+
+https://codepen.io/onderakbulut/pen/jOwNyMV----- product slider
+
+https://stackoverflow.com/questions/21921821/javascript-if-less-than-display-selling-out
+
+https://gist.github.com/ConduciveMammal/27f0b6e07fb440ce71277f8187081ff1
+
+https://raw.githubusercontent.com/carolineschnapp/color-swatches/master/swatch.liquid
+
+https://stackoverflow.com/questions/67038290/how-can-i-output-the-collections-products-from-a-section-using-schema-collectio
+<!-- ------------------------------------------------------------------------------- -->
+
+https://transfonter.org/ ----------------font face generator url
+
+<!-- ------------------------------------------------------------------------------- -->
+
+
+<!-- ---------------------------Start Shopify custom font add--------------------------- -->
+<style>
+{% assign cus-testimonial_font = section.settings.cus_testimonial-font %}
+  {{ cus-testimonial_font | font_face }}
+  body#rewards .cus_icon_section .section__title-desc p, body#rewards .cus_icon_section .home-inline__desc p{    
+    font-family: {{ cus-testimonial_font.family }}, {{ cus-testimonial_font.fallback_families }};
+    font-weight: {{ cus-testimonial_font.weight }}; 
+    font-style: {{ cus-testimonial_font.style }};
+  }
+
+</style>
+
+{
+         "type": "font_picker",
+         "id": "cus_testimonial-font",
+         "label": "Font",
+         "default": "work_sans_n6"
+       },
+<!-- ---------------------------End Shopify custom font add--------------------------- -->
+
+
+
+<div style="background:{{section.settings.background_color }}">......................</div>
+{
+   "type": "gradient",
+   "id": "background_color",
+   "label": "Background color",
+   "default": "#ffffff"
+  },
+
+{% assign mobile-block = section.blocks | where: 'type', 'question' %}
+          {%- for block in mobile-block -%}{% endfor %}
+
+
+{{ cart.currency.symbol }}{{amount_format}} {{ cart.currency.iso_code }}
+
+
+@font-face {
+    font-family: "Font name";
+    src: url({{ "Filename" | asset_url }}) format("Format");
+    src: url({{ "Filename" | file_url }}) format("Format");
+}
+
+<body class="{{ template | handleize }}"> ------ body class for dynamic add
+
+<script>
+  $('a#mobile_nav_trigger').click(function() {
+    $('.accordion').removeClass('active');
+    $('ul.menu.dropdown-child.panel').removeAttr('style');
+  });
+</script>
+
+{% if page.handle == '' %}
+
+{% endif %}
+
+{% if template == "page.name" %} 
+ do something
+{% endif %}
+
+{% if template contains "index" or template contains "product" %}
+  do something
+{% endif %}
+
+<!-- ------Start absolute padding bottom image CSS -->
+
+.cus_home_slider .home-video-with-text-video {
+    padding-bottom: 67.5%;
+}
+.cus_home_slider  .home-slideshow-slide-image {
+    padding-bottom:  67.5%;
+}
+.cus_home_slider  .home-slideshow-slide-image img {
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+/*     z-index: 100; */
+  height: 100%;
+  object-fit: cover;
+}
+
+<!-- ------End absolute padding bottom image CSS -->
+
+<!-- ---------Start Custom Json page content------------ -->
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
+
+<!-- ---------End Custom Json page content------------ -->
+
+
+<!-- input,
+textarea,
+button,
+select,
+a,
+img,
+span,
+div,
+.logo_cus a{
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+}
+a:focus,a:visited,a:active{
+  outline: none;
+} -->
+
+details.menu-drawer-container.menu-opening {
+    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+}
+
+.ImageHero.ImageHero--large {
+    min-height: initial;
+    padding-top: 43%;
+    height: initial;
+}
+.ImageHero__ImageWrapper{
+	display: block;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  height: 100%;
+  object-fit: cover;
+}
+.ImageHero__Wrapper.cuatomtext {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- --------------------------------------------------------------------------------- -->
+
+{{ '264260862_957395028201339_6158634144314538469_n.jpg' | file_img_url: 'master' }}
+
+<!-- ------------------------------------------------------------------------------ -->
+
+
+<!-- /*------------------- Start Custom Scrollbar Styling --------------------*/ -->
+
+.cus_size_box::-webkit-scrollbar {
+    width: 7px;
+}
+ 
+.cus_size_box::-webkit-scrollbar-track {
+    background-color: #ebebeb;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.cus_size_box::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #b9b9b9; 
+}
+
+<!-- /*------------------- End Custom Scrollbar Styling --------------------*/ -->
+
+<!------------ Start Custom WIDTH shopify code----------------- -->
+
+{% assign img_width = section.settings.img_width | append: 'x' %}
+{
+"type": "range",
+"id": "img_width",
+"min": 200,
+"max": 600,
+"step": 5,
+"unit": "px",
+"label": "Image Width",
+"default": 200
+},
+
+
+<!------------ End Custom WIDTH shopify code----------------- -->
+
+
+<!------------ Start Custom Filter shopify code----------------- -->
+
+
+<ul class="cus_filter">
+  {% for product_type in collection.all_types %}
+   {% if product_type == blank %}{% continue %}{% endif %}
+  {% assign type_handle = product_type | handleize %}
+  {% assign type_collection = collections[type_handle] %}
+  <li >
+    {% if type_collection == empty %}
+    {{ product_type | link_to_type  }}
+    {% else %}
+    {{ type_collection.title | link_to: type_collection.url }}
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+  
+
+  <ul class="cus_filter">
+  {% for product_type in collection.all_types %}
+   {% if product_type == blank %}{% continue %}{% endif %}
+  {% assign type_handle = product_type | handleize %}
+  {% assign type_collection = collections[type_handle] %}
+  <li >
+   
+     <a href="?filter.p.product_type={{product_type}}">{{ product_type }}</a>
+   
+  </li>
+  {% endfor %}
+</ul>
+
+<!------------ End Custom Filter shopify code----------------- -->
+
+
+<!------------ Start Custom Padding shopify code----------------- -->
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+ 
+{%- endstyle -%}
+{
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+
+<!------------ End Custom Padding shopify code----------------- -->
+
+<!------------------ Start second checkout ----------------------->
+
+    {% assign variant = product.selected_or_first_available_variant %}
+    {% form 'product', product %}
+        <input id="hidden-variant-id" name="id" type="hidden" value="{{ variant.id }}" />
+        {{ form | payment_button }}
+    {% endform %}
+
+<!---------------------- End second checkout -------------------->
+
+<!-- --------------------------------------Start Border CSS----------------------------------------------------------------- -->
+
+body.template-collection div#CollectionSection .boost-pfs-filter-products.grid .grid__item.grid-product:nth-child(-n+4) {
+    border-top: 1px solid rgba(0, 0, 0, 0.7);
+}
+
+body.template-collection div#CollectionSection .boost-pfs-filter-products.grid .grid__item.grid-product:nth-child(2n+1) {
+    border-right: 1px solid rgba(0, 0, 0, 0.7);
+}
+
+body.template-collection div#CollectionSection .boost-pfs-filter-products.grid .grid__item.grid-product{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+}
+body.template-collection div#CollectionSection .boost-pfs-filter-products.grid .grid__item.grid-product:nth-child(2n) {
+    border-right: 1px solid rgba(0, 0, 0, 0.7);
+}
+
+<!-- --------------------------------------End Border CSS----------------------------------------------------------------- -->
+
+<!-- Start URL Redirection Script -->
+
+{% if template contains "product" %}
+
+	<script>
+        const nextURL = '{{product.url}}?variant={{ product.selected_or_first_available_variant.id }}';
+        const nextTitle = '{{product.title}}';
+		const nextState = { additionalInformation: 'Updated the URL with JS' };
+		window.history.pushState(nextState, nextTitle, nextURL);
+		window.history.replaceState(nextState, nextTitle, nextURL);
+    </script>
+                      
+{% endif %}
+
+<!-- End URL Redirection Script -->
+
+
+<!-- Start Variant image shopify Script -->
+
+https://stackoverflow.com/questions/61315571/how-do-i-display-the-variant-image-when-the-color-swatch-of-a-variant-is-hovered
+
+{%- for variant in product.variants -%}
+  {%- if variant.title contains value -%}
+    {%- assign variantImgSrc = variant.image.src | img_url: 'small' -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+style="background-image: url({{ variantImgSrc }});"
+
+<!-- End Variant image shopify Script -->
+
+
+<!-- Variant inventoery quantity 0 hide -->
+<div class="selector-wrapper js product-form__item">
+   <label {% if option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+  <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input"
+          id="SingleOptionSelector-{{ forloop.index0 }}"
+          data-name="{{ option.name }}"
+          data-index="option{{ forloop.index }}">
+      {% for value in option.values %}
+         {%- assign variant_label_state = true -%}
+          {%- if product.options.size == 1 -%}
+            {%- unless product.variants[forloop.index0].available -%}
+              {%- assign variant_label_state = false -%}
+            {%- endunless -%}
+          {%- endif -%}
+     		<option class="{% unless variant_label_state %}hide{% endunless %}"  value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+      {% endfor %}
+  </select>
+</div>
+
+<!-- Variant inventoery quantity 0 hide -->
+
+<!-- ---Start max quantity limit--- -->
+
+max="{{ product.selected_or_first_available_variant.inventory_quantity}}
+
+<!-- --- End max quantity limit--- -->
+
+
+<!-- ---Start Cart Drawer sale and compare price Code--- -->
+
+ {% if product.product.compare_at_price > product.price %} 
+  <span class="cart__compare-price">
+      {{ product.product.compare_at_price | money }}
+  </span> 
+{% endif %}
+  <span class="cart__price {% if product.product.compare_at_price > product.price %} on-sale{% endif %}">
+    {{ product.original_price | money }}
+  </span>
+
+<style type="text/css">
+	span.cart__price{
+  color:{{ settings.cart-price-color }};
+}
+span.cart__price.on-sale{
+  color:{{ settings.cart-sale_price-color }};
+}
+span.cart__compare-price {
+    padding-right: 5px;
+    text-decoration: line-through;
+    font-size: 13px;
+    margin-bottom: 2px;
+  color:{{ settings.cart-compare_price-color }};
+}
+</style>
+<!-- ---End Cart Drawer sale and compare price Code--- -->
+
+
+
+
+<!--------------- Start Custom Price Update Code -------------->
+
+<div id="test" class="cus_pr">
+
+</div>
+
+ <script>
+
+ {% assign current_variant = product.selected_or_first_available_variant %}
+ {% assign current_variant1 = current_variant.price | money_with_currency %}
+      
+        
+function addDollars(s1,s2){
+  var n1 = parseFloat(s1.replace(/[^0-9\.]/g,"")),
+      n2 = parseFloat(s2.replace(/[^0-9\.]/g,""));
+  return "{{ cart.currency.iso_code }}{{ cart.currency.symbol }}"+ (n1+n2).toFixed(2);
+}
+var targetDiv = document.getElementById('test');
+
+ var sum = console.log(addDollars("{{ money_price }}","$35"));
+   console.log(sum)
+  targetDiv.insertAdjacentHTML('afterend', addDollars("{{ current_variant1 }}","$35"));
+
+
+  </script>
+
+
+  {% assign current_variant1 = product.selected_or_first_available_variant  %}
+     {% assign totalPrice =  current_variant1.price | divided_by: 100 %}
+    {% assign totalPrice2 =  totalPrice | plus:  section.settings.deliveryCharge %}
+    {{ totalPrice2 |times: 100 | money_with_currency }} 
+<!--------------- End Custom Price Update Code -------------->
+
+<!-- Start Other page add class link click -->
+ <script>
+     var path = window.location.href;
+       
+        $('li.site-footer__linklist-item.cus_link_faq a').each(function () {
+            if (this.href === path) {
+                $('a[href="#' + path + '"]').addClass('active');
+              $('.faq-tabs ul li:last a').addClass('tabulous_active');
+              $('div#tabs_container #tabs-5').addClass('showscale');
+              $('.faq-tabs ul li:first a').removeClass('tabulous_active');
+              $('div#tabs_container #tabs-1').removeClass('showscale');
+            }
+        });
+</script>
+<!-- End Other page add class link click -->
+
+<!-- Start Collection filter bg color -->
+{% assign file_extension = 'png' %} {% assign color_value = filter_value.label | downcase | split: " " %}  
+ <span class="filter_color_img" style="background-image: url('{{ color_value | join: "-" | append: '.' | append: file_extension | asset_url }}');"></span> 
+ <!-- End Collection filter bg color -->
+
+
+<!-- swatch script -->
+      var imgid = this.currentVariant.featured_image;
+                                var img_src= imgid.src;       
+                                //console.log(img_src);
+                              
+                                 var img_split= img_src.split('/products');
+                               console.log(img_split[1]);
+                             // document.getElementById('featured-img-change-variant').src= imgid.src;
+                              
+                               var slide_image = document.getElementsByClassName('media_gallery_img');                              
+                               for(var i = 0; i < slide_image.length; i++) {                                 
+                                 var media_gallery= slide_image[i].getAttribute('src'); 
+                                 //console.log(media_gallery);
+                                 
+                                  var media_img_split= media_gallery.split('/products');    
+                                  
+                                 if(img_split[1] == media_img_split[1]){  
+                                   console.log(media_img_split[1]);
+                                   var slide_number= slide_image[i].getAttribute('slide_no');
+                                   console.log(slide_number);
+                                   slide_number--;
+                                   swiper.slideTo(slide_number);
+                                   swiper2.slideTo(slide_number);
+                                 }
+                              }  
+<!-- swatch script -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- --------------------------Start Custom Add to cart button click validation-------------------------- -->
+
+
+<script>
+
+
+  // Check if submit is disabled on change of select
+$('#cus_select').on('change', function () {
+  if ($('.product-form__cart-submit').is(':disabled'))
+  {
+    $('.product-form__cart-submit').prop('disabled',false);
+  }
+  $(".valid").remove();
+});
+// Check value of select on submit
+$(".product-form__cart-submit").click(function (event) {
+  if ($("#cus_select option:selected").val()=='')
+  {
+    event.preventDefault();
+    $("#cus_select").focus();
+    $("#customversion").append('<p class="valid cus_valid"><em>Please select version</em></p>');
+    $(".product-form__cart-submit").prop("disabled", true);
+  }
+});
+
+  $('#watermark').on('change', function () {
+  if ($('.product-form__cart-submit').is(':disabled'))
+  {
+    $('.product-form__cart-submit').prop('disabled',false);
+  }
+  $(".valid").remove();
+});
+// Check value of select on submit
+$(".product-form__cart-submit").click(function (event) {
+  if ($("#watermark option:selected").val()=='')
+  {
+    event.preventDefault();
+    $("#watermark").focus();
+    $("#customwatermark").append('<p class="valid cus_valid"><em>Please select watermark</em></p>');
+    $(".product-form__cart-submit").prop("disabled", true);
+  }
+});
+
+
+   $('#custom_your_name').on('keyup blur', function () {
+  if ($('.product-form__cart-submit').is(':disabled'))
+  {
+    $('.product-form__cart-submit').prop('disabled',false);
+  }
+  $(".valid").remove();
+});
+// Check value of select on submit
+$(".product-form__cart-submit").click(function (event) {
+  if ($("#custom_your_name").val()=='')
+  {
+    event.preventDefault();
+    $("#custom_your_name").focus();
+    $("#customname").append('<p class="valid cus_valid"><em>Please enter your name</em></p>');
+    $("#customnameschool").append('<p class="valid cus_valid"><em>Please enter school name</em></p>');
+    $(".product-form__cart-submit").prop("disabled", true);
+  }
+});
+</script>
+
+
+https://codepen.io/paulyabsley/pen/nymvqj
+<!-- --------------------------End Custom Add to cart button click validation-------------------------- -->
+
+
+
+ {% if option.name == 'Color' or option.name == 'color' %}
+      {% assign found = false %}
+      {% for variant in product.variants %}
+          {% for opt in variant.options %}
+              {% if opt == value %}
+                  {% if found == false  %}
+                          <label class="custom-color-swatch-bg-img" title="{{ value }}" style="{% if variant.featured_image != blank %} background-image: url({{ variant.featured_image | img_url: 'master' }});{% else %}background-color: {{ value | split: ' ' | last | handle }};{% endif %}background-size: cover;
+                            background-repeat: no-repeat;" for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+                           
+                          </label>
+                         {% assign found = true %}
+                  {% endif %}
+              {% endif %}
+          {% endfor %}
+    {% endfor %}
+                            {% else %}
+                          <label  for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+                            {{ value }}
+                          </label>
+                             {% endif %}
+
+
+<!-- -------------------Start For only Size variant value code ----------------------------------------------- -->
+
+{% assign sizelist = '' %}
+
+{% for variant in product.variants %}
+  {% assign sizeOption = '' %}
+  
+  {% for option in variant.options %}
+    {% if option == 'Size' %}
+      {% assign sizeOption = option %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  
+  {% if sizeOption %}
+    {% capture size %}
+      {{ variant.option1 }}
+    {% endcapture %}
+    
+    {% unless sizelist contains size %}
+      <tr>
+        <td>{{ size }}</td>
+        <td>{{ variant.metafields.custom.apparel_bust }}</td>
+        <td>{{ variant.metafields.custom.apparel_waist }}</td>
+        <td>{{ variant.metafields.custom.apparel_hips }}</td>
+        <td>{{ variant.metafields.custom.apparel_length }}</td>
+      </tr>
+    
+      {% capture tempList %}
+        {{ sizelist | append: size | append: ' ' }}
+      {% endcapture %}
+    
+      {% assign sizelist = tempList %}
+    {% endunless %}
+  {% endif %}
+{% endfor %}
+
+<!-- ------------------- End For only Size variant value code ----------------------------------------------- -->

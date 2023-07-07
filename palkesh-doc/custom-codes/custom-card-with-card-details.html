@@ -1,0 +1,973 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.image_height == 'adapt' and section.settings.image != blank -%}
+  {%- style -%}
+    @media screen and (max-width: 749px) {
+      #Banner-{{ section.id }}::before,
+      #Banner-{{ section.id }} .banner__media::before,
+      #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
+        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+        content: '';
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 750px) {
+      #Banner-{{ section.id }}::before,
+      #Banner-{{ section.id }} .banner__media::before {
+        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+        content: '';
+        display: block;
+      }
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+{%- style -%}
+  #Banner-{{ section.id }}::after {
+    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<div
+  id="Banner-{{ section.id }}"
+  class="banner banner--{{ section.settings.image_height }}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}"
+>
+  {%- if section.settings.image != blank -%}
+    <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}">
+      {%- liquid
+        assign image_height = section.settings.image.width | divided_by: section.settings.image.aspect_ratio
+        if section.settings.image_2 != blank
+          assign image_class = 'banner__media-image-half'
+        endif
+        if section.settings.image_2 != blank and section.settings.stack_images_on_mobile
+          assign sizes = '(min-width: 750px) 50vw, 100vw'
+        elsif section.settings.image_2 != blank
+          assign sizes = '50vw'
+        else
+          assign sizes = '100vw'
+        endif
+      -%}
+      {{
+        section.settings.image
+        | image_url: width: 3840
+        | image_tag:
+          loading: 'lazy',
+          width: section.settings.image.width,
+          height: image_height,
+          class: image_class,
+          sizes: sizes,
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+      }}
+    </div>
+  {%- endif -%}
+  <div class="cus_banner__content banner__content page-width">
+    <div class="cus_banner__box banner__box content-container content-container--full-width-mobile  gradient">
+          <div class="cus_map">
+              {% if section.settings.map-heading != blank %}
+                <h3 class="cus_heading-h3">{{ section.settings.map-heading }}</h3>
+              {% endif %}
+              {% if section.settings.cus_map != blank %}
+                <iframe src="{{ section.settings.cus_map }}" width="100%" height="350" frameborder="0" style="border:0"></iframe>
+              {% endif %}
+          </div>
+          <div id="tagDorothy" class="cus_cards collapsable" {{ block.shopify_attributes }} >
+      {%- for block in section.blocks -%}
+            <div>
+                {% if block.settings.card-heading != blank %}
+                  <h3 class="cus_heading-h3 cus_hide-h3">{{ block.settings.card-heading }}</h3>
+                {% endif %}
+           {% if block.settings.card_text_box != blank %}
+                <div class="cus_card-inner hide-me">
+                   <div class="cus_card-inner2">
+                     {% if block.settings.card_img_box != blank %}
+                         <div class="card_img_box">
+                           <img src="{{ block.settings.card_img_box | img_url: 'master' }}">
+                         </div>
+                     {% endif %}
+                    
+                         <div class="card_text_box">
+                           <div class="card_name_title">
+                              <p>{{ block.settings.card_name_box }}</p>
+                              <p>{{ block.settings.card_title_box }}</p>
+                           </div>
+                            <p>{{ block.settings.card_text_box | truncate: 100 }}
+                              <a href="javascript:void(0)" class="btn read-more-self read-more-self-{{ forloop.index }} btn-default">{{ block.settings.card_text_btn }}</a>
+                            </p>
+                         </div>
+                   
+                   </div>
+                </div>
+              {% endif %}
+                  <div class="cus_card-details reveal-me reveal-me-{{ forloop.index }}">
+                     {% if block.settings.card-heading-det != blank %}
+                        <h3 class="cus_heading-h3">{{ block.settings.card-heading-det }}</h3>
+                      {% endif %}
+                    <div class="cus_card-details-inner">
+                      <div class="cus_det_box-1">
+                          <div class="cus_card-inner2">
+                           {% if block.settings.card_img_box-1 != blank %}
+                               <div class="card_img_box-1">
+                                 <img src="{{ block.settings.card_img_box-1 | img_url: 'master' }}">
+                               </div>
+                           {% endif %}
+                          
+                               <div class="card_text_box-1">
+                                 <div class="card_name_title">
+                                    <p>{{ block.settings.card_name_box-1 }}</p>
+                                    <p>{{ block.settings.card_title_box-1 }}</p>
+                                 </div>
+                               </div>
+                          </div>
+                          <div>
+                             {% if block.settings.card_text_detail != blank %}
+                                 {{ block.settings.card_text_detail }}
+                             {% endif %}
+                          </div>
+                        </div>
+                       <div class="cus_det_box-2">
+                         {% if block.settings.card_text_btn-3 != blank %}
+                            <a href="javascript:void(0)" class="btn read-more-self read-more-self-{{ forloop.index }} btn-default">{{ block.settings.card_text_btn-3 }}</a>
+                            <a href="{{ block.settings.card_url_btn-4 }}" class="btn read-more-self btn-default">{{ block.settings.card_text_btn-4 }}</a>
+                         {% endif %}
+                       </div>
+                    </div>
+                    
+                  </div>
+            </div>
+      {%- endfor -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Image Banner 3",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image-banner.settings.image.label"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "t:sections.image-banner.settings.image_overlay_opacity.label",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.image-banner.settings.image_height.options__1.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.image-banner.settings.image_height.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.image-banner.settings.image_height.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.image-banner.settings.image_height.options__4.label"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.image-banner.settings.image_height.label",
+      "info": "t:sections.image-banner.settings.image_height.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.image-banner.settings.header.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_below",
+      "default": true,
+      "label": "t:sections.image-banner.settings.show_text_below.label"
+    },
+     {
+          "type": "text",
+          "id": "map-heading",
+          "label": "Heading"
+        },
+        {
+          "type": "url",
+          "id": "cus_map",
+          "label": "Map Link"
+        }
+  ],
+  "blocks": [
+    {
+      "type": "cards",
+      "name": "Cards",
+      "settings": [
+        {
+          "type": "text",
+          "id": "card-heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "card_name_box",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "card_title_box",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "card_text_box",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "card_img_box",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "card_text_btn",
+          "label": "Button Text"
+        },
+         {
+            "type": "header",
+            "content": "Card Details"
+          },
+        {
+          "type": "text",
+          "id": "card-heading-det",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "card_name_box-1",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "card_title_box-1",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "card_img_box-1",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "card_text_detail",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "card_text_btn-3",
+          "label": "Button Text"
+        },
+        {
+          "type": "url",
+          "id": "card_url_btn-4",
+          "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "card_text_btn-4",
+          "label": "Button Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Image Banner 3"
+    }
+  ]
+}
+{% endschema %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+  jQuery(document).ready(function() {
+
+{% for block in section.blocks %}
+  
+  // Adds Collapsable && Custom Accordion Functionality
+	$('.read-more-self-{{ forloop.index }}').click(function(reveal) {
+		reveal.preventDefault();
+		var contentBox = $(this).closest('.collapsable');
+		var theHiddenOne = contentBox.find('.reveal-me-{{ forloop.index }}');
+        var theVisibleOne = contentBox.find('.hide-me');
+		if (theHiddenOne.is(':hidden')) {
+			theHiddenOne.attr("style", "display:block");
+			theVisibleOne.attr("style", "display:none");
+          $('.cus_map').attr("style", "display:none");
+          $('.cus_hide-h3').attr("style", "display:none");
+          $('.cus_cards.collapsable').attr("style", "width:100%");
+		} else {
+			theHiddenOne.attr("style", "display:none");
+			theVisibleOne.attr("style", "display:block");
+            $('.cus_map').attr("style", "display:block");
+          $('.cus_hide-h3').attr("style", "display:block");
+          $('.cus_cards.collapsable').attr("style", "");
+		}
+		$(this).toggleClass('read-less');
+	});
+{% endfor %}
+});
+</script>
+
+<style>
+.section-header .cus_header-divide {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+.section-header .cus_header-divide .header__icons {
+    justify-content: right;
+}
+ .section-header .cus_header-divide a.header__icon {
+    text-decoration: none;
+    background-color: #fcd2ba;
+    padding: 7px 30px;
+    width: auto;
+    height: auto;
+    border-radius: 50px;
+    font-size: 1.6rem;
+}
+.section-header  nav.header__inline-menu ul.list-menu li a.header__menu-item{
+    text-decoration: none;
+    background-color: #fcd2ba;
+    padding: 7px 30px;
+    width: auto;
+    height: auto;
+    border-radius: 50px;
+    line-height: inherit;
+    font-size: 1.6rem;
+    color: #000;
+}
+.section-header  nav.header__inline-menu ul.list-menu li a.header__menu-item:hover span{
+    text-decoration: none;
+  }
+.section-header  nav.header__inline-menu:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    left: 0;
+    bottom: 36%;
+}
+.section-header  ul.list-menu.list-menu--inline {
+    padding-top: 10px;
+}
+.section-header nav.header__inline-menu {
+    margin-bottom: -20px;
+}
+.section-header ul.list-menu.list-menu--inline {
+    grid-gap: 20px;
+}
+.section-header  h1.header__heading a.header__heading-link.link.link--text{
+    padding: 0;
+}
+.section-header .header {
+    padding-top: 12px;
+    padding-bottom: 30px;
+}
+.cus_header-divide details-modal.header__search {
+    display: none !important;
+}
+.banner .banner__box h2.banner__heading {
+    background-color: #fff;
+    color: #000;
+    padding: 21px 45px 31px;
+    border-radius: 30px;
+}
+.banner .banner__box h2.banner__heading.h1 {
+    font-size: 2.8rem;
+}
+.banner .banner__buttons a.button.button--primary {
+    border-radius: 50px;
+    font-size: 1.8rem;
+}
+.banner .banner__buttons a.button:after {
+    box-shadow:none;
+}
+body.page-contact-detail .banner .banner__box h2.banner__heading,
+body.page-pass-selection .banner .banner__box h2.banner__heading{
+    padding: 15px 40px 18px;
+    border-radius: 50px;
+}
+body.page-contact-detail .banner__content.page-width {
+    flex-direction: column;
+}
+body.page-contact-detail .cus_page_form {
+    width: 100%;
+    padding: 0 3.5rem;
+}
+body.page-contact-detail .cus_page_form .field__input {
+    border-radius: 50px;
+}
+body.page-contact-detail .cus_page_form .field:after{
+    box-shadow:none;
+}
+body.page-contact-detail .cus_page_form .contact__fields {
+    margin-bottom: 10px;
+}
+body.page-contact-detail .cus_page_form .field__input{
+    height: 6.5rem;
+    padding: 0.8rem 1.5rem 0.8rem 2rem;
+}
+body.page-contact-detail .cus_page_form .field__label{
+    line-height: 2.2;
+    font-size: 2rem;
+}
+body.page-contact-detail .cus_page_form .contact__button button.button {
+    background-color: #546e4f;
+    border-radius: 50px;
+    padding: 1.5rem 3rem;
+    min-width: calc(16rem + var(--buttons-border-width) * 2);
+    font-size: 2.4rem;
+}
+body.page-contact-detail .cus_page_form .contact__button button.button:after{
+    box-shadow: none;
+}
+body.page-contact-detail .cus_page_form .contact__button {
+    text-align: right;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll {
+    list-style: none;
+    display: flex;
+    padding-left: 0;
+    grid-gap: 30px;
+    margin: 35px 0px;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll li:first-child{
+    background-color: #fff;
+    color: #565656;
+    padding: 12px 14px;
+    border-radius: 50px;
+    font-size:2rem;
+    width: 25%;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll li{
+    background-color: #fff;
+    color: #565656;
+    border-radius: 50px;
+    font-size:2rem;
+    width: 25%;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll li label{
+    padding: 12px 14px;
+    width: 100%;
+    display: block;
+    border-radius: 50px;
+    cursor:pointer;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll li .price {
+    color: #565656;
+}
+.cus_page_form .field__input::placeholder {
+    color: #707070;
+    opacity: 1;  /* Firefox */
+}
+.cus_page_form .field__input:-webkit-input-placeholder {
+    /* Chrome, Safari, Opera */
+    color: #707070;
+}
+.cus_page_form .field__input::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #707070;
+}
+.cus_page_form .field__input:focus{
+    padding: 0.8rem 1.5rem 0.8rem 2rem;
+    box-shadow: none;
+}
+.cus_page_form h2.form-status.form-status-list.form__message {
+    background-color: #fff;
+    padding: 5px 20px;
+    font-weight: 700;
+    display: inline-block;
+    border-radius: 50px;
+}
+.cus_btn_coll input, .cus_btn_coll button{
+    background-color: #fff;
+    color: #565656;
+    padding: 12px 14px;
+    border-radius: 50px;
+    font-size: 2rem;
+    text-decoration:none;
+    border: none;
+}
+ .cus_btn_coll button{
+    cursor:pointer;
+}
+.cus_btn_coll{
+    display: flex;
+    justify-content: space-between;
+    grid-gap: 30px;
+    padding-top: 30px;
+}
+.cus_btn_coll .cus_btn1{
+    width:70%;
+}
+.cus_btn_coll .cus_btn2{
+    width:30%;
+    background-color: #546e4f;
+    color:#fff;
+}
+
+
+.collapsable {padding-bottom: 25px; padding-top: 25px;}
+.collapsable:not(:last-of-type) {border-bottom: solid 1px rgba(209, 18, 66, 0.4); padding-bottom: 0;}
+
+.reveal-me {
+    display:none;
+    position: relative;
+    top: 0;
+/*     background-color: #fff; */
+    width: 100%;
+    height: auto;
+    left: 0;
+}
+.read-more-self {
+    cursor: pointer;
+    color: #3ca3e1;
+    text-decoration: none;
+    font-size: 1.8rem;
+    line-height: normal;
+}
+
+.cus_banner__box.banner__box {
+    max-width: 100%;
+    min-width: 100%;
+    position:relative;
+    display: flex;
+    text-align: left;
+    grid-gap: 30px;
+    background-color: transparent;
+    align-items: flex-start;
+    padding: 0;
+}
+.cus_map {
+    width: 40%;
+}
+.cus_cards.collapsable{
+    width: 60%;
+    padding-top: 0;
+    margin-top: 0;
+}
+h3.cus_heading-h3 {
+    background-color: #fcd2ba;
+    padding: 13px 20px;
+    display: block;
+    border-radius: 50px;
+    font-size: 2.8rem;
+    margin-top:0px;
+    max-width: 250px;
+}
+.cus_card-inner {
+    background-color: #fcd2ba;
+    border-radius: 30px;
+    padding: 18px 30px;
+    margin-bottom: 30px;
+}
+.cus_cards .cus_card-inner:last-child {
+    margin-bottom: 0px;
+}
+.cus_card-inner2 {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 10px 20px;
+    display: flex;
+    grid-gap: 20px;
+}
+.cus_card-inner2 p {
+    margin: 0;
+}
+
+.cus_page_form .field {
+    display: block;
+}
+.cus_page_form .form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.cus_page_form .form-label {
+  display: block;
+  font-weight: 700;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.cus_page_form .form-group-input {
+  position: relative;
+}
+
+.cus_page_form .form-input {
+/*   width: 100%;
+  background: var(--input-bg);
+  border: 3px solid transparent;
+  border-radius: 3px;
+  height: 45px;
+  line-height: 45px;
+  padding: 0 40px 0 10px; */
+  transition: 0.3s ease all;
+}
+
+.cus_page_form .form-input:focus {
+  border: 3px solid var(--input-focus-border);
+  outline: none;
+  box-shadow: 3px 0px 30px var(--input-focus-shadow);
+}
+
+.cus_page_form .form-input-error {
+  font-size: 12px;
+  margin-bottom: 0;
+  display: none;
+}
+
+.cus_page_form .form-input-error-active {
+  display: block;
+}
+.cus_page_form .form-input-error.form-input-error-active {
+  color:#ff0022;
+}
+.cus_page_form .form-validation-status {
+  position: absolute;
+  right: 10px;
+  bottom: 15px;
+  z-index: 100;
+  font-size: 16px;
+  opacity: 0;
+}
+
+.cus_page_form .form-checkbox {
+  margin-right: 10px;
+}
+
+.cus_page_form .form-group-terms,
+.cus_page_form .form-message,
+.cus_page_form .form-group-btn-send {
+  grid-column: span 2;
+}
+
+.cus_page_form .form-message {
+  height: 45px;
+  line-height: 45px;
+  background: var(--error-message-bg);
+  padding: 0 15px;
+  border-radius: 3px;
+  display: none;
+}
+
+.cus_page_form .form-message-active {
+  display: block;
+}
+
+.cus_page_form .form-message p {
+  margin: 0;
+}
+
+.cus_page_form .form-group-btn-send {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.cus_page_form .form-btn {
+  height: 45px;
+  line-height: 45px;
+  width: 30%;
+  background: var(--send-btn-bg);
+  color: var(--send-btn-color);
+  font-weight: bold;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.1s ease all;
+}
+
+.cus_page_form .form-btn:hover {
+  box-shadow: 3px 0px 30px rgba(163, 163, 163, 1);
+}
+
+.cus_page_form .form-message-success {
+  font-size: 14px;
+  color: var(--success);
+  display: none;
+}
+
+.cus_page_form .form-message-success-active {
+  display: block;
+}
+.cus_page_form .form-input.field__input.form-input-error-active{
+  border: 1px solid #f02;
+}
+.card_img_box {
+    width: 25%;
+    position: relative;
+    padding-bottom: 17%;
+}
+.card_text_box {
+    width: 75%;
+}
+.card_img_box img{
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    object-fit: contain;
+    object-position: top;
+}
+.card_name_title p:first-child {
+    font-weight: 600;
+}
+.card_name_title {
+    display: flex;
+    justify-content: space-between;
+}
+.cus_banner__content.banner__content{
+  align-items: initial;
+}
+.cus_card-details-inner {
+    background-color: #fcd2ba;
+    display: flex;
+    padding: 15px;
+    border-radius: 30px;
+    grid-gap: 15px;
+    align-items: end;
+}
+.cus_det_box-1 {
+    background-color: #fff;
+    border-radius: 30px;
+    padding: 16px 30px 0;
+    width: 75%;
+}
+.card_img_box-1 {
+    width: 17%;
+    position: relative;
+    padding-bottom: 13%;
+}
+.card_text_box-1 {
+    width: 83%;
+}
+.card_img_box-1 img{
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    object-fit: contain;
+    object-position: top;
+}
+.cus_det_box-1 .cus_card-inner2 {
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    grid-gap: 20px;
+}
+.cus_det_box-2 {
+    width: 25%;
+}
+.cus_det_box-2 a {
+    background-color: #546e4f;
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 50px;
+    margin-top: 10px;
+}
+.cus_product-selection ul.cus_coll input[type="checkbox"],
+.cus_product-selection ul.cus_coll input[type="radio"] {
+  display: none;
+  
+}
+.cus_product-selection ul.cus_coll input[type="checkbox"]+label:hover{
+  background: #546e4f;
+  color:#fff;
+}
+
+.cus_product-selection ul.cus_coll input[type="checkbox"]:checked+label {
+  background: #546e4f;
+  color:#fff;
+}
+
+.cus_product-selection ul.cus_coll input[type="checkbox"]:checked+label:hover{
+  background: #546e4f;
+  color:#fff;
+}
+
+
+/*--------------------------------------------------------------
+# Form validation
+--------------------------------------------------------------*/
+.cus_page_form .form-group-success .form-validation-status {
+  color: var(--success);
+  opacity: 1;
+}
+
+.cus_page_form .form-group-error .form-label {
+  color: var(--error);
+}
+
+.cus_page_form .form-group-error .form-validation-status {
+  color: var(--error);
+  opacity: 1;
+}
+
+.cus_page_form .form-group-error .form-input {
+  border: 3px solid var(--error);
+}
+
+@media screen and (max-width: 767px) {
+ .cus_page_form .form {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+ .cus_page_form .form-group-terms,
+ .cus_page_form .form-message,
+ .cus_page_form .form-group-btn-send {
+    grid-column: 1;
+  }
+
+.cus_page_form  .form-btn {
+    width: 100%;
+  }
+body.page-contact-detail .banner:not(.banner--mobile-bottom) .field__input {
+    background-color: #fff;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll li {
+    width: 100%;
+    font-size: 1.6rem;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll {
+    flex-wrap: wrap;
+    grid-gap: 10px;
+}
+body.page-pass-selection .cus_product-selection ul.cus_coll li:first-child {
+    width: 100%;
+}
+.cus_btn_coll {
+    flex-wrap: wrap;
+    grid-gap: 10px;
+}
+.cus_btn_coll .cus_btn1 {
+    width: 100%;
+}
+.cus_btn_coll .cus_btn2 {
+    width: 100%;
+}
+.banner .banner__box h2.banner__heading.h1 {
+    font-size: 2rem;
+}
+.cus_btn_coll input, .cus_btn_coll button {
+    font-size: 1.6rem;
+}
+body.page-contact-detail .cus_page_form .contact__button button.button {
+    font-size: 2rem;
+}
+body.page-contact-detail .cus_page_form .contact__button {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.cus_map {
+    width: 100%;
+}
+.cus_cards.collapsable {
+    width: 100%;
+}
+.cus_banner__box.banner__box{
+    flex-wrap: wrap;
+    grid-gap: 10px;
+    padding:3rem 2.5rem;
+}
+.cus_card-inner2 {
+    flex-wrap: wrap;
+    grid-gap: 10px;
+}
+.card_img_box {
+    width: 100%;
+    padding-bottom: 65%;
+}
+.card_text_box {
+    width: 100%;
+}
+.card_name_title {
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+h3.cus_heading-h3 {
+    color: #000;
+    font-size: 2rem;
+}
+.cus_card-details-inner {
+    flex-wrap: wrap;
+    grid-gap: 10px;
+}
+.cus_det_box-1 {
+    width: 100%;
+}
+.cus_det_box-2 {
+    width: 100%;
+}
+.cus_det_box-1 .cus_card-inner2 {
+    flex-wrap: wrap;
+    grid-gap: 10px;
+}
+.card_img_box-1 {
+    width: 100%;
+    padding-bottom: 65%;
+}
+.card_text_box-1 {
+    width: 100%;
+}
+}
+@media only screen and (min-width: 750px) {
+body.page-contact-detail .banner__box.content-container,
+body.page-pass-selection .banner__box.content-container,
+body.cart .banner__box.content-container{
+    max-width: 100%;
+    width: 100%;
+    background-color: transparent;
+}
+body.page-contact-detail .banner__content,
+body.page-pass-selection .banner__content,
+body.cart .banner__content{
+    padding: 5rem 0;
+}
+}
+@media only screen and (min-width: 990px) {
+.section-header header.header.page-width.header--has-menu{
+    grid-template-areas: "heading navigation";
+    grid-template-columns: auto 1fr;
+}
+}
+
+
+</style>

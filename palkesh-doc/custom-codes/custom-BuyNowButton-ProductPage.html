@@ -1,0 +1,43 @@
+
+<form method="post" action="/cart/add" class="cus_form-p">
+            <input type="hidden" name="return_to" value="/checkout/" />
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+            <button type="button" class="btn cus_bt_now" {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
+              disabled
+            {% else %}
+              onclick="addToCart({{ product.variants.first.id }})"
+            {% endif %}>
+              {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                Sold Out
+              {% else %}
+                Buy now
+              {% endif %}
+            </button>
+          </form>
+
+
+<script>
+  function addToCart(variant_id) {
+    var quantity = 1; // you can change the quantity here
+
+    $.ajax({
+      type: 'POST',
+      url: '/cart/clear.js', // clear the cart before adding new item
+      dataType: 'json',
+      success: function() {
+        $.ajax({
+          type: 'POST',
+          url: '/cart/add.js',
+          data: {
+            quantity: quantity,
+            id: variant_id
+          },
+          dataType: 'json',
+          success: function() {
+            window.location.href = '/checkout';
+          }
+        });
+      }
+    });
+  }
+</script>

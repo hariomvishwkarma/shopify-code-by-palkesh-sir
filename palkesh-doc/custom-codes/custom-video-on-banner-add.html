@@ -1,0 +1,17 @@
+{%- if section.settings.video_link != blank -%}
+  <div class="fullscreen-video-wrap">
+      <video class="video-js slides__image" controls loop autoplay preload="none" muted playsinline >
+          <source src="{{ section.settings.video_link }}" type="video/mp4">
+      </video>
+  </div>
+{% endif %}
+
+ {
+  "type": "url",
+  "id": "video_link",
+  "label": "Video link"
+}
+
+
+
+

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>modal-video.js</title>
+  <style type="text/css">
+/* Start Video Section */
+.video-banner {
+    margin-left: auto;
+    margin-right: auto;
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: flex-end;
+    height: 57rem;
+    max-height: 57rem;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+.video-banner-inner{
+    box-sizing: border-box;
+    margin: 0;
+    min-width: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    line-height: 0;
+    cursor: pointer;
+}
+.video-banner-svg{
+    width: 10rem;
+    height: 10rem;
+    color: var(--theme-ui-colors-white,#fff);
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+    -webkit-transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+}
+
+.video-banner-svg:hover {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+}
+.video-banner-link {
+  transition: all .8s ease-in-out; }
+
+.video-banner-link:hover {
+  opacity: 0.8; }
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 100;
+  transition: all 1.5s ease;
+  background: rgba(0, 0, 0, 0.85); }
+
+.modal-video-container {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  transform: scale(0);
+  width: 0;
+  height: 0%;
+  padding-top: 56.25%;
+  transition: all 1.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+.video-popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 900;
+  width: 70%;
+  height: 70%;
+  transition: all .5s ease; }
+
+@media only screen and (min-width: 1300px) {
+  .modal-video-container {
+    top: 10%; } }
+
+@media only screen and (max-width: 1024px) {
+  .video-popup {
+    width: 85%;
+    height: 85%; }
+  .modal-video-container {
+    left: 7%; } }
+
+@media only screen and (max-width: 600px) {
+  .modal-video-container {
+    top: 30%; } }
+
+.close {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  z-index: 999;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer; }
+
+.close > span {
+  position: absolute;
+  left: 95%;
+  top: 50%; }
+.video-main{
+    padding: 0 0 5%;
+}
+/* End Video Section */
+
+  </style>
+</head>
+<body>
+
+ <section class="video-main">
+      <a class="video-banner-link" href="{{section.settings.video-url}}" data-vidup>
+          <div class="video-banner page-width " style="background-image:url('https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8d2FsbCUyMGJhY2tncm91bmR8ZW58MHx8MHx8&w=1000&q=80');">
+            <div class="video-banner-inner" tabindex="0">
+              <svg class="video-banner-svg" width="98.529" height="98.529" viewBox="0 0 98.529 98.529"><g fill="none"><g stroke="currentColor" stroke-width="2"><circle cx="49.264" cy="49.264" r="49.264" stroke="none"></circle><circle cx="49.264" cy="49.264" r="48.264"></circle></g><g><path d="M42.651 37.584l18.3 11.68-18.3 11.683z"></path><path d="M44.651 41.233v16.064l12.582-8.033-12.582-8.03m-2-3.65l18.299 11.68-18.299 11.683V37.584z" fill="currentColor"></path></g></g>
+              </svg>
+            </div>
+          </div>
+      </a>
+    </section>
+
+      <!-- The Modal -->
+   <div class="modal" id="modal">
+      <div class="close"><span class="close" id="close">&times;</span></div>
+      <div class="modal-video-container" id="mdc">
+        <iframe class="video-popup" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen id="modal-video"></iframe>
+      </div>
+    </div>
+ 
+ <script type="text/javascript">
+   
+ 
+  /* Data VidUp */
+
+/* Get all elements with data-vidup */
+const vidupElements = document.querySelectorAll('[data-vidup]');
+
+const modal = document.getElementById('modal');
+const modalVideo = document.getElementById('modal-video');
+const mdc = document.getElementById('mdc');
+const close = document.getElementById('close');
+
+function closeModal() {
+    // mdc.style.width = "0";
+    mdc.style.transform = "scale(0)";
+    
+    setTimeout(() => {
+        modal.style.visibility = "hidden";
+        modal.style.opacity = "0";
+        modalVideo.src = "";  
+    }, 500);
+}
+
+function showModal(element) {
+    modal.style.visibility = "visible";
+    modal.style.opacity = "1";
+    modalVideo.src = element.href;
+    mdc.style.width = "100%";
+
+
+    setTimeout(() => {
+        mdc.style.transform = "scale(1)";
+    }, 300);
+
+}
+
+/* Foreach element add an eventlistener and show the popup when clicked and add the src in the link */
+vidupElements.forEach(element => {
+    element.addEventListener("click", (e) => {
+
+        e.preventDefault();
+        showModal(element);
+    });
+});
+
+close.addEventListener('click', (e) => {
+    closeModal();
+});
+
+mdc.addEventListener('click', () => {
+    closeModal();
+});
+
+modal.addEventListener('click', () => {
+    closeModal();
+});
+  </script>
+ </script>
+</body>
+</html>

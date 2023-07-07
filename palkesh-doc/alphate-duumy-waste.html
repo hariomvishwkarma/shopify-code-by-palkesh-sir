@@ -1,0 +1,196 @@
+<style>
+
+.cus-brands-container h2 {
+    font-weight: bold;
+    color: black;
+    font-size: 25px;
+  }
+  a.view-all {
+    background: #dec7c0 !important;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 19px;
+  }
+  ul.c-alp-ul.alphabet li {
+        margin-top: 12px;
+  }
+  ul.c-alp-ul.alphabet li:first-child {
+    padding: 7px 0;
+  }
+  .alphabet li a {
+	font-weight: bold;
+    border-radius: 25px;
+    padding: 13px 16px;
+    background: #d1d1d157;
+   }
+  .alphabet li a:not(.view-all) {
+	color: #000;
+	opacity: .3;
+  }
+  ul.c-alp-ul {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    flex-wrap:wrap;
+    align-items: center;
+    margin: 30px 0;
+   }
+   .alphabet li a:hover {
+    background: #00000033;
+}
+  .filtered-by p {
+    font-size: 22px;
+}
+  .card a {
+    font-size: 18px;
+}
+  .filter-alpha {
+    display: flex;
+    gap: 25px;
+}
+  .filtered-by {
+    width: 12%;
+}
+  .row.services {
+    display: flex;
+    gap: 18px;
+}
+  .filter-alpha {
+    margin-top: 65px;
+}
+</style>
+
+<div class="page-width c-alp container">
+	<div class="cus-brands-container c-row">
+      <h2>BRANDS</h2>
+		<div class="col-sm-12">
+			<ul class="c-alp-ul alphabet">
+				<li><a href="#" class="view-all">View all</a></li>
+				<li><a href="#">A</a></li>
+				<li><a href="#">B</a></li>
+				<li><a href="#">C</a></li>
+				<li><a href="#">D</a></li>
+				<li><a href="#">E</a></li>
+				<li><a href="#">F</a></li>
+				<li><a href="#">G</a></li>
+				<li><a href="#">H</a></li>
+				<li><a href="#">I</a></li>
+				<li><a href="#">J</a></li>
+				<li><a href="#">K</a></li>
+				<li><a href="#">L</a></li>
+				<li><a href="#">N</a></li>
+				<li><a href="#">M</a></li>
+				<li><a href="#">O</a></li>
+				<li><a href="#">P</a></li>
+				<li><a href="#">Q</a></li>
+				<li><a href="#">R</a></li>
+				<li><a href="#">S</a></li>
+				<li><a href="#">T</a></li>
+				<li><a href="#">U</a></li>
+				<li><a href="#">V</a></li>
+				<li><a href="#">W</a></li>
+				<li><a href="#">X</a></li>
+				<li><a href="#">Y</a></li>
+				<li><a href="#">Z</a></li>
+			</ul>
+		</div>
+	</div>
+  <div class="filter-alpha">
+	<div class="filtered-by">
+		
+	</div>
+	<div class="row services">
+
+	</div>
+  <div>
+  </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Brands Alpha",
+  "class": "section",
+  "tag": "section",
+  "settings": [
+      ],
+   "presets": [
+    {
+    "name": "Brands Alpha"
+    }
+  ]
+}
+{% endschema %}
+
+{% paginate collections.all.products by 1000 %}
+<script>
+$(document).ready(function() {
+  // HTML Setup
+  var servicesArray = [ {% for link in linklists.shop.links %}
+    {% if link.title == 'BRAND'  %}
+      {% if link.links != blank %}
+        {% for child_link in link.links %}
+          {% if child_link.links != blank %}
+            {% for grandchild_link in child_link.links %}
+              {
+                title: "{{ grandchild_link.title }}",
+                link: "{{ grandchild_link.url }}"
+              },
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  {% endfor %} ];
+
+  for (var i = 0; i < servicesArray.length; i++) {
+    var service = servicesArray[i];
+    var titleWithLink = "<a href='" + service.link + "'>" + service.title + "</a>";
+    $(".services").append("<article class='col-sm-4' data-title='" + service.title + "'><div class='card'>" + titleWithLink + "</div></article>");
+  }
+
+  	//Actual logic
+	
+	//Bold only the letters of services available
+	for (var c = 0; c < $("article").length; c++) {
+		var serviceTitle = $("article:eq("+c+")").text(),
+			firstChar = serviceTitle.charAt(0);
+		
+		for (var a = 0; a < 26; a++) {
+			if ($(".alphabet li:eq("+a+") a").text() == firstChar) {
+				$(".alphabet li:eq("+a+") a").css("opacity","1");
+			}
+		}
+	}
+	
+	//Filter logic
+	$("ul li a").click(function(e) {
+		e.preventDefault();
+		
+		//Get letter that was clicked
+		var letter = $(this).text();
+		
+		//If view all, show all cards, else hide all cards and show ones that start with the letter
+		if (letter == "View all") {
+			$("article").show();
+			$(".filtered-by").html('<p><strong>' + letter + '</strong></p>');
+		} else {
+			$("article").hide();
+			
+			//Show letter filtered by
+			$(".filtered-by").html('<p><strong>' + letter + '</strong></p>');
+
+			//loop through cards, find first letter match
+			for (var j = 0; j < $("article").length; j++) {
+				var serviceTitle = $("article:eq("+j+")").data("title");
+
+				if (serviceTitle.indexOf(letter) == 0) {
+					$("article:eq("+j+")").show();
+				}
+			}
+		}
+	});
+
+});
+</script>
+
+{% endpaginate %}

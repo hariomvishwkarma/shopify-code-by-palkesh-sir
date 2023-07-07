@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>modal</title>
+	<style type="text/css">
+		* {
+  box-sizing: border-box;
+}
+body {
+  font-family: sans-serif;
+  background: #28986a;
+  margin: 0;
+  padding: 0;
+  transition: all 0.5s ease;
+  line-height: 1.5;
+  font-size: 16px;
+}
+.holder {
+  height: 2000px;
+  text-align: center;
+}
+.info {
+  width: 500px;
+  background-color: #fff;
+  border-radius: 40px;
+  padding: 40px;
+  margin: 30px auto 0;
+  text-align: left;
+}
+.button {
+  width: 235px;
+  line-height: 60px;
+  text-align: center;
+  border: 3px solid;
+  border-radius: 40px;
+  display: inline-block;
+  cursor: pointer;
+  color: white;
+  margin: 30px 15px 0;
+  font-weight: bold;
+}
+.modal {
+  width: 500px;
+  text-align: center;
+  background-color: #fff;
+  position: fixed;
+  bottom: -500px;
+  left: 50%;
+  margin-left: -250px;
+  transition: all 0.5s ease;
+  border-radius: 40px;
+  padding: 40px;
+  z-index: 95;
+}
+.modal.active {
+  bottom: 100px;
+}
+.underlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  transition: all 0.5s ease;
+  opacity: 0;
+  z-index: -90;
+}
+.underlay.active {
+  opacity: 1;
+  z-index: 90;
+}
+	</style>
+</head>
+<body>
+<div class="holder">
+  <div class="info">
+    When opening modal we want to disable body scrolling so we set <code>body { overflow: hidden; }</code>.<br />
+However that creates a little jump between opening and closing modals when the browser compensates for the missing width of the scrollbar.<br />
+An easy fix to this would be to calculate the width of the window and apply it to <code>body</code> then remove it on closing.
+  </div>
+  <a class="button with">With Compensation</a>
+ <!--  <a class="button widthout">Without Compensation</a> -->
+</div>
+<div class="modal">
+  Modal content...
+</div>
+<div class="underlay">
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+	// Calculate window width
+  $(document).ready(function(){
+    $windowWidth = $(window).width();
+  });
+  $(window).resize(function(){
+    $windowWidth = $(window).width();
+  });
+// Open modal
+  $('.button').on('click tap', function(){
+    $('body').css('overflow', 'hidden');
+    if($(this).hasClass('with')) {
+      $('body').css('width', $windowWidth);
+    }
+    $('.modal').addClass('active');
+    $('.underlay').addClass('active');
+  });
+// Close modal
+  $('.underlay').on('click tap', function(){
+    $('body').removeAttr('style');
+    $('.modal').removeClass('active');
+    $('.underlay').removeClass('active');
+  });
+</script>
+</body>
+</html>

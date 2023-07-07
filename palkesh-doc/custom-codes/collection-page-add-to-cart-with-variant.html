@@ -1,0 +1,95 @@
+  https://community.shopify.com/c/shopify-design/add-to-cart-with-variants-on-collection-page/td-p/1019067
+
+
+   <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="quick-add-to-cart small--hide clearfix">
+
+{% if product.variants.size > 1 %}
+
+  <select id="product-select-{{ product.id }}" name='id' class="text-center">
+
+  {% for variant in product.variants %}
+
+  {% if variant.available %}
+
+    <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }}</option>
+
+  {% else %}
+
+    <option disabled="disabled">
+
+    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+
+    </option>
+
+  {% endif %}
+
+  {% endfor %}
+
+  </select>
+
+  {% else %}
+
+    <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+
+  {% endif %}
+
+ 
+
+  {% if product.available %}
+
+    <button type="submit" name="add" id="AddToCart" class="btn btn-mini text-center" onclick="ga('send', 'event', 'Quick Add To Cart', '{{ product.type }}', '{{ product.title }}');">Add To Cart</button>
+
+  {% else %}
+
+    <h6>Out of Stock</h6>
+
+  {% endif %}
+
+</form>
+
+
+
+
+
+
+
+
+
+
+{%- if section.settings.collection_atc -%}
+    <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="quick-add-to-cart clearfix">
+      {% if product.variants.size > 1 %}
+        <select id="product-select-{{ product.id }}" name='id' class="text-center cus_option">
+          {% for variant in product.variants %}
+              {% if variant.available %}
+                 <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }}</option>
+              {% else %}
+                <option disabled="disabled">
+                 {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                </option>
+              {% endif %}
+          {% endfor %}
+       </select>
+     {% else %}
+       <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+     {% endif %}
+  
+     {% if product.available %}
+       <button type="submit" name="add" id="AddToCart" class="btn btn-mini text-center cus_atc_btn" onclick="ga('send', 'event', 'Quick Add To Cart', '{{ product.type }}', '{{ product.title }}');">Add To Cart</button>
+     {% else %}
+
+        <button type="submit" name="add" data-add-to-cart="" class="btn btn--full add-to-cart" disabled="disabled">
+          <span data-add-to-cart-text="" data-default-text="Add to cart">
+            Sold Out
+          </span>
+        </button>
+     {% endif %}
+   </form>
+{%- endif -%}
+
+  {
+          "type": "checkbox",
+          "id": "collection_atc",
+          "label": "Collection ATC button",
+          "default": false
+        },

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Loader Demo</title>
+ <style>
+/* Preloader */
+
+.preloader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  /* change if the mask should have another color then white */
+  z-index: 99;
+  /* makes sure it stays on top */
+
+}
+.photos-wrapper .swiper-slide {
+    visibility: visible !important;
+    height: 100% !important;
+}
+.status {
+width: 40px !important;
+height: 40px !important;
+  position: absolute;
+  left: 50%;
+  /* centers the loading animation horizontally one the screen */
+  top: 50%;
+  /* centers the loading animation vertically one the screen */
+  background-image: url({{ "logo-icon.png" | asset_url }});
+  /* path to your loading animation */
+  animation-name: pulse;
+  animation-duration: 1s;
+background-repeat: no-repeat;
+background-size: 40px;
+  background-position: center;
+ transform: translate(-50%, -50%);
+  /* is width and height divided by two */
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+}
+@keyframes pulse {
+  0% {transform: scale(1) translate(-50%, -50%);}
+  50% {transform: scale(1.1) translate(-50%, -50%);}
+  100% {transform: scale(1) translate(-50%, -50%);}
+}
+
+    </style>
+        
+
+</head>
+  
+<body>
+   <!-- Preloader -->
+<div class="preloader" >
+  <div class="status" >&nbsp;</div>
+</div>
+
+    <img src="https://unsplash.it/3000/3000/?random" width="200" height="200" 
+         alt="GeeksforGeeks logo" />
+         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+       $(window).on('load', function() { // makes sure the whole site is loaded 
+  $('.status').fadeOut(); // will first fade out the loading animation 
+  $('.preloader').delay(0).fadeOut('slow'); // will fade out the white DIV that covers the website. 
+  $('body').delay(0).css({'overflow':'visible'});
+})
+    </script>
+</body>
+  
+</html>

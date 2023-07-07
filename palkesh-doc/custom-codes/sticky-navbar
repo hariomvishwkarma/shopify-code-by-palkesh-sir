@@ -1,0 +1,96 @@
+<style>
+.navbar-fixed {
+  top: 0;
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+  padding: 0 20px;
+}
+</style>
+
+
+navbar   <<<------ add class on the navbar
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+		  $(window).scroll(function () {
+		  console.log($(window).scrollTop())
+		  if ($(window).scrollTop() > 63) {
+		    $('.navbar').addClass('navbar-fixed');
+		  }
+		  if ($(window).scrollTop() < 64) {
+		    $('.navbar').removeClass('navbar-fixed');
+		  }
+		});
+  </script>
+
+
+
+
+
+
+
+  $(window).scroll(function () {
+		  console.log($(window).scrollTop())
+		  if ($(window).scrollTop() > 63) {
+		    $('#top_head').addClass('main_sliderbar_bar');
+            $("#AccessibleNav").fadeOut(300);
+            $(".menu_close").css("display", "none");
+		  }
+		  if ($(window).scrollTop() < 64) {
+		    $('#top_head').removeClass('main_sliderbar_bar');
+            $("#AccessibleNav").fadeIn(300);
+		  }
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+    // Create a media condition that targets viewports at least 768px wide
+const mediaQuery = window.matchMedia('(min-width: 769px)')
+// Check if the media query is true
+if (mediaQuery.matches) {
+  // Then trigger an alert
+    $(window).scroll(function () {
+		  console.log($(window).scrollTop())
+		  if ($(window).scrollTop() > 300) {
+		    $('.navbar').addClass('navbar-fixed');
+		  }
+		  if ($(window).scrollTop() < 61) {
+		    $('.navbar').removeClass('navbar-fixed');
+		  }
+		});
+}
+		
+  </script>
+
+  <script>
+    // Create a media condition that targets viewports at least 768px wide
+const mediaQuery1 = window.matchMedia('(max-width: 768px)')
+// Check if the media query is true
+if (mediaQuery1.matches) {
+  // Then trigger an alert
+    $(window).scroll(function () {
+		  console.log($(window).scrollTop())
+		  if ($(window).scrollTop() > 300) {
+		    $('.navbar-m').addClass('navbar-fixed-m');
+		  }
+		  if ($(window).scrollTop() < 61) {
+		    $('.navbar-m').removeClass('navbar-fixed-m');
+		  }
+		});
+}
+		
+  </script>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>https://codepen.io/webcrunchblog/pen/ZEWwvZy</title>
+	<style type="text/css">
+
+
+/*body {
+  background-color: blueviolet;
+}*/
+
+.title {
+  margin-bottom: 2rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 32px;
+  right: 5px;
+  pointer-events: none;
+  z-index: 2;
+}
+.icon.icon-success {
+  fill: green;
+}
+.icon.icon-error {
+  fill: red;
+}
+
+.container {
+  max-width: 460px;
+  margin: 3rem auto;
+  padding: 3rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  background-color: white;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.label {
+  font-weight: bold;
+  display: block;
+  color: #333;
+  margin-bottom: 0.25rem;
+  color: #2d3748;
+}
+
+.input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  display: block;
+  width: 100%;
+  color: #2d3748;
+  border: 1px solid #cbd5e0;
+  line-height: 1.25;
+  background-color: white;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.25rem;
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+.cus_input::-moz-placeholder {
+  color: #a0aec0;
+}
+.cus_input:-ms-input-placeholder {
+  color: #a0aec0;
+}
+.cus_input::placeholder {
+  color: #a0aec0;
+}
+.cus_input.input-error {
+  border: 1px solid red;
+}
+.cus_input.input-error:focus {
+  border: 1px solid red;
+}
+.cus_input:focus {
+  outline: none;
+  border: 1px solid #a0aec0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  background-clip: padding-box;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.error-message {
+  font-size: 0.85rem;
+  color: red;
+}
+
+.button {
+  background-color: blueviolet;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.25rem;
+  color: white;
+  font-weight: bold;
+  display: block;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+.button:hover {
+  filter: brightness(110%);
+}
+
+.promo {
+  color: white;
+  opacity: 0.75;
+  margin: 1rem auto;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 0.25rem;
+}
+.promo a {
+  color: white;
+}
+	</style>
+</head>
+<body>
+   <div class="container">
+  <h2 class="title">Create a new account</h2>
+  <form action="#" class="form" id="form">
+
+    <div class="input-group">
+      <label for="firstname" class="label">First name</label>
+      <input id="firstname" placeholder="webcrunch" type="text" class="cus_input">
+      <span class="error-message"></span>
+     
+    </div>
+<div class="input-group">
+      <label for="lastname" class="label">Last name</label>
+      <input id="lastname" placeholder="webcrunch" type="text" class="cus_input">
+      <span class="error-message"></span>
+      
+    </div>
+    <div class="input-group">
+      <label for="email" class="label">Email</label>
+      <input id="email" type="email" class="cus_input" autocomplete placeholder="andy@web-crunch.com">
+      <span class="error-message"></span>
+     
+    </div>
+
+    <div class="input-group">
+      <label for="password" class="label">Password</label>
+      <input id="password" type="password" class="cus_input">
+      <span class="error-message"></span>
+      
+    </div>
+
+    <div class="input-group">
+      <label for="password_confirmation" class="label">Password Confirmation</label>
+      <input id="password_confirmation" type="password" class="cus_input">
+      <span class="error-message"></span>
+     
+    </div>
+
+    <input type="submit" class="button" value="Create account">
+
+  </form>
+</div>
+
+<script type="text/javascript">
+	class FormValidator {
+  constructor(form, fields) {
+    this.form = form;
+    this.fields = fields;
+  }
+
+  initialize() {
+    this.validateOnEntry();
+    this.validateOnSubmit();
+  }
+
+  validateOnSubmit() {
+    let self = this;
+
+    this.form.addEventListener('submit', e => {
+      e.preventDefault();
+      self.fields.forEach(field => {
+        const input = document.querySelector(`#${field}`);
+        self.validateFields(input);
+      });
+    });
+  }
+
+  validateOnEntry() {
+    let self = this;
+    this.fields.forEach(field => {
+      const input = document.querySelector(`#${field}`);
+
+      input.addEventListener('input', event => {
+        self.validateFields(input);
+      });
+    });
+  }
+
+  validateFields(field) {
+
+    // Check presence of values
+    if (field.value.trim() === "") {
+      this.setStatus(field, `${field.previousElementSibling.innerText} cannot be blank`, "error");
+    } else {
+      this.setStatus(field, null, "success");
+    }
+
+    // check for a valid email address
+    if (field.type === "email") {
+      const re = /\S+@\S+\.\S+/;
+      if (re.test(field.value)) {
+        this.setStatus(field, null, "success");
+      } else {
+        this.setStatus(field, "Please enter valid email address", "error");
+      }
+    }
+
+    // Password confirmation edge case
+    if (field.id === "password_confirmation") {
+      const passwordField = this.form.querySelector('#password');
+
+      if (field.value.trim() == "") {
+        this.setStatus(field, "Password confirmation required", "error");
+      } else if (field.value != passwordField.value) {
+        this.setStatus(field, "Password does not match", "error");
+      } else {
+        this.setStatus(field, null, "success");
+      }
+    }
+  }
+
+  setStatus(field, message, status) {
+    // const successIcon = field.parentElement.querySelector('.icon-success');
+    // const errorIcon = field.parentElement.querySelector('.icon-error');
+    const errorMessage = field.parentElement.querySelector('.error-message');
+
+    if (status === "success") {
+      // if (errorIcon) {errorIcon.classList.add('hidden');}
+      if (errorMessage) {errorMessage.innerText = "";}
+      // successIcon.classList.remove('hidden');
+      field.classList.remove('input-error');
+    }
+
+    if (status === "error") {
+      // if (successIcon) {successIcon.classList.add('hidden');}
+      field.parentElement.querySelector('.error-message').innerText = message;
+      // errorIcon.classList.remove('hidden');
+      field.classList.add('input-error');
+    }
+  }}
+
+
+const form = document.querySelector('#form');
+const fields = ["firstname", "lastname", "email", "password", "password_confirmation"];
+
+const validator = new FormValidator(form, fields);
+validator.initialize();
+</script>
+</body>
+</html>
+
+
+
+
+<script type="text/javascript">
+  
+    // Start SignUp Form
+  $('#CustomerRegisterFormBtn').on("click",function(e){  
+    e.preventDefault();  
+    var name_r = $('#firstname').val();
+    var lastname_r = $('#lastname').val(); 
+    var email_r = $('#email').val();  
+    var password_r = $('#password').val();  
+    var confirmpassword_r = $('#password_confirmation').val(); 
+
+      if (name_r.length < 1) {
+        $("#firstname").addClass('input-error');
+      $("#customername-em").addClass('input-error').text("First Name cannot be blank");    
+    }  
+     if (lastname_r.length < 1) {
+        $("#lastname").addClass('input-error');
+      $("#customerlastname-em").addClass('input-error').text("Last Name cannot be blank");    
+    }
+    if (email_r.length < 1) {  
+       $("#email").addClass('input-error');
+      $("#CustEmail-em").addClass('input-error').text("Please enter valid email address");  
+    }
+    if (password_r.length < 1) { 
+       $("#password").addClass('input-error');
+      $("#customerpassword-em").addClass('input-error').text("Password cannot be blank");    
+    }  
+      if (confirmpassword_r.length < 1) { 
+       $("#password_confirmation").addClass('input-error');
+      $("#customerconfirmpassword-em").addClass('input-error').text("Password confirmation required");    
+    }
+    if(name_r.length > 1 && lastname_r.length > 1 && email_r.length > 1 && password_r.length > 1 && confirmpassword_r.length > 1){
+      $('#create_customer').trigger('submit');
+    }
+  }); 
+// End SignUp Form
+</script>

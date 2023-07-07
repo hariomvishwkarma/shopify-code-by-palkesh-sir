@@ -1,0 +1,100 @@
+
+<div class="page-width testimonial-bg">
+<div class="title-wrapper-with-link">
+  {% if section.settings.testimonial_heading != blank %}
+    <h2 class="title">{{ section.settings.testimonial_heading }}</h2>
+  {%- endif -%}
+</div>
+<div class="custom-testimonial-slider">
+      {% for block in section.blocks %}
+      <div class="custom-testimonial">
+        {% if section.settings.testimonial_img != blank %}
+           <img src="{{ section.settings.testimonial_img | img_url: 'master' }}" >
+        {% endif %}
+        {%- if block.settings.testimonial_text != blank -%}
+        
+
+        <div class="announcement__text">
+          {{ block.settings.testimonial_text }}
+        </div>
+
+        {%- endif -%}
+      </div>
+       {% endfor %}
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Custom Testimonial",
+  "settings": [
+   {
+      "type": "text",
+      "id": "testimonial_heading",
+      "label": "Heading"
+    },
+   {
+      "type": "image_picker",
+      "id": "testimonial_img",
+      "label": "icon"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Custom Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "testimonial_text",
+          "label": "Testimonial Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Testimonial"
+    }
+  ]
+}
+{% endschema %}
+
+
+
+<script>
+jQuery(document).ready(function($) {
+
+      $('.custom-testimonial-slider').slick({
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        autoplay: false,
+        autoplaySpeed: 2000,
+        arrows: false, 
+//      fade: true,
+//      focusOnSelect: true,
+//      lazyLoad: 'ondemand',
+        responsive: [{
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        },
+        {
+           breakpoint: 400,
+           settings: {
+              arrows: false,
+              slidesToShow: 1,
+              slidesToScroll: 1
+           }
+        }]
+    });
+});
+</script>
+
+
+
+

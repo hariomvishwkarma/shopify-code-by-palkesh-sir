@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>navbar</title>
+	<style type="text/css">
+		#primary_nav_wrap ul
+{
+left: 0px;
+top: 0px;
+	list-style:none;
+	position: fixed;
+background: #121314;
+color: white;
+	margin:0;
+	padding:0
+display: inline-table;
+width: 100%;
+}
+
+#primary_nav_wrap ul a
+{
+
+	display: block;
+	color: #9C9C9C; 
+	text-decoration:none;
+	font-weight:700;
+	font-size: 22px;
+	line-height:32px;
+	padding: 15px 15px;
+	background: #121314;
+	font-family:"HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
+      -webkit-transition: all 150ms linear;
+-moz-transition: all 150ms linear;
+-ms-transition: all 150ms linear;
+-o-transition: all 150ms linear;
+transition: all 150ms linear;
+}
+
+#primary_nav_wrap ul a:hover
+{
+
+	color: white;
+background-color: #2d2f33; 
+text-shadow: 0 0 2px white;
+-webkit-text-shadow: 0 0 2px white;
+-moz-text-shadow: 0 0 2px white;
+-o-text-shadow: 0 0 2px white;
+-ms-text-shadow: 0 0 2px white;
+  -webkit-transition: all 150ms linear;
+-moz-transition: all 150ms linear;
+-ms-transition: all 150ms linear;
+-o-transition: all 150ms linear;
+transition: all 150ms linear;
+}
+
+#primary_nav_wrap ul a:active
+{
+
+	color: #8ABF29;
+background-color: #2d2f33; 
+    -webkit-transition: all 50ms linear;
+-moz-transition: all 50ms linear;
+-ms-transition: all 50ms linear;
+-o-transition: all 50ms linear;
+transition: all 50ms linear;
+}
+
+#primary_nav_wrap ul li
+{
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0;
+background: #121314;
+}
+
+#primary_nav_wrap ul li.current-menu-item
+{
+	background-color: #222326; 
+}
+
+#primary_nav_wrap ul li:hover
+{
+	background-color: #222326; 
+  
+  
+}
+
+#primary_nav_wrap ul ul
+{
+	display:none;
+	position:absolute;
+	top:100%;
+	left:0;
+	background: #121314;
+	padding:0;
+}
+
+#primary_nav_wrap ul ul li
+{
+	float:none;
+	width:200px;
+    
+}
+
+#primary_nav_wrap ul ul a
+{
+	line-height:120%;
+	padding:10px 15px;
+	background: #121314; 
+  
+}
+
+
+#primary_nav_wrap ul ul ul
+{
+	top:0;
+	left:100%;
+
+}
+
+#primary_nav_wrap ul li:hover > ul
+{
+	display:block;
+
+}
+
+		
+	</style>
+</head>
+<body>
+  <nav id="primary_nav_wrap">
+		<ul>
+		   {%- for link in linklists.main-menu.links -%}
+		  <li class="current-menu-item">
+		    
+		    <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+		          {{ link.title }}
+		        </a>
+		  
+		     {%- if link.links != blank -%}
+		          <ul>
+		            {%- for child_link in link.links -%}
+		              <li>
+		                <a href="{{ child_link.url }}" {% if child_link.active %}aria-current="page"{% endif %}>
+		                  {{ child_link.title }}
+		                </a>
+
+		                {%- if child_link.links != blank -%}
+		                  <ul>
+		                    {%- for grandchild_link in child_link.links -%}
+		                      <li>
+		                        <a href="{{ grandchild_link.url }}" {% if grandchild_link.active %}aria-current="page"{% endif %}>
+		                          {{ grandchild_link.title }}
+		                        </a>
+		                      </li>
+		                    {%- endfor -%}
+		                  </ul>
+		                {%- endif -%}
+
+		              </li>
+		            {%- endfor -%}
+		          </ul>
+		        {%- endif -%}
+		  </li>
+
+		  {%- endfor -%}
+		</ul>
+</nav>
+</body>
+</html>

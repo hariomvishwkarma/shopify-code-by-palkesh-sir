@@ -1,0 +1,23 @@
+
+<!-- // Start On page load to add active class on links -->
+
+<script>
+
+  jQuery(function($) {
+  var path = window.location.href; 
+  // because the 'href' property of the DOM element is the absolute path
+  $('.cus_blog_tags li a').each(function() {
+    if (this.href === path) {
+      $(this).addClass('active');
+    }
+  });
+});
+</script>
+
+<style>
+.cus_blog_tags li a.active {
+    color: red;
+}
+</style>
+
+<!-- // Start On page load to add active class on links -->

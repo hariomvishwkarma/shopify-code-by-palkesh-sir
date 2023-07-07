@@ -1,0 +1,139 @@
+<style type="text/css">
+.page-width.cus-brand-section {
+    padding-top: 50px;
+}
+.alpha-list-wrapper,
+#no-match {
+  display: none; }
+
+.alpha-list-wrapper.active,
+#no-match.active {
+  display: flex; }
+
+#alpha-nav {
+  padding-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 20px;
+}
+
+.character-element {
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 5px 6px;
+  color: #000;
+/*   border: 1px solid #aaa; */
+  border-radius: 50px;
+  background-color: #e7e7e7;
+/*   background: linear-gradient(180deg, #020024 0%, #f8fdff 0%, #e1e1e1 100%);  */
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+  ul.alpha-list-group {
+    list-style: none;
+    padding-left: 0;
+     width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+h3.alpha-list-heading {
+    width: 10%;
+    color: #000;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+li.item-class a {
+    color: #000;
+    font-size: 17px;
+    font-weight: 600;
+}
+li.item-class {
+    width: 25%;
+    padding-bottom: 1rem;
+}
+  div#alpha-list {
+    padding-top: 5rem;
+}
+  .alpha-list-wrapper {
+    padding-bottom: 2rem;
+}
+@media (max-width: 767px) {
+  .character-element {
+    padding: calc(100% / 50);
+    margin: calc(100% / 50);
+    min-width: calc(100% / 15); } }
+
+.character-element:not(.disabled):hover,
+.character-element:not(.disabled):active {
+  background: #ddb7ab;
+  cursor: pointer; 
+  color: #fff;
+  font-weight: bold;
+}
+
+.character-element.disabled {
+  color: #aaa;
+  cursor: default; 
+  background-color: #f3f3f3;
+}
+
+.character-element.active {
+  background: #ddb7ab; 
+  color: #fff;
+  font-weight: bold;
+}
+a.character-element[data-filter="*"] {
+  width: 100px;
+}
+.cus-brand-section h2.cus_t{
+  font-weight: bold;
+  color: #000;
+  font-size: 25px;
+}
+</style>
+<div class="page-width cus-brand-section">
+<h2 class="cus_t">{{ section.settings.cus-title }}</h2>
+<ul id="list-nav" class="list-nav">
+   {%- for link in section.settings.cus-menu.links -%}
+     <li class="item-class"><a href="{{ link.url }}">{{ link.title }}</a></li>
+   {% endfor %}
+</ul>
+</div>
+<script src="{{ 'alphabets-filter.js' | asset_url }}" defer="defer"></script>
+{% schema %}
+  {
+    "name": "Brands Alphabet Filter",
+    "settings": [
+       {
+        "type": "text",
+        "id": "cus-title",
+        "label": "Title"
+       },
+       {
+        "type": "link_list",
+        "id": "cus-menu",
+        "label": "Menu"
+       }
+    ],
+    "presets": [
+    {
+    "name": "Brands Alphabet Filter"
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

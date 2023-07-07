@@ -1,0 +1,138 @@
+<div class="page-width">
+<div class="Brand_alpha">
+   <ul>
+     {%- for link in section.settings.menu.links -%}
+        {% assign first_letter = link.title | slice: 0 %}
+        <li><a class="alpha-l" href="#alpha-{{ forloop.index }}">{{ first_letter }}</a></li>
+     {% endfor %}
+   </ul>
+</div>
+<nav class="cus_nav" role="navigation">
+  <ul>
+    {%- for link in section.settings.menu.links -%}
+      <li id="alpha-{{ forloop.index }}" class="cus_items">
+        <a class="alpha" href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+          {{ link.title }}
+        </a>
+
+        {%- if link.links != blank -%}
+          <ul class="cus_menus">
+            {%- for child_link in link.links -%}
+              <li>
+                <a href="{{ child_link.url }}" {% if child_link.active %}aria-current="page"{% endif %}>
+                  {{ child_link.title }}
+                </a>
+
+                {%- if child_link.links != blank -%}
+                  <ul>
+                    {%- for grandchild_link in child_link.links -%}
+                      <li>
+                        <a href="{{ grandchild_link.url }}" {% if grandchild_link.active %}aria-current="page"{% endif %}>
+                          {{ grandchild_link.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+</div>
+
+{% schema %}
+  {
+    "name": "Designers Page",
+    "settings": [
+       {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu"
+       },
+      {
+        "type": "link_list",
+        "id": "menu-alpha",
+        "label": "Alphabets List"
+       }
+    ],
+      "presets": [
+    {
+      "name": "Designers Page"
+    }
+  ]
+  }
+{% endschema %}
+
+<script>
+  const links = document.querySelectorAll(".alpha-l");
+
+for (const link of links) {
+  link.addEventListener("click", clickHandler);
+}
+
+function clickHandler(e) {
+  e.preventDefault();
+  const href = this.getAttribute("href");
+  const offsetTop = document.querySelector(href).offsetTop;
+
+  scroll({
+    top: offsetTop,
+    behavior: "smooth"
+  });
+}
+</script>
+<style type="text/css">
+  .cus_nav ul {
+    list-style: none;
+    padding:0;
+}
+.cus_nav ul li.cus_items {
+    display: flex;
+}
+.cus_nav a, .Brand_alpha ul li a{
+  text-decoration:none;
+  color:#333333;
+}
+.cus_nav .alpha{
+  width:10%;
+}
+.cus_nav .cus_menus{
+  width:90%;
+}
+.cus_nav ul li.cus_items{
+    margin-bottom: 20px;
+}
+.Brand_alpha ul {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+   list-style: none;
+   padding-left: 0;
+    margin-top: 0;
+}
+
+.Brand_letter {
+    text-transform: uppercase;
+      background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    outline: none;
+    padding: 0;
+}
+</style>

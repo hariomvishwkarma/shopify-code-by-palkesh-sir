@@ -1,0 +1,491 @@
+{% assign my_description = product.description | split: '<!-- split -->'  %}
+  
+<div class="page-width">
+    <div class="store_banner">
+        <div class="store_hero">
+          {%comment%}
+            {% if product.metafields.global.store_banner1 != blank %}
+               <img src="{{product.metafields.global.store_banner1}}" />
+            {% endif %}
+           {%endcomment%}
+          <img src="{{ product.images[4] | product_img_url: 'master' }}">
+      </div>
+        <a href="#example" class="openModal">
+          {%comment%}
+            {% if product.metafields.global.store_logo1 != blank %}
+               <img src="{{product.metafields.global.store_logo1}}" />
+            {% endif %}
+          {%endcomment%}
+          <img src="{{ product.images[1] | product_img_url: 'medium' }}">
+        </a>
+    </div>
+  	<div class="store-desc">
+      <div class="store-cashback-box">	
+             {% if product.metafields.global.heading4 != blank %}
+               <div class="store_cashback">{{product.metafields.global.heading4}}</div> 
+             {% endif %}
+        <div class="store_shop_btn">
+         {% if product.metafields.global.btn_text1 != blank %}
+            <a href="#example" class="openModal">
+              {{product.metafields.global.btn_text1}}
+            </a>
+          {% endif %}
+        </div>
+        <div class="view_all_cpn">
+           {% if product.metafields.global.btn_text2 != blank %}
+            <a href="#">
+              {{product.metafields.global.btn_text2}}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="store-description-box">
+        <h4>{{ product.title }} </h4>
+        <div>{{ my_description[0] }} {{ my_description[1] }}</div>
+      </div>
+	</div>
+
+  	<div class="store_attributes">
+      
+      {{ my_description[2] }}
+      {{ my_description[3] }}
+      {{ my_description[4] }}
+      {{ my_description[5] }}
+      
+      {%comment%}
+      <div class="store_attribute_item">
+        <div class="store_attribute_img">
+            {% if product.metafields.global.icon1 != blank %}
+               <img src="{{product.metafields.global.icon1}}" />
+            {% endif %}
+          </div>
+          {% if product.metafields.global.icon-text1 != blank %}
+             <p class="store_attribute_text">{{product.metafields.global.icon-text1}}</p> 
+          {% endif %}
+       
+      </div>
+       
+      
+       <div class="store_attribute_item">
+          <div class="store_attribute_img">
+            {% if product.metafields.global.icon2 != blank %}
+               <img src="{{product.metafields.global.icon2}}" />
+            {% endif %}
+          </div>
+          {% if product.metafields.global.icon-text2 != blank %}
+             <p class="store_attribute_text">{{product.metafields.global.icon-text2}}</p> 
+          {% endif %}
+       </div>
+      <div class="store_attribute_item">
+          <div class="store_attribute_img">
+            {% if product.metafields.global.icon3 != blank %}
+               <img src="{{product.metafields.global.icon3}}" />
+            {% endif %}
+          </div>
+          {% if product.metafields.global.icon-text3 != blank %}
+             <p class="store_attribute_text">{{product.metafields.global.icon-text3}}</p> 
+          {% endif %}
+       </div>
+      <div class="store_attribute_item">
+          <div class="store_attribute_img">
+            {% if product.metafields.global.icon4 != blank %}
+               <img src="{{product.metafields.global.icon4}}" />
+            {% endif %}
+          </div>
+          {% if product.metafields.global.icon-text4 != blank %}
+             <p class="store_attribute_text">{{product.metafields.global.icon-text4}}</p> 
+          {% endif %}
+       </div>
+      {%endcomment%}
+  	</div>
+  
+  
+    <div class="store-sc-cbf-sp-block">
+      {{ my_description[6] }}
+      {{ my_description[7] }}
+      {{ my_description[8] }}
+    {%comment%}
+      <div class="store_item">
+        {% if product.metafields.global.heading1 != blank %}
+             <h5 class="store_attribute_text">{{product.metafields.global.heading1}}</h5> 
+          {% endif %}
+        {% if product.metafields.global.text1 != blank %}
+             <p class="store_attribute_text">{{product.metafields.global.text1}}</p> 
+          {% endif %}
+      </div>
+      <div class="store_item">
+        {% if product.metafields.global.heading2 != blank %}
+             <h5 class="store_attribute_text">{{product.metafields.global.heading2}}</h5> 
+          {% endif %}
+        {% if product.metafields.global.text2 != blank %}
+             <p class="store_attribute_text">{{product.metafields.global.text2}}</p> 
+          {% endif %}
+      </div>
+      <div class="store_item">
+          {% if product.metafields.global.heading3 != blank %}
+             <h5 class="store_attribute_text">{{product.metafields.global.heading3}}</h5> 
+          {% endif %}
+          <div>
+          
+        	<table> 
+              <tr>
+                <td>
+                   {% if product.metafields.global.text3 != blank %}
+                      <a href="#">
+                          {{product.metafields.global.text3}}
+                      </a>
+                   {% endif %}
+                 
+                </td>
+                <td>
+                   {% if product.metafields.global.text6 != blank %}
+                      <a href="#">
+                          {{product.metafields.global.text6}}
+                      </a>
+                   {% endif %}
+                 
+                </td>
+              </tr>
+              <tr>
+                 <td>
+                   {% if product.metafields.global.text4 != blank %}
+                      <a href="#">
+                          {{product.metafields.global.text4}}
+                      </a>
+                   {% endif %}
+                 
+                </td>
+                 <td>
+                   {% if product.metafields.global.text7 != blank %}
+                      <a href="#">
+                          {{product.metafields.global.text7}}
+                      </a>
+                   {% endif %}
+                 
+                </td>
+              </tr>
+              <tr>
+                 <td>
+                   {% if product.metafields.global.text5 != blank %}
+                      <a href="#">
+                          {{product.metafields.global.text5}}
+                      </a>
+                   {% endif %}
+                 
+                </td>
+                 <td>
+                   {% if product.metafields.global.text8 != blank %}
+                      <a href="#">
+                          {{product.metafields.global.text8}}
+                      </a>
+                   {% endif %}
+                 
+                </td>
+              </tr>
+          	</table>
+        </div>
+      </div>
+      
+    {%endcomment%}
+    </div> 
+  	<div class="store-block">
+      
+      {{ my_description[9] }}
+      
+    {%comment%}
+      {% if product.metafields.global.heading5 != blank %}
+           <h4>{{product.metafields.global.heading5}}</h4> 
+      {% endif %}
+      {% if product.metafields.global.text9 != blank %}
+           <div>{{product.metafields.global.text9}}</div> 
+      {% endif %}
+    {%endcomment%}
+  	</div>
+</div>
+
+<aside id="example" class="modal_add">
+    <div>
+      <div class="modal_bg">
+        <div class="modal_head">
+            <img src="https://cdn.shopify.com/s/files/1/0266/4883/8191/files/b2_300x300.png?v=1618882666">
+          <p>Already a member? <a href="{{ routes.account_login_url }}">Log In</a></p>
+        </div>
+        <div class="main_block">
+        <div class="modal_heading"> 
+          <h2>Sign Up for Free Today!</h2>
+        </div>
+        
+        <div class="modal_content">
+          <div class="block_1">
+            <h3>Join Free Now</h3>
+            <p>and get</p>
+            <h4>2.0% Cash Back</h4>
+            <h5>on 1-800-4Clocks.com orders.</h5>
+            <img src="https://cdn.shopify.com/s/files/1/0266/4883/8191/files/150x40-18004clocks.png?v=1630070077">
+          </div>
+          
+          <div class="block_2">
+                <div class="grid">
+    <div class="grid__item medium-up--one-half medium-up--push-one-quarter">
+
+      <div class="form-vertical">
+
+        <h1 class="text-center">{{ 'customer.register.title' | t }}</h1>
+
+        {%- assign formId = 'RegisterForm' -%}
+        {% form 'create_customer', id: formId, novalidate: 'novalidate' %}
+          {% include 'form-status', form: form, form_id: formId %}
+
+          <label for="{{ formId }}-FirstName">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" name="customer[first_name]" id="{{ formId }}-FirstName" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocomplete="given-name">
+
+          <label for="{{ formId }}-LastName">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" name="customer[last_name]" id="{{ formId }}-LastName" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocomplete="family-name">
+
+          <label for="{{ formId }}-email">{{ 'customer.register.email' | t }}</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="{{ formId }}-email"
+            class="{% if form.errors contains 'email' %} input--error{% endif %}"
+            {% if form.email %} value="{{ form.email }}"{% endif %}
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            aria-required="true"
+            {%- if form.errors contains 'email' -%}
+              class="input--error"
+              aria-invalid="true"
+              aria-describedby="{{ formId }}-email-error"
+            {%- endif -%}
+          >
+          {%- if form.errors contains 'email' -%}
+            <span id="{{ formId }}-email-error" class="input-error-message">
+              <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+              {% include 'icon-error' %}
+              <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+            </span>
+          {%- endif -%}
+
+          <label for="{{ formId }}-password">{{ 'customer.register.password' | t }}</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="{{ formId }}-password"
+            class="{% if form.errors contains 'password' %} input--error{% endif %}"
+            aria-required="true"
+            {%- if form.errors contains 'password' -%}
+              class="input--error"
+              aria-invalid="true"
+              aria-describedby="{{ formId }}-password-error"
+            {%- endif -%}
+          >
+          {%- if form.errors contains 'password' -%}
+            <span id="{{ formId}}-password-error" class="input-error-message">
+              {% include 'icon-error' %}
+              <span>{{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.</span>
+            </span>
+          {%- endif -%}
+        
+          <p class="text-center">
+            {% assign pageurl = content_for_header| split:'"pageurl":"' | last | split:'"' | first %}
+            {%if pageurl contains '?return_to' %}
+            {%assign redirect_url = pageurl | replace:"\/", "/" | split:"?return_to=" %}
+            <input type="hidden" name="return_to" value="{{redirect_url[1]}}">
+            {%endif%}
+            <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn">
+          </p>
+
+        {% endform %}
+      </div>
+    </div>
+  </div>
+          </div>
+        </div>
+          
+<!--           <div class="info_block">
+            <h2>Not ready to sign up? To continue shopping without Cash Back, <a href="#">Click here</a>.</h2>
+              <p>You may withdraw this consent at any time.<br>
+                By becoming a member, you agree to our <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+              </p>
+            <p> <a href="#">Contact Us</a> <br>Rakuten Canada, Inc.<br> 4881 Yonge Street, Suite 200, North York, ON M2N 5X3</p>
+            
+          </div> -->
+         </div>
+      </div>
+      
+        <a href="#close" title="Close"></a>
+    </div>
+</aside>
+{% schema %}
+  {
+    "name": "static-store",
+    "settings": [
+		{
+          "id": "store_banner",
+          "type": "image_picker",
+          "label": "Banner Image"
+    	},
+		{
+          "id": "store_logo",
+          "type": "image_picker",
+          "label": "Store Logo Image"
+    	},
+		{
+          "id": "stor_shop_link",
+          "type": "url",
+          "label": "store link"
+        },
+        {
+          "id": "stor_shop_text",
+          "type": "text",
+          "label": "shop button"
+        },
+		{
+          "id": "all_coupons_link",
+          "type": "url",
+          "label": "Coupons link"
+        },
+        {
+          "id": "all_coupons_text",
+          "type": "text",
+          "label": "Coupons text"
+        },
+		{
+          "id": "store_title",
+          "type": "text",
+          "label": "store title"
+        },
+		{
+          "id": "store_description",
+          "type": "richtext",
+          "label": "store Description"
+        },
+		{
+          "id": "attribute_img1",
+          "type": "image_picker",
+          "label": "Store attribute Image"
+    	},
+		{
+          "id": "attribute_text1",
+          "type": "richtext",
+          "label": "store Description"
+        },
+		{
+          "id": "attribute_img2",
+          "type": "image_picker",
+          "label": "Store attribute Image"
+    	},
+		{
+          "id": "attribute_text2",
+          "type": "richtext",
+          "label": "store Description"
+        },
+		{
+          "id": "attribute_img3",
+          "type": "image_picker",
+          "label": "Store attribute Image"
+    	},
+		{
+          "id": "attribute_text3",
+          "type": "richtext",
+          "label": "store Description"
+        },
+		{
+          "id": "attribute_img4",
+          "type": "image_picker",
+          "label": "Store attribute Image"
+    	},
+		{
+          "id": "attribute_text4",
+          "type": "richtext",
+          "label": "store Description"
+        },
+		{
+          "id": "special_condition1",
+          "type": "text",
+          "label": "store Description"
+        },
+		{
+          "id": "special_condition_title1",
+          "type": "richtext",
+          "label": "store Description"
+        },
+		{
+          "id": "special_condition2",
+          "type": "text",
+          "label": "store Description"
+        },
+		{
+          "id": "special_condition_title2",
+          "type": "richtext",
+          "label": "store Description"
+        },
+		{
+          "id": "special_condition3",
+          "type": "text",
+          "label": "store Description"
+        },
+		{
+          "id": "similar_stores1_text",
+          "type": "text",
+          "label": "similar store name"
+        },
+		{
+          "id": "similar_stores1",
+          "type": "url",
+          "label": "similar store link"
+        },
+		{
+          "id": "similar_stores_cashback1",
+          "type": "text",
+          "label": "similar store text"
+        },
+		{
+          "id": "similar_stores2",
+          "type": "url",
+          "label": "similar store link"
+        },
+		{
+          "id": "similar_stores2_text",
+          "type": "text",
+          "label": "similar store name"
+        },
+		{
+          "id": "similar_stores_cashback2",
+          "type": "text",
+          "label": "similar store text"
+        },
+		{
+          "id": "similar_stores3",
+          "type": "url",
+          "label": "similar store link"
+        },
+		{
+          "id": "similar_stores3_text",
+          "type": "text",
+          "label": "similar store name"
+        },
+		{
+          "id": "similar_stores_cashback3",
+          "type": "text",
+          "label": "similar store text"
+        },
+		{
+          "id": "store_description2",
+          "type": "richtext",
+          "label": "store Description"
+        }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+<script>
+  $("#shopify-section-static-store").parent().css("padding-top","0");
+</script>

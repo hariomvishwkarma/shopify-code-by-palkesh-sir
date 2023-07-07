@@ -1,0 +1,87 @@
+
+ {% assign selected_variant = product.selected_variant %}
+  {% for variant in product.variants %}
+    {% if variant.title contains value and variant.image %}
+      {% assign selected_variant = variant %}
+    {% endif %}
+  {% endfor %}
+
+  <input class="dev_input" data-dev-id="{{ selected_variant.image.src | image_url: width: 416 }}"    >
+
+
+ <button src="{{ media.preview_image | image_url: width: 416 }}"></button>----- Thumbnail- IMAGE
+
+
+https://prnt.sc/guaz-ksHGlbG
+https://prnt.sc/4UX2ZKGvpIJ6
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	/*
+    STEPS:
+    1. Grab the img id from the src on gallery thumb click
+    2. loop thru the radio button images and grab the img src
+    2a. click the button that's it!
+    */
+ 
+  /*
+  As the gallery is using flickity slider, we need to find when the gallery is ready!
+  Hence, we are running an interval and checking the point when the gallery is available
+  in the DOM nodes.
+  */
+  
+  var galleryChecker = setInterval(function(){
+    if($('.thumbnail').length > 0){
+      console.log('DOM is ready BOSS');
+      //wait for a second
+      setTimeout(function(){
+    	//run the procedure
+        $('.thumbnail').on('click', function(){
+           // alert('theThumbImg');
+          //STEP 1
+          var theThumbImg = $(this).attr('src');
+          // alert(theThumbImg);
+          //STEP 2
+            var imgUrl = '';   
+          //run a for loop for each swatch input. dev_input is a custom class added to the swatch input
+          $('.product-form__input').eq(0).find('.dev_input').each(function(){ 
+            // alert('theThumbImg');
+            imgUrl = $(this).data('dev-id'); 
+            // alert(imgUrl);
+            //STEP 2a
+            if(theThumbImg == imgUrl){
+                $('.dev_input').addClass('active');
+             // alert('matched');
+              $(this).trigger('click');
+              return false; 
+            }
+          });
+        });
+        
+        
+    	//arrow click
+        // $('.flickity-prev-next-button').on('click', function(){
+        //   //STEP 1
+        //   var featSrc = $('.gallery-cell.is-selected img').data('dev-hook');
+        //   var theThumbImg = featSrc;
+        //   console.log(theThumbImg);
+        //   //STEP 2
+        //     var imgUrl = '';      
+        //   $('.swatch_options .swatch').eq(0).find('.dev_input').each(function(){
+        //     imgUrl = $(this).data('dev-id'); 
+        //     //STEP 2a
+        //     if(theThumbImg == imgUrl){
+        //       console.log('matched');
+        //       $(this).trigger('click');
+        //       return false; 
+        //     }
+        //   });
+        // });      
+      }, 1000);     
+      	//clear interval
+        clearInterval(galleryChecker);
+    }
+  }, 1); 
+});
+</script>

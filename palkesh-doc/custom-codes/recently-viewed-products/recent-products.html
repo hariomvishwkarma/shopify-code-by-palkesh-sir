@@ -1,0 +1,101 @@
+<style>
+  .recently-viewed-wrapper .price-item--regular{
+    display:none;
+  }
+</style>
+<div class="clearfix"></div>
+<div class="recently-viewed-wrapper page-width">
+    <h2 class="recent-heading">{% if section.settings.recent_heading != blank %} {{ section.settings.recent_heading }} {% else %} recently viewed {% endif %}</h2>
+   {% render 'recently-viewed'%}
+</div>
+
+<style>
+
+.recently-viewed-wrapper{
+  margin: 1rem auto;
+}
+
+.recently-viewed-img {
+  width: 100%;
+}
+.recently-viewed-grid {
+  display: grid;
+/*   grid-gap: 1rem; */
+  grid-template-columns:  repeat(4,1fr);
+  list-style: none;
+  margin:0; 
+  padding: 0;
+}    
+.recently-viewed-grid-item {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.recently-viewed-a {
+  text-decoration: none;
+  color: black;
+}
+h3.recent-view-heading {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0!important;
+    padding: 0 !important;
+}
+
+span.priceinfo {
+    text-align: left;
+}
+
+.recent-heading {
+  text-transform: capitalize;
+}
+  @media only screen and (max-width: 767px) {
+  .recent-heading {
+    text-align: center;
+}
+ .recently-viewed-grid {
+  grid-template-columns:  repeat(2,1fr);
+}    
+}
+  
+</style>
+
+{% schema %}
+  {
+    "name": "Recently Viewed Products",
+    "settings": [
+      {
+      "type": "text",
+      "id": "recent_heading",
+      "label": "Recently Viewed"
+    }
+    ],
+     "presets": [
+    {
+      "name": "Recently Viewed Products"
+    }
+  ]
+  }
+{% endschema %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick-theme.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.8/slick.css">
+
+  <style class="INLINE_PEN_STYLESHEET_ID">
+    /* Defines the width of the carousel and centers it on the page */
+.slick-carousel {
+  margin: 0 auto;
+  width: 1000px;
+}
+
+/* The width of each slide */
+.slick-slide {
+  width: 350px;
+}
+
+/* Color of the arrows */
+.slick-next::before, .slick-prev::before {
+  color: black;
+}
+  </style>
+	<!-- Create your own class for the containing div -->
+

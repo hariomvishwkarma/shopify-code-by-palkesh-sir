@@ -1,0 +1,111 @@
+   {%- unless product.has_only_default_variant -%}
+     
+      {%- for option in product.options_with_values -%}
+
+        {%- assign downcase_option = option.name | downcase -%}
+        {%- capture popover_id -%}popover-{{ product.id }}-{{ section.id }}-{{ option.name | handle }}{%- endcapture -%}
+
+        {%- if section.settings.show_color_swatch and color_label contains downcase_option -%}
+          {%- assign is_option_with_color_swatch = true -%}
+        {%- else -%}
+          {%- assign is_option_with_color_swatch = false -%}
+        {%- endif -%}
+    
+    
+    
+    
+    
+     <div id="{{ popover_id }}" class="OptionSelector " aria-hidden="true">
+                <span class="Popover__Title Heading u-h4">{{ option.name | escape }}</span>
+
+                <div class="Popover__Content">
+                  <div class="Popover__ValueList" data-scrollable>
+        {%- capture option_index2 -%}option{{ option.position }}{%- endcapture -%}
+                    {%- for value in option.values -%}
+                      {%- for variant in product.variants -%}
+                      {%- if variant[option_index2] == value -%}
+                        {%- assign variant_image2 = variant.image | default: product.featured_image -%}
+                         {% assign variant_image_3 =  variant.metafields.custom.variant_image %}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                      <button type="button" class="cus_p_v Popover__Value {% if value == option.selected_value %}is-selected{% endif %} Heading Link Link--primary u-h6"
+                              data-value="{{ value | escape }}"
+                              data-option-position="{{ option.position }}"
+                             
+                                data-background-color="{{ value | replace: ' ', '' }}"
+                                data-background-image="{{ value | handle | append: '.png' | asset_url }}"
+                            
+                              data-action="select-value">
+                       {%- assign image_url2 = variant_image2 -%}
+                        
+                          <span class="colorimage"  style="{% if variant_image_3 != blank %}background-image: url({{ variant_image_3  | img_url: '64x64' }});{% else %}{% if image_url2 != blank %}background-image: url({{ image_url2  | img_url: '64x64' }});{% else %}background-color: {{ value | split: ' ' | last | handle }};{% endif %}{% endif %}"></span> {{- value | escape -}}
+                   
+                     
+
+                       
+                           
+                      </button>
+                
+                    {%- endfor -%}
+                      
+                  </div>
+
+                  {%- assign size_chart_page_handle = settings.size_chart_page | default: 'size-chart' -%}
+                  {%- assign size_chart_page = pages[size_chart_page_handle] -%}
+
+                  {%- if size_label contains downcase_option and size_chart_page != empty -%}
+                    <button type="button" class="Popover__FooterHelp Heading Link Link--primary Text--subdued u-h6" data-action="open-modal" aria-controls="modal-{{ size_chart_page.handle }}">
+                      {{- 'product.form.size_chart' | t -}}
+                    </button>
+                  {%- endif -%}
+                </div>
+              </div>
+{%- endfor -%}
+                  <div class="no-js ProductForm__Option">
+        <div class="Select Select--primary">
+          {%- include 'icon' with 'select-arrow' -%}
+
+          <select id="product-select-{{ product.id }}" class="formVariant" name="id" title="Variant">
+            {%- for variant in product.variants -%}
+              <option {% if variant == selected_variant %}selected="selected"{% endif %} {% unless variant.available %}disabled="disabled"{% endunless %} value="{{ variant.id }}" data-sku="{{ variant.sku }}" data-title="{{ variant.title }}" data-price="{{ variant.price | money_without_trailing_zeros }}" data-comprice="{{ variant.compare_at_price | money_without_trailing_zeros }}">{{ variant.title }} - {{ variant.price | money }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+      </div>
+    {%- else -%}
+      <input type="hidden" name="id" data-sku="{{ selected_variant.sku }}" value="{{ selected_variant.id }}">
+    {%- endunless -%}
+
+
+
+
+    span.colorimage {
+    display: inline-block;
+  vertical-align: middle;
+}
+.cus_p_v.Popover__Value{
+  padding: 0;
+    text-align: left;
+    display: inline-block;
+  margin:0px 10px 10px 0;
+  background-color: #ebe1e19e;
+  border: #ccc 1px solid;
+    font-size: 13px;
+      width: auto;
+    padding: 0 5px 0 0;
+  border-radius: 5px;
+      color: #4d4d4d;
+  letter-spacing: 0;
+}
+.cus_p_v.Popover__Value.is-selected{
+border-color: transparent;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
+}
+.cus_p_v.Popover__Value:hover{
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
+}

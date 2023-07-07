@@ -1,0 +1,90 @@
+  <ul id="product-grid" data-id="{{ section.id }}" class="
+              grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+              grid--{{ section.settings.columns_desktop }}-col-desktop">
+              {%- for product in collection.products -%}
+                {% assign lazy_load = false %}
+                {%- if forloop.index > 2 -%}
+                  {%- assign lazy_load = true -%}
+                {%- endif -%}
+                <li class="grid__item main-cus-img-{{ product.id }}">
+                  {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    lazy_load: lazy_load,
+                    show_quick_add: section.settings.enable_quick_add,
+                    section_id: section.id
+                  %}
+{% for option in product.options %}
+  {% if option == 'Color' %}
+    {% assign index = forloop.index0 %}
+    {% assign colorlist = '' %}
+    {% assign color = '' %}
+    {% for variant in product.variants %}
+      {% capture color %}{{ variant.options[index] }}{% endcapture %}
+      {% unless colorlist contains color %}
+        <img class="cus_v-{{ variant.id }}" src="{{ variant.image.src | img_url: 'master' }}" data-src="{{ variant.image.src | img_url: 'master' }}" alt="{{ color }}" width="16" height="16" />
+        {% capture tempList %}{{colorlist | append: color | append: ''}}{% endcapture %}
+        {% assign colorlist = tempList %}
+      {% endunless %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+                </li>
+              {%- endfor -%}
+            </ul>
+
+
+
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+     
+  <script>
+     {% for product in collection.products %}
+       {% for option in product.options %}
+        {% for variant in product.variants %}
+          $(".cus_v-{{ variant.id }}").each(function() {
+                $(this).hover(function() {    // this is the mouseenter event handler
+                $(".main-cus-img-{{ product.id }} .main-cus-img-c").attr("srcset", $(this).attr("data-src"));
+            }, 
+                              function() {               // this is the mouseleave event handler
+                $(".main-cus-img-{{ product.id }} ").attr("srcset", "https://picsum.photos/200/300?image=0");    // this will revert it back to the original image (tv.jpg)
+            });
+          });
+         {% endfor %}
+       {% endfor %}
+     {% endfor %}
+
+
+
+$(".js-section__product-single .js-product-slider").not(".slick-initialized").each( function() {
+    var $sliderElement = $(this);
+    var $firstSliderImage = $sliderElement.find('.product-single__photo__wrapper').first().find('img').first();
+
+    if ($firstSliderImage.length > 0) {
+      // TODO: The product slider is a weird beast – hidden by default,
+      // then inserted where needed. Maybe rethink to keep in one place?
+      $firstSliderImage.one('load', function() {
+        initiateSlick($sliderElement);
+      }).each(function() {
+        if(this.complete) $(this).trigger('load');
+      });
+    } else {
+      $(function initiateCarouselOnDomReady() {
+        initiateSlick($sliderElement);
+      });
+    }
+  });
+
+
+$(".js-section__product-single .js-product-slider").not(".slick-initialized").each(function(){
+  var $sliderElement=$(this),
+  $firstSliderImage=$sliderElement.find(".product-single__photo__wrapper").first().find("img").first();
+  $firstSliderImage.length>0?$firstSliderImage.one("load",function(){
+    initiateSlick($sliderElement)
+  }).each(function(){
+    this.complete&&$(this).trigger("load")
+  }):$(function(){initiateSlick($sliderElement)})})
+</script>

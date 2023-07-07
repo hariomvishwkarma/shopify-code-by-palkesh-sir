@@ -1,0 +1,98 @@
+<div id="variant-inventory">
+                    {% comment %} Inventory tracking on product page {% endcomment %}
+                  <div class="selDiv">
+                  <select id="finalQuantity" style="display:none;">
+                    {% for variant in product.variants %}
+                      
+                      
+                    {%- assign finalquantity = finalquantity | plus: variant.inventory_quantity-%}
+                    <option value="{{variant.id}}" pro="{{ variant.inventory_policy }}">{{variant.inventory_quantity}}</option>
+                    {% endfor %}
+                    </select>
+                  </div>
+                   {% if finalquantity > 0 %}
+                  <span class="final_quantity">  </span> 
+                   {% else %}
+                    The product is out of stock!
+                    {% endif %}
+                    {% comment %} END inventory tracking on product page {% endcomment %}
+                </div>
+
+
+
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(window).on('load', function () {
+              var string = window.location.href;
+              var checkurl = window.location.origin + window.location.pathname;
+    if(string == checkurl){
+       var firstVal = $('.selDiv option:eq(0)').html();
+       var firstVal_pro = $('.selDiv option:eq(0)').attr("pro");
+           if(firstVal>0){
+                  $('.final_quantity').html("In Stock").css('color','#76bd1c');
+              } else if(firstVal <= 0 && firstVal_pro == "continue"){
+                 $('.final_quantity').html("In Stock").css('color','#76bd1c');
+              }else{
+                  $('.final_quantity').html("In Stock").css('color','#76bd1c');
+              }
+    }
+    else{ 
+          var data = string.split("?");
+          var as_variant_id1 = data[1].split("=")[1];
+          var as_fianl_val = $('.selDiv option[value="'+as_variant_id1+'"]').html();
+          var as_fianl_pro = $('.selDiv option[value="'+as_variant_id1+'"]').attr("pro");
+          if(as_fianl_val>0){
+                  $('.final_quantity').html("In Stock").css('color','#76bd1c');
+              } else if(as_fianl_val <= 0 && as_fianl_pro == "continue"){
+                  $('.final_quantity').html("Pre-Order").css('color','#e34848');
+              }else{
+                  $('.final_quantity').html("Unavailable").css('color','#ff9f3b');
+              }
+    }
+            
+
+    });
+    $(document).ready(function () {
+
+        $(".cus_variant").on("click", function () {
+           setTimeout(function () {
+            var string = document.location.href;
+            var data = string.split("?");
+            var as_variant_id1 = data[1].split("=")[1];
+             //alert(as_variant_id1);
+            var as_fianl_val = $('.selDiv option[value="'+as_variant_id1+'"]').html();
+             var as_fianl_pro = $('.selDiv option[value="'+as_variant_id1+'"]').attr("pro");
+            // alert(as_fianl_pro);
+             if(as_fianl_val>0){
+                  $('.final_quantity').html("In Stock").css('color','#76bd1c');
+              } else if(as_fianl_val <= 0 && as_fianl_pro == "continue"){
+                  $('.final_quantity').html("Pre-Order").css('color','#e34848');
+              }else{
+                  $('.final_quantity').html("Unavailable").css('color','#ff9f3b');
+              }
+              
+             }, 300);
+        });
+    });
+</script>
+
+
+
+
+
+
+<!-- -------------Url Redirection script------------------------ -->
+
+
+{% if  template contains "product" %}                 
+  <script>
+        const nextURL = '{{product.url}}?variant={{ product.selected_or_first_available_variant.id }}';
+        const nextTitle = '{{product.title}}';
+    const nextState = { additionalInformation: 'Updated the URL with JS' };
+    window.history.pushState(nextState, nextTitle, nextURL);
+    window.history.replaceState(nextState, nextTitle, nextURL);
+ 
+    </script>
+                      
+{% endif %}

@@ -1,0 +1,368 @@
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+    {%- when 'announcement' -%}
+      <div class="announcement-bar color-accent-2 gradient " role="region" aria-label="{{ 'sections.header.announcement' | t }}" {{ block.shopify_attributes }}>
+        {%- if block.settings.text != blank -%}
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="announcement-bar__link link link--text focus-inset animate-arrow">
+          {%- endif -%}
+              <div class="">
+                <p class="announcement-bar__message center h5">
+                  {{ block.settings.text | escape }}
+                  {%- if block.settings.link != blank -%}
+                    {% render 'icon-arrow' %}
+                  {%- endif -%}
+                </p>
+              </div>
+          {%- if block.settings.link != blank -%}
+            </a>
+          {%- endif -%}
+        {%- endif -%}
+    
+      </div>
+  {%- endcase -%}
+{%- endfor -%}
+
+
+<div class="flx1">
+<div class="countdown-txt">
+  {% comment %}<p>{{ section.settings.announce_text }} <span class="p1 custom_date_change"> {{ section.settings.shipping_date | in_time_zone: "America/Los_Angeles" | date: "%A, %B %d" }}</span><span id="shipping_date"></span></p> {% endcomment %}
+  <p>{{ section.settings.announce_text }} <span class="p1 custom_date_change" id="shipping_date"></span></p>
+  <p>{{ section.settings.announce_text1 }}</p>
+</div>
+
+
+  <div class="cus_container">
+    <div class="cd_timer">
+      <div class="cd_container">
+        <div class="time day"></div>
+        <span class="time_text">Days</span>
+      </div>
+      <span class="colons">:</span>
+      <div class="cd_container">
+        <div class="time hour"></div>
+        <span class="time_text">Hrs</span>
+      </div>
+      <span class="colons">:</span>
+      <div class="cd_container">
+        <div class="time minute"></div>
+        <span class="time_text">Mins</span>
+      </div>
+      <span class="colons">:</span>
+      <div class="cd_container">
+        <div class="time second"></div>
+        <span class="time_text">Secs</span>
+      </div>
+    </div>
+  </div>
+  <div> <a href="{{ section.settings.button_link }}" class="btn-announcement">{{ section.settings.button }}</a> </div>
+</div>
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Welcome to our store",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "t:sections.announcement-bar.blocks.announcement.settings.text_alignment.options__1.label"
+            },
+            {
+              "value": "center",
+              "label": "t:sections.announcement-bar.blocks.announcement.settings.text_alignment.options__2.label"
+            },
+            {
+              "value": "right",
+              "label": "t:sections.announcement-bar.blocks.announcement.settings.text_alignment.options__3.label"
+            }
+          ],
+          "default": "center",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.text_alignment.label"
+        },
+        {
+          "type": "select",
+          "id": "color_scheme",
+          "options": [
+            {
+              "value": "accent-1",
+              "label": "t:sections.all.colors.accent_1.label"
+            },
+            {
+              "value": "accent-2",
+              "label": "t:sections.all.colors.accent_2.label"
+            },
+            {
+              "value": "background-1",
+              "label": "t:sections.all.colors.background_1.label"
+            },
+            {
+              "value": "background-2",
+              "label": "t:sections.all.colors.background_2.label"
+            },
+            {
+              "value": "inverse",
+              "label": "t:sections.all.colors.inverse.label"
+            }
+          ],
+          "default": "accent-1",
+          "label": "t:sections.all.colors.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Url"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button Text"
+    },
+    {
+      "type": "text",
+      "id": "announce_text",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "announce_text1",
+      "label": "Paragraph"
+    },
+    {
+      "type": "text",
+      "id": "shipping_date",
+      "label": "Shipping Date",
+      "default":"Oct 23, 2022",
+      "info": "Date format should be Oct 09, 2022 (month day, year)"
+    },
+    {
+      "type": "text",
+      "id": "new_date",
+      "label": "Countdown Timer Date",
+      "default":"Oct 19, 2022 23:59:59",
+      "info": "Date format should be Oct 12, 2022 03:24:59(month day, year hrs:mins:sec)"
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement"
+      }
+    ]
+  }
+}
+{% endschema %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--countdown timer start -->
+<script>
+		// Set the date we're counting down to
+        var newdate ="{{ section.settings.new_date }}";
+        var countDownDate = new Date(newdate).getTime();
+		//var countDownDate = new Date("Oct 02, 2022 01:59:59").getTime();
+        var distance;
+		// Update the count down every 1 second
+		var x = setInterval(function() {
+
+		  // Get today's date and time
+		  var now = new Date().getTime();
+
+		  // Find the distance between now and the count down date
+		  var distance = countDownDate - now;
+
+		  // Time calculations for days, hours, minutes and seconds
+		  var days =  Math.floor(distance / (1000 * 60 * 60 * 24));
+		  var hours =  ("0" +Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(-2);
+		  var minutes = ("0" + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
+		  var seconds =  ("0" + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
+
+		  // Display the result in the element with id="countdown"
+		  //document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+		  $('.day').text(days);
+		  $('.hour').text(hours);
+		  $('.minute').text(minutes);
+		  $('.second').text(seconds);
+          
+		  // If the count down is finished, write some text
+		  if (distance < 0) {
+			clearInterval(x);
+             autodate();
+            clearInterval(y);
+            shipdatechange();
+		  }
+		});
+     function autodate(){ 
+            var countDate ="{{ section.settings.new_date }}";
+            var countDate =new Date(countDate);
+            countDate. setDate(countDate. getDate() + 7); 
+            var countDownDate = new Date(countDate).getTime();
+            
+            var now = new Date().getTime();
+            var distanceday2 = countDownDate - now; 
+            var daycount2 =  Math.floor(distanceday2 / (1000 * 60 * 60 * 24));
+            if(daycount2 < 0){
+               countDate. setDate(countDate. getDate() + 7); 
+               var countDownDate = new Date(countDate).getTime();
+               
+                var distanceday3 = countDownDate - now; 
+                var daycount3 =  Math.floor(distanceday3 / (1000 * 60 * 60 * 24));
+                if(daycount3 < 0){
+                   countDate. setDate(countDate. getDate() + 7); 
+                   var countDownDate = new Date(countDate).getTime();
+                      var distanceday4 = countDownDate - now; 
+                      var daycount4 =  Math.floor(distanceday4 / (1000 * 60 * 60 * 24));
+                      if(daycount4 < 0){
+                         countDate. setDate(countDate. getDate() + 7); 
+                         var countDownDate = new Date(countDate).getTime();
+                         var distanceday5 = countDownDate - now; 
+                          var daycount5 =  Math.floor(distanceday5 / (1000 * 60 * 60 * 24));
+                          if(daycount5 < 0){
+                             countDate. setDate(countDate. getDate() + 7); 
+                             var countDownDate = new Date(countDate).getTime();
+                          }
+                      }
+                  
+                }
+                
+            }
+            // Update the count down every 1 second
+          	var x = setInterval(function() {
+        		  // Get today's date and time
+    		  var now = new Date().getTime();
+    
+    		  // Find the distance between now and the count down date
+    		  var distance = countDownDate - now;
+    
+    		  // Time calculations for days, hours, minutes and seconds
+    		  var days =  Math.floor(distance / (1000 * 60 * 60 * 24));
+    		  var hours =  ("0" +Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(-2);
+    		  var minutes = ("0" + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
+    		  var seconds =  ("0" + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
+    
+    		  // Display the result in the element with id="countdown"
+    		  //document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+    		  $('.day').text(days);
+    		  $('.hour').text(hours);
+    		  $('.minute').text(minutes);
+    		  $('.second').text(seconds);
+              
+    		  // If the count down is finished, write some text
+    		  if (distance < 0) {
+    			clearInterval(x);
+                autodate();
+    		  }
+    		});
+            
+        } 
+	
+ <!-- countdown timer end -->
+ 
+ <!-- shipping counter start -->
+    
+		// Set the date we're counting down to
+        var shippingdate ="{{ section.settings.shipping_date }}";
+        var countDownDateship = new Date(shippingdate).getTime();
+		//var countDownDateship = new Date("Oct 02, 2022 01:59:59").getTime();
+
+		// Update the count down every 1 second
+		var y = setInterval(function() {
+
+		  // Get today's date and time
+		  var now = new Date().getTime();
+
+		  // Find the distance between now and the count down date
+		  var distances = countDownDateship - now;
+          var myDate = new Date(shippingdate);
+          var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+          // console.log(daysOfWeek[myDate.getDay()]);
+          // console.log(months[myDate.getMonth()]);
+          // console.log(myDate.getDate());
+          
+          //var Newshippingdate = new Date(shippingdate).toDateString();
+           // Display the result in the element with id="countdown"
+		  document.getElementById("shipping_date").innerHTML = daysOfWeek[myDate.getDay()] + ", " + months[myDate.getMonth()] + " "  + myDate.getDate() ;
+		           
+		  // If the count down is finished, write some text
+		  if (distances < 0) {
+			clearInterval(y);
+             autoshipdate();
+		  }
+		});
+     function autoshipdate(){ 
+          var dates = new Date(); 
+          dates. setDate(dates. getDate() + 7); 
+          var countDownDateship = new Date(dates).getTime();
+           	// Update the count down every 1 second
+    		var y = setInterval(function() {
+    
+    		  // Get today's date and time
+    		  var now = new Date().getTime();
+    
+    		  // Find the distance between now and the count down date
+    		  var distances = countDownDateship - now;
+    
+    		  var myDate = new Date(dates);
+              var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+              var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+          
+           // Display the result in the element with id="countdown"
+		  document.getElementById("shipping_date").innerHTML = daysOfWeek[myDate.getDay()] + ", " + months[myDate.getMonth()] + " "  + myDate.getDate() ;
+		           
+    		  // If the count down is finished, write some text
+    		  if (distances < 0) {
+    			clearInterval(y);
+                autoshipdate();
+    		  }
+    		});
+            
+        } 
+  function shipdatechange(){    
+           var shippingdate ="{{ section.settings.shipping_date }}";
+            var shippingdate =new Date(shippingdate);
+            shippingdate. setDate(shippingdate. getDate() + 7); 
+            var countDownDateship = new Date(shippingdate).getTime();
+            var y = setInterval(function() {
+    
+              // Get today's date and time
+              var now = new Date().getTime();
+    
+              // Find the distance between now and the count down date
+              var distances = countDownDateship - now;
+    
+              var myDate = new Date(shippingdate);
+              var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+              var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+          
+           // Display the result in the element with id="countdown"
+          document.getElementById("shipping_date").innerHTML = daysOfWeek[myDate.getDay()] + ", " + months[myDate.getMonth()] + " "  + myDate.getDate() ;
+                   
+              // If the count down is finished, write some text
+              if (distances < 0) {
+                clearInterval(y);
+                autoshipdate();
+              }
+            });
+  }
+	</script>  
+ <!-- shipping counter end -->
