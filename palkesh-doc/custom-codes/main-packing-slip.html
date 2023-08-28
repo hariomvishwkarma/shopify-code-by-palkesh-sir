@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Packing Slip</title>
+
+</head>
+<body>
+<div class="wrapper">
+	  {% comment %}
+    To adjust the size of line item images, change desired_image_size.
+    The other variables make sure your images print at high quality.
+    {% endcomment %}
+    {% assign desired_image_size = 58 %}
+    {% assign resolution_adjusted_size = desired_image_size | times: 300 | divided_by: 72 | ceil %}
+    {% capture effective_image_dimensions %}
+      {{ resolution_adjusted_size }}x{{ resolution_adjusted_size }}
+    {% endcapture %}
+  <div class="ps-product-container">
+{% if line_items_in_shipment.size > 1 %}
+ <div class="ps-product-sec">
+		<div class="ps-product-cant">
+           {% for line_item in line_items_in_shipment %}
+            {% assign total_shipping_quantity = total_shipping_quantity | plus: line_item.shipping_quantity %}
+          {% endfor %}
+             <h3>{{total_shipping_quantity}}</h3>
+			 <p>Cantidad</p>
+		</div>
+		<div class="ps-product-detail">
+			<p><span>Varios productos necesitan ser preparados</span></p>
+			<p>Visita la pagina del pedido para verlos todos</p>
+		</div>
+</div>
+{% else %}
+{% for line_item in line_items_in_shipment %}
+	<div class="ps-product-sec">
+		<div class="ps-product-cant">
+			
+				<h3>{{ line_items_in_shipment.size }}</h3>
+			 <p>Cantidad</p>
+		</div>
+		<div class="ps-product-detail">
+			<p class="ps-product-title-ov"><span>Producto:</span> {{ line_item.title }}</p>
+			 {% comment %}
+			 {% if line_item.variant_title != blank %}
+			  <p>{{ line_item.variant_title }}</p>
+			 {% endif %}
+			 {% if line_item.properties != blank %}
+			   {% for property in line_item.properties %}
+			   <p>  <span class="line-item-description-line">
+			       {{ property.first }} : {{ property.last }}
+			     </span>
+			   </p>
+			   {% endfor %}
+			{% endif %}
+			{% endcomment %}
+			 {% if line_item.sku != blank %}
+              <p><span>SKU: {{ line_item.sku }}</span></p>
+            {% endif %}
+		</div>
+	</div>
+{% endfor %}
+{% endif %}
+</div>
+<div class="ps-cus-line">
+	<p>Informacivan para el armado del paquete</p>
+	<div class="hr-theme-slash-2">
+		
+	  <div class="hr-line"></div>
+	  <div class="hr-icon">
+          <img src="https://cdn.shopify.com/s/files/1/0663/1958/1408/files/pngwing.com.png?v=1691055433" height="30px" width="30px" alt="image">
+	  </div>
+		
+	</div>
+	<p>Etiqueta para pegar en el paquete</p>
+</div>
+
+<div class="ps-detail-sec">
+	<div class="ps-d-main-box">
+		<div class="ps-d-box-1">
+			<div class="ps-d-inner-box-1"><img src="https://cdn.shopify.com/s/files/1/0663/1958/1408/files/Jior_ce28852f-bb96-4273-bb45-e54526a71db2.png?v=1690809029" class="slip-logo"></div>
+			<div class="ps-d-inner-box-2"><p>Pedido:</p><h1>{{ order.name }}</h1></div>
+		</div>
+		<div class="ps-d-box-2">
+			<div class="ps-d-list-heading ps-bt-border">
+				<div class="ps-d-h1"><h3>Remitente:</h3></div>
+				<div class="ps-d-h2"><h3>Jior</h3></div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Destinatario:</h3></div>
+				<div class="ps-d-h2">
+					<h3>
+            {% if shipping_address.first_name != blank %}
+                {{ shipping_address.first_name }}
+            {% endif %}
+            {% if shipping_address.last_name != blank %}
+                {{ shipping_address.last_name }}
+            {% endif %}
+					</h3>
+				</div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Rut:</h3></div>
+				<div class="ps-d-h2">
+					<p> 
+					{% if shipping_address.company != blank %}
+                {{ shipping_address.company }}
+          {% endif %}
+        </p>
+        </div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Correo:</h3></div>
+				<div class="ps-d-h2">
+					<p>
+						{% if customer.email != blank %}
+							{{ customer.email }}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Teléfono:</h3></div>
+				<div class="ps-d-h2">
+					<p>
+					   {% if shipping_address.phone != blank %}
+		                 {{ shipping_address.phone }}
+		               {% endif %}
+		            </p>
+		        </div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Dirección:</h3></div>
+				<div class="ps-d-h2">
+					<p>
+					{% if shipping_address.address1 != blank %}
+			          {{ shipping_address.address1 }}
+			    {% endif %}
+				  </p>
+				</div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Dep, local, etc:</h3></div>
+				<div class="ps-d-h2">
+					<p>
+					{% if shipping_address.address2 != blank %}
+			          {{ shipping_address.address2 }}
+			    {% endif %}
+				  </p>
+					</div>
+			</div>
+		</div>
+     
+
+	</div>
+	<div class="ps-d-main-box-2">
+		<div class="ps-d-main-box-3">
+			<div class="ps-1box-sec">
+				<div>Comuna:</div>
+				<h2>
+					{% if shipping_address.city != blank %}
+			          {{ shipping_address.city }}
+			    {% endif %}
+			  </h2>
+              
+		   <p>
+            
+             {% if shipping_address.province != blank %}
+              {% assign cus-pro = shipping_address.province | replace: "Región", "" %}
+			  {{ cus-pro |  replace: "de", ""  }}
+			   {% endif %}
+			</p>
+			</div>
+	    </div>
+	    <div class="ps-d-main-box-4">
+			<div class="ps-2box-sec">
+				<div>Forma de entrega  </div>
+				<div>{{ order.shipping_method.title}}</div>
+			</div>
+	    </div>
+	     <div class="ps-d-main-box-5">
+			<div class="ps-2box-r-sec">
+				<div><span>DE: {{ shop.name }}</span></div>
+				<div><span>EMISION: {{ order.created_at | date: "%d/%m/%Y" }}</span></div>
+			</div>
+	    </div>
+	    <div class="ps-d-main-box-6">
+			<div class="ps-textbox-sec">
+				<div><span>DIR REMITENTE:</span> General Amengual 166, Estación Central</div>
+			</div>
+	    </div>
+	   
+ </div>
+ <div class="ps-d-main-box-7">
+			<div class="ps-footer-sec-1">
+				<div class="ps-footer-inner-box-1">
+					<h5>ESCANEA EL CÓDIGO QR</h5>
+					<p>Y síguenos en nuestras redes, comparte con nuestra comunidad y no te pierdas las novedades.</p>
+				</div>
+				<div class="ps-footer-inner-box-2">
+					<h5>ATENCIÓN AL CLIENTE</h5>
+					<p>Si tienes problemas con tu pedido comunicate al<br>WhatsApp: <span>+56 9 9686 6050</span></p>
+				</div>
+			</div>
+			<div class="ps-footer-sec-2">
+				<img src="https://cdn.shopify.com/s/files/1/0663/1958/1408/files/JIOR_f3bc8278-944d-49af-a439-6b97ef016d4b.png?v=1691036842">
+			</div>
+	</div>
+	
+</div>
+</div>
+
+<style type="text/css">
+			.wrapper {
+			    font-family: "Noto Sans", sans-serif;
+			    font-weight: 250;
+			  }
+			@page { 
+				margin: 0cm; } /* All margins set to 2cm */
+			@media print 
+			{
+			   @page
+			   {
+			    width: 10cm;
+			    height: 15cm;
+			  }
+			}
+		    .slip-logo{
+		    	width: 100%;
+		        height: 100%;
+                object-fit: contain;
+		      }
+            
+		    .ps-product-container{
+		        border: 1px solid #000;
+		      }
+		    .ps-product-sec:first-child{
+			  	border-top: none;
+			   }
+			.ps-product-sec{
+			  	width: 100%;
+			    display: -webkit-box;
+			    display: -webkit-flex;
+			    display: flex;
+			    border-top: 1px dashed #000;
+			  }
+			
+			.ps-product-cant{
+		        width: 20%;
+		        padding: 15px 2px 15px 2px;
+		        background-color: #000;
+                text-align: center;
+                display: flex;
+			    flex-direction: column;
+			    justify-content: center;
+			  }
+			.ps-product-cant h3{
+		        font-size: 40px;
+		        margin: 0px;
+		        font-weight: 600;
+		        color: #fff;
+			}
+			.ps-product-cant p{
+		        margin: 0px;
+		        color: #fff;
+		        font-size: 18px;
+			}
+			.ps-product-detail{
+			  	width: 80%;
+			  	padding-left: 15px;
+    			padding-right: 8px;
+    			display: flex;
+			    flex-direction: column;
+			    justify-content: center;
+			  }
+			.ps-product-detail p span{
+			  	font-weight: 600;
+			  }
+			.ps-product-detail p{
+			  	margin: 5px 0;
+			  	font-size: 18px;
+			  }
+			.ps-product-title-ov{
+		  	    white-space: nowrap;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			    width: 550px;
+			  }
+		    .hr-theme-slash-2 {
+			  display: flex;
+			  position: relative;
+			}
+			.hr-theme-slash-2 .hr-line {
+			  width: 100%;
+			  position: relative;
+			  margin: 15px 0;
+			  border-style: dashed;
+              border-width: thin;
+              border-color: gray;
+			}
+			.hr-theme-slash-2 .hr-icon {
+			  position: absolute;
+			  top: 1px;
+			  color: #ff0000;
+			  left: 13%;
+			}
+			.hr-theme-slash-2 .hr-icon img{
+			  width: 38px;
+			}
+			.ps-cus-line p{
+				text-align: center;
+				margin: 0;
+				font-size: 15px;
+			}
+			.ps-cus-line{
+				margin-top: 14px;
+			}
+			.ps-detail-sec {
+			    border: 1px solid #000;
+			    margin-top: 15px;
+			}
+
+			.ps-d-main-box {
+			    display: flex;
+			    width: 100%;
+			    border-bottom: 1px solid #000;
+			}
+
+			.ps-d-box-1 {
+			    width: 28%;
+			    display: flex;
+			    flex-direction: column;
+			    border: 1px solid #000;
+			    border-left: 0;
+			    border-bottom: 0;
+			}
+
+			.ps-d-box-2 {
+		        width: 72%;
+			    padding-bottom: 10px;
+			}
+
+			.ps-d-list-heading {
+			    display: flex;
+			    justify-content: space-between;
+			    grid-gap: 10px;
+			    padding: 0px 10px 0px 15px;
+			    margin-bottom: 10px
+			}
+			.ps-d-h2 {
+			    text-align: right;
+			}
+			.ps-d-list-heading.ps-bt-border {
+			    border-bottom: 1px solid #000;
+			}
+			.ps-d-box-2 h3, .ps-d-box-2 p{
+                margin: 5px 0
+			}
+			.ps-d-h1 h3 {
+			    font-size: 18px;
+			}
+			.ps-d-h2 p {
+			    font-size: 18px;
+			    word-break: break-word;
+			    font-weight: 600;
+			}
+			.ps-d-h2 h3{
+			    font-size: 18px;
+			}
+			.ps-d-inner-box-2 {
+			    display: flex;
+			    flex-direction: column;
+			    justify-content: center;
+			    height: 160px;
+			    width: 60%;
+                margin: auto;
+			    
+			}
+			.ps-d-inner-box-2 h1, .ps-d-inner-box-2 p{
+                margin: 0px;
+			}
+			.ps-d-inner-box-2 h1{
+                font-size: 30px;
+			}
+			.ps-d-inner-box-1 p {
+			    font-size: 35px;
+			}
+			.ps-d-inner-box-1 {
+			    text-align: center;
+			    background-color: #000;
+			    height: 160px;
+			}
+			.ps-d-inner-box-2 p {
+			    font-size: 18px;
+	            font-weight: 600;
+			}
+			.ps-d-main-box-2{
+				margin: 15px 5px 0px;
+				border: 1px solid #000;
+			}
+			
+			.ps-d-main-box-3 {
+			    padding: 10px;
+			    border-bottom: 1px solid #000;
+			}
+			.ps-1box-sec h2{
+			    padding-top: 15px;
+			    text-align: center;
+			    font-size: 40px;
+			    font-weight: 600;
+			    margin: 0px;
+			    text-transform: uppercase;
+			}
+			.ps-1box-sec p {
+			    margin: 0px;
+			    text-align: center;
+			    padding-bottom: 25px;
+			    font-weight: bold;
+			    padding-top: 5px;
+			    font-size: 18px;
+			    text-transform: uppercase;
+			}
+			.ps-2box-sec {
+			    display: flex;
+			    border-bottom: 1px solid #000;
+			    font-weight: 600;
+			    text-transform: uppercase;
+			}
+			.ps-2box-sec div{
+				display: flex;
+			    align-items: center;
+			    padding: 24px 10px;
+			    justify-content: center;
+			    font-size: 18px
+			}
+			.ps-2box-sec div:nth-child(1){
+				width: 30%;
+			}
+			.ps-2box-sec div:nth-child(2){
+				width: 70%;
+				background-color: #000;
+				color: #fff;
+				font-size: 21px;
+			}
+			.ps-2box-r-sec {
+			    display: flex;
+			    border-bottom: 1px solid #000;
+			    font-size: 18px;
+			}
+			.ps-2box-r-sec div{
+			    padding: 10px 10px;
+			}
+			.ps-2box-r-sec div span {
+			    font-weight: 600;
+			}
+			.ps-2box-r-sec div:nth-child(1){
+				width: 40%;
+				border-right:1px solid #000;
+				text-transform: uppercase;
+			}
+			.ps-2box-r-sec div:nth-child(2){
+				width: 60%;
+			}
+			.ps-textbox-sec div{
+			    padding: 7px 10px;
+			    font-size: 18px;
+			    text-transform: uppercase;
+			}
+			.ps-textbox-sec div span{
+				font-weight: 600;
+			}
+			.ps-d-main-box-7 {
+			    padding: 5px 5px 5px 10px;
+			    display: flex;
+			    align-items: center;
+			}
+			.ps-footer-sec-1{
+				width: 65%;
+				padding-left: 10px;
+			}
+			.ps-footer-sec-2{
+				width: 35%;
+				text-align: right;
+			}
+			.ps-footer-sec-2 img{
+				width: 100%;
+                height: 215px;
+                object-fit: contain;
+                object-position: right;
+			}
+			.ps-d-main-box-7 h5{
+			    margin: 0px;
+			    font-size: 18px;
+			}
+			.ps-d-main-box-7 p{
+			    font-size: 18px;
+			    margin-top: 7px;
+			}
+			.ps-footer-inner-box-2 p span{
+                font-weight: 600;
+			}
+			.ps-footer-inner-box-2 p{
+                margin-bottom: 0px;
+			}
+
+	</style>
+</body>
+</html>

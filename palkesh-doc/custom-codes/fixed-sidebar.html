@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>sidebar nav</title>
+	<style>
+		 body.cus_menu-overflow {
+     overflow: hidden;
+}
+
+.cus_fixed-sidebar .navbar {
+     position: relative;
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     justify-content: space-between;
+     padding-top: .5rem;
+     padding-bottom: .5rem;
+     width: 100%;
+}
+
+
+
+/***********************************************/
+/******************CUSTOME DESIGN****************** **********************************************/
+/* BURGER ========================================== */
+.cus_fixed-sidebar .cus_menu-burger {
+     width: 50px;
+     height: 50px;
+     position: fixed;
+     top: 87px;
+     right: 25px;
+     border-radius: 4px;
+     z-index: 9999;
+}
+.cus_fixed-sidebar .cus_menu-burger span {
+     position: relative;
+     margin-top: 9px;
+     margin-bottom: 9px;
+     -webkit-user-select: none;
+     -moz-user-select: none;
+     -ms-user-select: none;
+     user-select: none;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     margin-left: -15px;
+     margin-top: -1.5px;
+}
+.cus_fixed-sidebar .cus_menu-burger span, .cus_fixed-sidebar .cus_menu-burger span::before, .cus_fixed-sidebar .cus_menu-burger span::after {
+     display: block;
+     width: 30px;
+     height: 3px;
+     background-color: #2a2a2a;
+     outline: 1px solid transparent;
+     -webkit-transition-property: background-color, -webkit-transform;
+     -moz-transition-property: background-color, -moz-transform;
+     -o-transition-property: background-color, -o-transform;
+     transition-property: background-color, transform;
+     -webkit-transition-duration: 0.3s;
+     -moz-transition-duration: 0.3s;
+     -o-transition-duration: 0.3s;
+     transition-duration: 0.3s;
+}
+.cus_fixed-sidebar .cus_menu-burger span::before, .cus_fixed-sidebar .cus_menu-burger span::after {
+     position: absolute;
+     content: "";
+}
+.cus_fixed-sidebar .cus_menu-burger span::before {
+     top: -9px;
+}
+.cus_fixed-sidebar .cus_menu-burger span::after {
+     top: 9px;
+}
+.cus_fixed-sidebar .cus_menu-burger.cus_menu-clicked span {
+     background-color: transparent;
+}
+.cus_fixed-sidebar .cus_menu-burger.cus_menu-clicked span::before {
+     -webkit-transform: translateY(9px) rotate(45deg);
+     -moz-transform: translateY(9px) rotate(45deg);
+     -ms-transform: translateY(9px) rotate(45deg);
+     -o-transform: translateY(9px) rotate(45deg);
+     transform: translateY(9px) rotate(45deg);
+}
+.cus_fixed-sidebar .cus_menu-burger.cus_menu-clicked span::after {
+     -webkit-transform: translateY(-9px) rotate(-45deg);
+     -moz-transform: translateY(-9px) rotate(-45deg);
+     -ms-transform: translateY(-9px) rotate(-45deg);
+     -o-transform: translateY(-9px) rotate(-45deg);
+     transform: translateY(-9px) rotate(-45deg);
+}
+.cus_fixed-sidebar .cus_menu-burger.cus_menu-clicked span:before, .cus_fixed-sidebar .cus_menu-burger.cus_menu-clicked span:after {
+     background-color: #000;
+}
+.cus_fixed-sidebar .cus_menu-burger:hover {
+     cursor: pointer;
+}
+/* NAV ========================================== */
+.cus_fixed-sidebar nav.cus_menu-nav {
+     background-color: #fff;
+     position: fixed;
+     z-index: 999;
+     top: 0;
+     right: 0;
+     height: 100%;
+     max-width: 515px;
+     width: 100%;
+     padding: 18px 40px 25px;
+     overflow-y: auto;
+     -webkit-transform: translateX(100%);
+     -moz-transform: translateX(100%);
+     -ms-transform: translateX(100%);
+     -o-transform: translateX(100%);
+     transform: translateX(100%);
+     -webkit-transition: transform 0.55s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+     -moz-transition: transform 0.55s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+     -o-transition: transform 0.55s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+     transition: transform 0.55s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+.cus_fixed-sidebar nav.cus_menu-nav.cus_menu-show {
+     -webkit-transform: translateX(0px);
+     -moz-transform: translateX(0px);
+     -ms-transform: translateX(0px);
+     -o-transform: translateX(0px);
+     transform: translateX(0px);
+}
+.cus_fixed-sidebar nav.cus_menu-nav.cus_menu-show ul.cus_menu-main li {
+     -webkit-transform: translateX(0px);
+     -moz-transform: translateX(0px);
+     -ms-transform: translateX(0px);
+     -o-transform: translateX(0px);
+     transform: translateX(0px);
+     opacity: 1;
+}
+
+
+.cus_fixed-sidebar nav.cus_menu-nav ul.cus_menu-main {
+     list-style-type: none;
+}
+.cus_fixed-sidebar nav.cus_menu-nav ul.cus_menu-main li {
+     margin-bottom: 0px;
+     -webkit-transform: translateX(40px);
+     -moz-transform: translateX(40px);
+     -ms-transform: translateX(40px);
+     -o-transform: translateX(40px);
+     transform: translateX(40px);
+     opacity: 0;
+     -webkit-transition: all 0.3s ease;
+     -moz-transition: all 0.3s ease;
+     -o-transition: all 0.3s ease;
+     transition: all 0.3s ease;
+}
+.cus_fixed-sidebar nav.cus_menu-nav ul.cus_menu-main li:last-of-type {
+     margin-bottom: 0px;
+}
+.cus_fixed-sidebar nav.cus_menu-nav ul.cus_menu-main li a {
+     color: #000;
+     text-decoration: none;
+     text-transform: capitalize;
+     font-size: 1.2rem;
+     display: block;
+     letter-spacing:0;
+     padding: 10px 0 0;
+     -webkit-transition: all 0.3s ease;
+     -moz-transition: all 0.3s ease;
+     -o-transition: all 0.3s ease;
+     transition: all 0.3s ease;
+}
+.cus_fixed-sidebar nav.cus_menu-nav ul.sidebar-sub-menu li.sidebar-sub-menu-list a,
+.cus_fixed-sidebar nav.cus_menu-nav ul.sidebar-sub-sub-menu li.sidebar-sub-sub-menu-list a{
+    font-size: 1rem;
+    font-family: garet !important;
+}
+ul.sidebar-sub-menu .sidebar-sub-menu-list, ul.sidebar-sub-sub-menu li.sidebar-sub-sub-menu-list {
+    padding-left: 30px;
+}
+
+li.sidebar-sub-menu-list {
+    margin-bottom: 0;
+}
+.cus_fixed-sidebar nav.cus_menu-nav ul.cus_menu-main li a span {
+     color: #b7ac7f;
+}
+.cus_fixed-sidebar nav.cus_menu-nav ul.cus_menu-main li a:hover {
+     color: #b7ac7f;
+}
+
+/* OVERLAY ========================================== */
+.cus_fixed-sidebar .cus_menu-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     z-index: 999;
+     width: 100%;
+     height: 100%;
+     -webkit-transition: all 0.3s ease-in-out;
+     -moz-transition: all 0.3s ease-in-out;
+     -o-transition: all 0.3s ease-in-out;
+     transition: all 0.3s ease-in-out;
+     background-color: #d4d4d4;
+     opacity: 0;
+     visibility: hidden;
+}
+.cus_fixed-sidebar .cus_menu-overlay.cus_menu-show {
+     opacity: 0.8;
+     visibility: visible;
+}
+	</style>
+</head>
+<body>
+
+<div class="cus_fixed-sidebar">
+<div class="cus_menu-burger">
+  <span></span>
+</div>
+
+<div class="cus_menu-overlay"></div>
+  <nav role="navigation" class="cus_menu-nav">
+  <ul id="menu-elysium" class="cus_menu-main">
+     {% for link in linklists[section.settings.main_linklist2].links %}
+      <li>
+        <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+          {{ link.title }}
+        </a>
+
+        {%- if link.links != blank -%}
+          <ul class="sidebar-sub-menu">
+            {%- for child_link in link.links -%}
+              <li class="{%- unless child_link.links != blank -%}sidebar-sub-menu-list{% else %}sidebar-sub-menu-list-2{% endunless %}">
+                <a href="{{ child_link.url }}" {% if child_link.active %}aria-current="page"{% endif %}>
+                  {{ child_link.title }}
+                </a>
+
+                {%- if child_link.links != blank -%}
+                  <ul class="sidebar-sub-sub-menu">
+                    {%- for grandchild_link in child_link.links -%}
+                      <li class="sidebar-sub-sub-menu-list">
+                        <a href="{{ grandchild_link.url }}" {% if grandchild_link.active %}aria-current="page"{% endif %}>
+                          {{ grandchild_link.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+
+  </div>
+
+
+   <script>
+    $('.cus_menu-burger, .cus_menu-overlay').click(function(){
+  $('.cus_menu-burger').toggleClass('cus_menu-clicked');
+  $('.cus_menu-overlay').toggleClass('cus_menu-show');
+  $('nav.cus_menu-nav').toggleClass('cus_menu-show');
+  $('body').toggleClass('cus_menu-overflow');
+});
+
+$(function() {
+  var header = $(".cus_menu-navbar");
+
+  $(window).scroll(function() {    
+      var scroll = $(window).scrollTop();
+      if (scroll >= 50) {
+          header.addClass("cus_menu-scrolled");
+          header.removeClass("cus_menu-navbar-inverse");
+
+      } else {
+          header.removeClass("cus_menu-scrolled");
+      }
+  });
+
+});
+  </script>
+
+</body>
+</html>

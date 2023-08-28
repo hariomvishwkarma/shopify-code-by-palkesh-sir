@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Packing Slip</title>
+
+</head>
+<body>
+<div class="wrapper">
+	  {% comment %}
+    To adjust the size of line item images, change desired_image_size.
+    The other variables make sure your images print at high quality.
+    {% endcomment %}
+    {% assign desired_image_size = 58 %}
+    {% assign resolution_adjusted_size = desired_image_size | times: 300 | divided_by: 72 | ceil %}
+    {% capture effective_image_dimensions %}
+      {{ resolution_adjusted_size }}x{{ resolution_adjusted_size }}
+    {% endcapture %}
+{% for line_item in line_items_in_shipment %}
+	<div class="ps-product-sec">
+		<div class="ps-product-img">
+			{% if line_item.image != blank %}
+            <div class="aspect-ratio aspect-ratio-square" style="width: 100%; height: 100%;">
+              {{ line_item.image | img_url: 'master' | img_tag: '', 'aspect-ratio__content' }}
+            </div>
+          {% endif %}
+		</div>
+		<div class="ps-product-detail">
+			<p><span>Producto:</span> {{ line_item.title }}</p>
+			 {% if line_item.variant_title != blank %}
+			  <p>{{ line_item.variant_title }}</p>
+			 {% endif %}
+			 {% if line_item.sku != blank %}
+              <p><span>SKU:</span> {{ line_item.sku }}</p>
+            {% endif %}
+            <p><span>Cant:</span> {{ line_item.shipping_quantity }} of {{ line_item.quantity }}</p>
+		</div>
+	</div>
+{% endfor %}
+
+<div class="ps-cus-line">
+	<p>Informacivan para el armado del paquete</p>
+	<div class="hr-theme-slash-2">
+		
+	  <div class="hr-line"></div>
+	  <div class="hr-icon"><?xml version="1.0" encoding="iso-8859-1"?>
+	<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+	<svg fill="#000000" height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+		 viewBox="0 0 30.556 30.556" xml:space="preserve"><g><path d="M26.311,23.224c-0.812-1.416-2.072-2.375-3.402-2.736c-1.051-0.287-2.141-0.199-3.084,0.334l-2.805-4.904
+			c1.736-3.463,5.633-11.227,6.332-12.451C24.258,1.884,22.637,0,22.637,0l-7.36,12.872L7.919,0c0,0-1.62,1.884-0.715,3.466
+			c0.7,1.225,4.598,8.988,6.332,12.451l-2.804,4.904c-0.943-0.533-2.035-0.621-3.084-0.334c-1.332,0.361-2.591,1.32-3.403,2.736
+			c-1.458,2.547-0.901,5.602,1.239,6.827c0.949,0.545,2.048,0.632,3.107,0.345c1.329-0.363,2.591-1.322,3.402-2.735
+			c0.355-0.624,0.59-1.277,0.71-1.926v0.001c0.001-0.005,0.001-0.01,0.006-0.015c0.007-0.054,0.017-0.108,0.022-0.167
+			c0.602-4.039,1.74-6.102,2.545-7.104c0.807,1.002,1.946,3.064,2.547,7.104c0.006,0.059,0.016,0.113,0.021,0.167
+			c0.004,0.005,0.004,0.01,0.006,0.015v-0.001c0.121,0.648,0.355,1.302,0.709,1.926c0.812,1.413,2.074,2.372,3.404,2.735
+			c1.059,0.287,2.158,0.2,3.109-0.345C27.213,28.825,27.768,25.771,26.311,23.224z M9.911,26.468
+			c-0.46,0.803-1.189,1.408-1.948,1.615c-0.338,0.092-0.834,0.148-1.289-0.113c-0.97-0.555-1.129-2.186-0.346-3.556
+			c0.468-0.812,1.177-1.403,1.95-1.614c0.335-0.091,0.831-0.146,1.288,0.113C10.537,23.47,10.695,25.097,9.911,26.468z M23.881,27.97
+			c-0.455,0.262-0.949,0.205-1.287,0.113c-0.76-0.207-1.488-0.812-1.949-1.615c-0.783-1.371-0.625-2.998,0.346-3.555
+			c0.457-0.26,0.953-0.204,1.289-0.113c0.771,0.211,1.482,0.802,1.947,1.614C25.01,25.784,24.852,27.415,23.881,27.97z"/></g></svg>
+		</div>
+		
+	</div>
+	<p>Etiqueta para pegar en el paquete</p>
+</div>
+
+<div class="ps-detail-sec">
+	<div class="ps-d-main-box">
+		<div class="ps-d-box-1">
+			<div class="ps-d-inner-box-1"><p>{{ shop.name }}</p></div>
+			<div class="ps-d-inner-box-2"><p>Pedido:</p><h1>{{ order.name }}</h1></div>
+		</div>
+		<div class="ps-d-box-2">
+			<div class="ps-d-list-heading ps-bt-border">
+				<div class="ps-d-h1"><h3>Remitente:</h3></div>
+				<div class="ps-d-h2"><h3>Jior</h3></div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Destinatario:</h3></div>
+				<div class="ps-d-h2">
+					<h3>
+						{% if shipping_address != blank %}
+			          {{ shipping_address.name }}
+			          {% if shipping_address.company != blank %}
+			           
+			            {{ shipping_address.company }}
+			          {% endif %}
+			         
+			          {{ shipping_address.address1 }}
+			          {% if shipping_address.address2 != blank %}
+			           
+			            {{ shipping_address.address2 }}
+			          {% endif %}
+			          {% if shipping_address.city_province_zip != blank %}
+			         
+			            {{ shipping_address.city_province_zip }}
+			          {% endif %}
+			     
+			          {{ shipping_address.country }}
+			          
+			        {% else %}
+			          Sin dirección de envío
+			        {% endif %}
+					</h3>
+				</div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Rut:</h3></div>
+				<div class="ps-d-h2"><p>Text 2</p></div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Carreo:</h3></div>
+				<div class="ps-d-h2"><p>Text 2</p></div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>teléfono:</h3></div>
+				<div class="ps-d-h2">
+					<p>
+					   {% if shipping_address.phone != blank %}
+		                 {{ shipping_address.phone }}
+		               {% endif %}
+		            </p>
+		        </div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Dirección:</h3></div>
+				<div class="ps-d-h2">
+					<p>
+					{% if billing_address != blank %}
+			          {{ billing_address.name }}
+			          {% if billing_address.company != blank %}
+			           
+			            {{ billing_address.company }}
+			          {% endif %}
+			         
+			          {{ billing_address.address1 }}
+			          {%  if billing_address.address2 != blank %}
+			            
+			            {{ billing_address.address2 }}
+			          {% endif %}
+			          {% if billing_address.city_province_zip != blank %}
+			           
+			            {{ billing_address.city_province_zip }}
+			          {% endif %}
+			         
+			          {{ billing_address.country }}
+			        {% else %}
+			          Sin dirección de facturación
+			        {% endif %}
+				    </p>
+				</div>
+			</div>
+			<div class="ps-d-list-heading">
+				<div class="ps-d-h1"><h3>Dep, local, etc:</h3></div>
+				<div class="ps-d-h2"><p>Text 2</p></div>
+			</div>
+		</div>
+
+	</div>
+	<div class="ps-d-main-box-2">
+		<div class="ps-3box-sec">
+			<div>JIORE XPRESS</div>
+			<div>ENVÍO PAGADO</div>
+			<div>
+				<svg focusable="false" class="icon icon--store-availability-in-stock" viewBox="0 0 18 14" role="presentation">
+			      <path d="M2 6l5 5 9-9" stroke="#ffffff" stroke-width="1" fill="none"></path>
+			    </svg>
+			</div>
+		</div>
+		<div class="ps-d-main-box-3">
+			<div class="ps-1box-sec">
+				<div>Comuna:</div>
+				<div>RM, LAS CONDES</div>
+			</div>
+	    </div>
+	    <div class="ps-d-main-box-4">
+			<div class="ps-2box-sec">
+				<div>TIPO DE ENVÍO</div>
+				<div>FAST SHIPPING</div>
+			</div>
+	    </div>
+	     <div class="ps-d-main-box-5">
+			<div class="ps-2box-r-sec">
+				<div><span>DE:</span> JIORSTORE</div>
+				<div><span>EMISION:</span> 07/07/2023</div>
+			</div>
+	    </div>
+	    <div class="ps-d-main-box-6">
+			<div class="ps-textbox-sec">
+				<div><span>DIR REMITENTE:</span> GENERAL AMENGUAL 166, ESTACIÓN CENTRAL</div>
+			</div>
+	    </div>
+	   
+	</div>
+	 <div class="ps-d-main-box-7">
+			<div class="ps-footer-sec">
+				<div><span>Nota:</span></div>
+				<div>No hay una nota del cliente sobre esta entrega.</div>
+				<div>NAVEGA Y EQUIPATE CON LOS MEJORES PRODUCTOS ENJORCL</div>
+			</div>
+	    </div>
+	
+</div>
+</div>
+
+<style type="text/css">
+		.wrapper {
+		    width: 831px;
+		    margin: auto;
+		    padding: 4em;
+		    font-family: "Noto Sans", sans-serif;
+		    font-weight: 250;
+		  }
+		.ps-product-sec{
+		  	width: 100%;
+		    display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		    align-items: center;
+		    border: 1px solid #000;
+		    border-radius: 20px;
+		  }
+		.ps-product-img{
+             width: 15%;
+		  }
+		.ps-product-detail{
+		  	width: 85%;
+		  	padding-left: 20px;
+		  }
+		.ps-product-detail p span{
+		  	font-weight: 600;
+		  }
+		.ps-product-detail p{
+		  	margin: 5px 0;
+		  }
+		.ps-product-img img{
+            object-fit: cover;
+            width: 100%;
+            height:100%;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+		  }
+		  .hr-theme-slash-2 {
+			  display: flex;
+			  position: relative;
+			}
+			.hr-theme-slash-2 .hr-line {
+			  width: 100%;
+			  position: relative;
+			  margin: 15px 0;
+			  border-style: dashed;
+              border-width: thin;
+			}
+			.hr-theme-slash-2 .hr-icon {
+			  position: absolute;
+			  top: 3px;
+			  color: #ff0000;
+			  left: 20px
+			}
+			.hr-theme-slash-2 .hr-icon svg{
+			  	transform: rotate(90deg);
+			}
+			.ps-cus-line p{
+				text-align: center;
+				margin: 0;
+			}
+			.ps-cus-line{
+				margin-top: 20px;
+			}
+			.ps-detail-sec {
+			    border: 1px solid #000;
+			    border-radius: 20px;
+			    margin-top: 20px;
+			}
+
+			.ps-d-main-box {
+		        margin: 20px;
+			    display: inline-block;
+			    width: calc(100% - 40px);
+			    border-bottom: 1px solid #000;
+			}
+
+			.ps-d-box-1 {
+				float: left;
+			    width: calc(30% - 0px);
+			    display: flex;
+			    flex-direction: column;
+			    justify-content: space-between;
+			}
+
+			.ps-d-box-2 {
+				float: right;
+		        width: calc(70% - 45px);
+			    padding-left: 45px;
+			    border-bottom: 2px solid #000;
+			    padding-bottom: 10px;
+			}
+
+			.ps-d-list-heading {
+			    display: flex;
+			    justify-content: space-between;
+			    grid-gap: 10px;
+			}
+			.ps-d-h2 {
+			    text-align: right;
+			}
+			.ps-d-list-heading.ps-bt-border {
+			    border-bottom: 2px solid #000;
+			}
+			.ps-d-box-2 h3, .ps-d-box-2 p{
+                margin: 5px 0
+			}
+			.ps-d-inner-box-2 {
+			    border: 1px solid #000;
+			    height: 190px;
+			    display: flex;
+			    flex-direction: column;
+			    justify-content: center;
+			    border-left: 0;
+			    border-bottom: 0;
+			}
+			.ps-d-inner-box-2 h1, .ps-d-inner-box-2 p{
+                margin: 5px 0
+			}
+			.ps-d-inner-box-1 p {
+			    font-size: 35px;
+			}
+			.ps-d-inner-box-2 p {
+			    font-size: 22px;
+			}
+			.ps-d-main-box-2{
+				margin: 20px;
+				border: 1px solid #000;
+			}
+			.ps-3box-sec {
+			    display: flex;
+			    border-bottom: 1px solid #000;
+			    font-weight: 600;
+			}
+			.ps-3box-sec svg{
+				width: 33px;
+			}
+			.ps-3box-sec div{
+				display: flex;
+			    align-items: center;
+			    padding: 10px;
+			    justify-content: center;
+			}
+			.ps-3box-sec div:nth-child(1){
+                width: 30%;
+                border-right: 1px solid #000;
+			}
+			.ps-3box-sec div:nth-child(2){
+                width: 50%;
+			}
+			.ps-3box-sec div:nth-child(3){
+                width: 20%;
+                background-color: #000;
+                justify-content: center;
+			}
+			.ps-d-main-box-3 {
+			    padding: 20px;
+			    border-bottom: 1px solid #000;
+			}
+			.ps-1box-sec div:nth-child(2){
+			    padding: 29px 0 45px 0px;
+			    text-align: center;
+			    font-size: 30px;
+			    font-weight: 600;
+			}
+			.ps-2box-sec {
+			    display: flex;
+			    border-bottom: 1px solid #000;
+			    font-weight: 600;
+			}
+			.ps-2box-sec div{
+				display: flex;
+			    align-items: center;
+			    padding: 20px 10px;
+			    justify-content: center;
+			}
+			.ps-2box-sec div:nth-child(1){
+				width: 30%;
+			}
+			.ps-2box-sec div:nth-child(2){
+				width: 70%;
+				background-color: #000;
+				color: #fff;
+			}
+			.ps-2box-r-sec {
+			    display: flex;
+			    border-bottom: 1px solid #000;
+			}
+			.ps-2box-r-sec div{
+			    padding: 10px 10px;
+			}
+			.ps-2box-r-sec div span {
+			    font-weight: 600;
+			}
+			.ps-2box-r-sec div:nth-child(1){
+				width: 40%;
+				border-right:1px solid #000;
+				text-align: center;
+			}
+			.ps-2box-r-sec div:nth-child(2){
+				width: 60%;
+			}
+			.ps-textbox-sec div{
+			    padding: 7px 20px;
+			    font-size: 15px;
+			}
+			.ps-textbox-sec div span{
+				font-weight: 600;
+			}
+			.ps-d-main-box-7 {
+			    padding: 20px 40px;
+			}
+			.ps-footer-sec div span{
+				font-weight: 600;
+				margin-bottom: 8px;
+    			display: block;
+			}
+			.ps-footer-sec div:last-child{
+				padding-top: 70px;
+			    text-align: center;
+			    font-size: 12px;
+			}
+	</style>
+</body>
+</html>

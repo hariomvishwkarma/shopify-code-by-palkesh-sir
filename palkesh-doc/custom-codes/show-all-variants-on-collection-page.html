@@ -1,0 +1,156 @@
+{% for product in collection.products %}
+                                 
+                                     {% for option in product.options %}
+                                     {% if option == 'Color' %}
+                                     {% assign index = forloop.index0 %}
+                                     {% assign colorlist = '' %}
+                                     {% assign color = '' %}
+                                     {% for variant in product.variants %}
+                                     {% capture color %}
+                                     {{ variant.options[index] }}
+                                     {% endcapture %}
+                                        
+                                         
+                                           
+                                     {% unless colorlist contains color %}
+                                      {% if variant.available %}
+                                        
+                                     {% assign cus-colors = variant.options[index] | split: ", " %}
+                                        {% for cus-color in cus-colors %}
+                                          {% case cus-color %}
+                                            {% when 'Ceil Blue' %}
+                                              {% assign order_value = 6 %}
+                                            {% when 'Midnight Black' %}
+                                              {% assign order_value = 5 %}
+                                            {% when 'Slate Grey' %}
+                                              {% assign order_value = 4 %}
+                                            {% when 'Luminary Blue' %}
+                                              {% assign order_value = 2 %}
+                                            {% when 'Sage Green' %}
+                                              {% assign order_value = 3 %}
+                                            {% when 'Cardinal Red' %}
+                                              {% assign order_value = 1 %}
+                                            {% else %}
+                                              {% assign order_value = 0 %}
+                                          {% endcase %}
+                                        
+                                        {% endfor %}
+
+                                            
+                                    <div style="order:{{ order_value }};" class="cus_list_grid_view o-layout__item u-1/{{ section.settings.grid_mobile }} {{ grid_item_width }}">
+                                        {% render "product-grid-item-custom-variants", product: variant,  productcustom: product, page: 'collection', image_sizes: sizes %}      
+                                    </div>
+                                     {% comment %} <li id="{{ variant.id }}" title="{{ variant.inventory_quantity }} In Stock" class="instock"><a href="{{ product.url | within: collection }}?variant={{ variant.id }}" style="background:{{ color | downcase }}">{{ color | downcase }} {{  }}</a></li>{% endcomment %}
+                                    
+                                      {% else %}
+                                    
+                                      {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+                                        {% comment %}
+                                            Add default products to help with onboarding for collections/all only.
+                                        {% endcomment %}
+                                        {% for i in (1..8) %}
+                                            <div class="o-layout__item u-1/{{ section.settings.grid_mobile }} {{ grid_item_width }}">
+                                                <a href="#" class="product-card-link home-products__link">
+                                                    <div class="product-card product--{{ settings.product_grid_align }}">
+                                                        <div class="product-card__media">
+                                                            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                                            {{ 'product-' | append: current | placeholder_svg_tag: 'product-card__img placeholder-svg placeholder-svg--light' }}
+                                                        </div>
+                                                        <div class="product-card__details product-card__details--{{ settings.product_grid_text_size }}">
+                                                            <h3 class="product-card__title">{{ 'homepage.onboarding.product_title' | t }}</h3>
+                                                            {% if settings.product_grid_vendor %}
+                                                                <p class="product-card__vendor">{{ 'homepage.onboarding.product_vendor' | t }}</p>
+                                                            {% endif %}
+                                                            <p class="product-card__price">
+                                                                {% render 'product-price', product: product %}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="o-layout__item u-1/1">
+                                            <div class="collection-empty">
+                                                {%- if filter_count > 0 -%}
+                                                    <a href="{{ collection.url }}" class="link link--underline">{{ 'collections.general.filter_reset' | t }}</a>
+                                                {%- endif -%}
+                                                <h5 class="collection-empty__title">{{ 'collections.general.no_matches' | t }}</h5>
+                                                <span class="emoji collection-empty__emoji">
+                                                    <i class="icon icon--confused"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    
+                                      {% endif %}
+                                    
+                                    {% capture tempList %}
+                                    {{colorlist | append: color | append: " " }}
+                                    {% endcapture %}
+                                    {% assign colorlist = tempList %}
+                                    {% endunless %}
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                  {% comment %}
+                                        {% for option in product.options %}
+                                               {% if option == 'Color' %}
+                                               {% assign index = forloop.index0 %}
+                                               {% assign colorlist = '' %}
+                                               {% assign color = '' %}
+                                               {% for variant in product.variants %}
+                                               {% capture color %}
+                                               {{ variant.options[index] }}
+                                               {% endcapture %}
+                                              
+                                               {% unless colorlist contains color %}
+                                                {% if variant.available %}
+                                    <div class="cus_list_grid_view o-layout__item u-1/{{ section.settings.grid_mobile }} {{ grid_item_width }}">
+                                  {% render "product-grid-item-custom-variants", product: product, page: 'collection', image_sizes: sizes %}      
+                                {% render 'product-grid-item', product: product, page: 'collection', image_sizes: sizes %}
+                                    </div>
+                                {% else %}
+                                    {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+                                        
+                                        {% for i in (1..8) %}
+                                            <div class="o-layout__item u-1/{{ section.settings.grid_mobile }} {{ grid_item_width }}">
+                                                <a href="#" class="product-card-link home-products__link">
+                                                    <div class="product-card product--{{ settings.product_grid_align }}">
+                                                        <div class="product-card__media">
+                                                            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                                            {{ 'product-' | append: current | placeholder_svg_tag: 'product-card__img placeholder-svg placeholder-svg--light' }}
+                                                        </div>
+                                                        <div class="product-card__details product-card__details--{{ settings.product_grid_text_size }}">
+                                                            <h3 class="product-card__title">{{ 'homepage.onboarding.product_title' | t }}</h3>
+                                                            {% if settings.product_grid_vendor %}
+                                                                <p class="product-card__vendor">{{ 'homepage.onboarding.product_vendor' | t }}</p>
+                                                            {% endif %}
+                                                            <p class="product-card__price">
+                                                                {% render 'product-price', product: product %}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="o-layout__item u-1/1">
+                                            <div class="collection-empty">
+                                                {%- if filter_count > 0 -%}
+                                                    <a href="{{ collection.url }}" class="link link--underline">{{ 'collections.general.filter_reset' | t }}</a>
+                                                {%- endif -%}
+                                                <h5 class="collection-empty__title">{{ 'collections.general.no_matches' | t }}</h5>
+                                                <span class="emoji collection-empty__emoji">
+                                                    <i class="icon icon--confused"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                            {% endif %}
+                                           {% endunless %}
+                                           {% endfor %}
+                                            {% endif %}
+                                            {% endfor %} {% endcomment %}
+                                {% endfor %}

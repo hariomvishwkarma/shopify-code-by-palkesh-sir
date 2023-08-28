@@ -1,0 +1,281 @@
+<style>
+.giftWrapContainer {
+position: relative;
+width: 100%;
+max-width: 35rem;
+margin-bottom: 4rem;
+}
+
+.checkHide {
+display: none !important
+}
+
+.cartCheckbox {
+position: relative;
+margin-bottom: 1rem;
+}
+
+.cartCheckbox a {
+color: rgb(var(--color-foreground));
+text-decoration: none;
+line-height: 1.5;
+}
+
+.cartCheckbox a:before {
+content: '';
+position: absolute;
+height: 20px;
+width: 20px;
+z-index: 1;
+left: 0;
+}
+
+.cartCheckbox--variant.select {
+display: flex;
+position: relative;
+width: 30%;
+min-width: 25rem;
+flex-direction: column;
+}
+
+.cartCheckbox--variant.select::after {
+display: none;
+}
+
+.cartCheckbox--variant.select > select {
+outline: 0.2rem solid rgba(var(--color-foreground),.5);
+outline-offset: 0.3rem;
+box-shadow: 0 0 0 0.3rem rgb(var(--color-background)),0 0 0.5rem 0.4rem rgba(var(--color-foreground),.3);
+}
+
+.cartCheckbox--variant.select::before, .cartCheckbox.select::after{
+display: none !important
+}
+
+.cartCheckbox--variant.select > select::before {
+pointer-events: none;
+content: "";
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+border-radius: var(--inputs-radius-outset);
+box-shadow: var(--inputs-shadow-horizontal-offset) var(--inputs-shadow-vertical-offset) var(--inputs-shadow-blur-radius) rgba(var(--color-base-text),var(--inputs-shadow-opacity));
+z-index: -1;
+}
+
+.cartCheckbox--variant.select > select::after {
+pointer-events: none;
+content: "";
+position: absolute;
+top: var(--inputs-border-width);
+right: var(--inputs-border-width);
+bottom: var(--inputs-border-width);
+left: var(--inputs-border-width);
+border: 0.1rem solid transparent;
+border-radius: var(--inputs-radius);
+box-shadow: 0 0 0 var(--inputs-border-width) rgba(var(--color-foreground),var(--inputs-border-opacity));
+transition: box-shadow var(--duration-short) ease;
+z-index: 1;
+}
+
+.cartCheckbox--variant.select svg {
+top: calc(65% - 0.2rem);
+}
+
+.is-empty .giftWrapContainer {
+display: none;
+}
+
+.giftWrapNote {
+margin-top: 5rem;
+}
+/* Toggle Button */
+.cm-toggle {
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  margin: 10px;
+}
+
+
+/* To create surface of toggle button */
+.cm-toggle:after {
+  content: '';
+  width: 60px;
+  height: 28px;
+  display: inline-block;
+  background: rgba(196, 195, 195, 0.55);
+  border-radius: 18px;
+  clear: both;
+}
+
+
+/* Contents before checkbox to create toggle handle */
+.cm-toggle:before {
+  content: '';
+  width: 32px;
+  height: 32px;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: -3px;
+  border-radius: 50%;
+  background: rgb(255, 255, 255);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+
+/* Shift the handle to left on check event */
+.cm-toggle:checked:before {
+  left: 32px;
+  box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+/* Background color when toggle button will be active */
+.cm-toggle:checked:after {
+  background: #16a085;
+}
+  /* Transition for smoothness */
+.cm-toggle,
+.cm-toggle:before,
+.cm-toggle:after,
+.cm-toggle:checked:before,
+.cm-toggle:checked:after {
+  transition: ease .3s;
+  -webkit-transition: ease .3s;
+  -moz-transition: ease .3s;
+  -o-transition: ease .3s;
+}
+</style>
+
+
+
+<div class="giftWrapContainer">
+  <gift-wrap data-variant-id="41610781589699"
+             data-product-id="7193669173443"
+             data-cart-type="drawer"
+             data-add-link="cart/add?id=41610781589699&quantity=1">
+
+    <div class="cartCheckbox" name="Gift Wrap">
+      <input type="checkbox" name="attributes[Gift Wrap]" id="drawerCheckbox" class="cm-toggle">
+      <label for="drawerCheckbox">Please include gift wrapping.</label>
+    </div>
+
+    <script type="application/json" id="cartItems">
+      {{ cart | json }}
+    </script>
+
+  </gift-wrap>
+</div>
+
+
+<script>
+  class GiftWrap extends HTMLElement {
+    constructor() {
+      super();
+      this.checkbox = this.querySelector('input[type="checkbox"]');
+      this.select = this.querySelector("#giftWrap");
+      this.cartItems = this.querySelector("#cartItems").textContent;
+      this.note = document.querySelector("cart-note");
+      this.cartType = this.dataset.cartType;
+
+      sessionStorage.getItem("check") ? this.checkbox.checked = true : this.checkbox.checked = false;
+
+      if (this.select) {
+        if (sessionStorage.getItem("selected")) {
+          this.select.querySelectorAll("option").forEach(e => {
+            if (e.value == sessionStorage.getItem("selected")) {
+              e.selected = "selected";
+            }
+          });
+        }
+        this.select.addEventListener("change", this.selectUpdate.bind(this));
+      }
+
+      this.checkbox.addEventListener("change", this.update.bind(this));
+      this.removeLinkUpdate(JSON.parse(this.cartItems));
+
+      // Add event listener to update remove href on cart item change
+      this.checkbox.addEventListener("change", this.updateRemoveHref.bind(this));
+    }
+
+    selectUpdate() {
+      this.dataset.addLink = `cart/add?id=${this.select.value}&quantity=1`;
+      sessionStorage.setItem("selected", `${this.select.value}`);
+    }
+
+    update(e) {
+      if (this.checkbox.checked) {
+        sessionStorage.setItem("check", "true");
+        if (this.cartType === "drawer") {
+          this.renderItems(this.dataset.addLink);
+        }
+      } else {
+        sessionStorage.removeItem("check");
+        // Directly set remove href when checkbox is unchecked
+        if (this.cartType === "drawer") {
+          const removeHref = sessionStorage.getItem("remove_href");
+          if (removeHref) {
+            this.renderItems(removeHref);
+          } else {
+            // If remove href is not available, construct it manually using the existing dataset attributes
+            const removeHref = `cart/change?id=${this.dataset.variantId}&quantity=0`;
+            this.renderItems(removeHref);
+          }
+        }
+      }
+    }
+
+    updateRemoveHref() {
+      const cartItems = JSON.parse(this.cartItems);
+      if (Array.isArray(cartItems)) {
+        const removeHrefItem = cartItems.find(item => item.product_id == this.dataset.productId);
+        if (removeHrefItem) {
+          const removeHref = `cart/change?id=${removeHrefItem.key}&quantity=0`;
+          sessionStorage.setItem("remove_href", removeHref);
+        }
+      }
+    }
+
+    renderItems(e) {
+      const cartDrawer = document.querySelector("cart-drawer");
+      fetch(`${window.location.origin}/${e}`)
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+
+          if (doc.querySelector(".drawer.is-empty")) {
+            cartDrawer.classList.add('is-empty');
+          }
+
+          document.querySelector(".drawer").innerHTML = this.getSectionInnerHTML(html, ".drawer");
+          document.querySelector("#cart-icon-bubble").innerHTML = doc.querySelector("#cart-icon-bubble").innerHTML;
+
+          if (document.querySelector("#main-cart-items")) {
+            document.querySelector("#main-cart-items").innerHTML = this.getSectionInnerHTML(html, "#main-cart-items");
+          }
+        });
+    }
+
+    getSectionInnerHTML(html, selector) {
+      return new DOMParser().parseFromString(html, "text/html").querySelector(selector).innerHTML;
+    }
+
+    removeLinkUpdate(cartItems) {
+      if (Array.isArray(cartItems)) {
+        cartItems.map(item => {
+          if (item.product_id == this.dataset.productId) {
+            sessionStorage.setItem("remove_href", `cart/change?id=${item.key}&quantity=0`);
+          }
+        });
+      }
+    }
+  }
+
+  customElements.define("gift-wrap", GiftWrap);
+</script>

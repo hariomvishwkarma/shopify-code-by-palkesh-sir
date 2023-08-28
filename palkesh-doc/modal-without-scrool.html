@@ -27,35 +27,33 @@ body {
   margin: 30px auto 0;
   text-align: left;
 }
-.button {
-  width: 235px;
-  line-height: 60px;
-  text-align: center;
-  border: 3px solid;
-  border-radius: 40px;
-  display: inline-block;
-  cursor: pointer;
-  color: white;
-  margin: 30px 15px 0;
-  font-weight: bold;
+.c_button {
+    width: 100%;
+    text-align: left;
+    display: inline-block;
+    cursor: pointer;
+    color: #000;
+    margin-bottom: 20px;
+    font-weight: 700;
 }
-.modal {
-  width: 500px;
-  text-align: center;
-  background-color: #fff;
-  position: fixed;
-  bottom: -500px;
-  left: 50%;
-  margin-left: -250px;
-  transition: all 0.5s ease;
-  border-radius: 40px;
-  padding: 40px;
-  z-index: 95;
+.c_modal {
+    width: 500px;
+    text-align: center;
+    background-color: #fff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transition: all .5s ease;
+    border-radius: 3px;
+    padding: 40px;
+    z-index: 95;
+    display: none;
+    transform: translate(-50%, -50%);
 }
-.modal.active {
-  bottom: 100px;
+.c_modal.c_active {
+  display:block;
 }
-.underlay {
+.c_underlay {
   position: fixed;
   left: 0;
   right: 0;
@@ -65,10 +63,21 @@ body {
   transition: all 0.5s ease;
   opacity: 0;
   z-index: -90;
+  display: none;
 }
-.underlay.active {
+.c_underlay.c_active {
   opacity: 1;
   z-index: 90;
+  display:block;
+}
+.c_modal-close {
+    position: absolute;
+    right: 27px;
+    top: 13px;
+}
+.c_modal-close svg {
+    pointer-events:initial;
+    cursor:pointer;
 }
 	</style>
 </head>
@@ -82,14 +91,18 @@ An easy fix to this would be to calculate the width of the window and apply it t
   <a class="button with">With Compensation</a>
  <!--  <a class="button widthout">Without Compensation</a> -->
 </div>
-<div class="modal">
-  Modal content...
+<div class="c_modal">
+  <div class="c_modal-close">
+      <svg focusable="false" class="icon icon--close c_close" viewBox="0 0 19 19" role="presentation">
+        <path d="M9.1923882 8.39339828l7.7781745-7.7781746 1.4142136 1.41421357-7.7781746 7.77817459 7.7781746 7.77817456L16.9705627 19l-7.7781745-7.7781746L1.41421356 19 0 17.5857864l7.7781746-7.77817456L0 2.02943725 1.41421356.61522369 9.1923882 8.39339828z" fill="currentColor" fill-rule="evenodd"></path>
+      </svg>
+  </div>
+  <img loading="lazy" src="//jior.cl/cdn/shop/files/Pago_450x.png?v=1683908024" srcset="//jior.cl/cdn/shop/files/Pago_450x.png?v=1683908024 1x, //jior.cl/cdn/shop/files/Pago_450x@2x.png?v=1683908024 2x" alt="">
 </div>
-<div class="underlay">
-</div>
+<div class="c_underlay"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script type="text/javascript">
-	// Calculate window width
+ <script type="text/javascript">
+  // Calculate window width
   $(document).ready(function(){
     $windowWidth = $(window).width();
   });
@@ -97,19 +110,19 @@ An easy fix to this would be to calculate the width of the window and apply it t
     $windowWidth = $(window).width();
   });
 // Open modal
-  $('.button').on('click tap', function(){
-    $('body').css('overflow', 'hidden');
-    if($(this).hasClass('with')) {
-      $('body').css('width', $windowWidth);
+  $('.c_button').on('click tap', function(){
+    $('body, html').css('overflow', 'hidden');
+    if($(this).hasClass('c_with')) {
+      $('body, html').css('width', $windowWidth);
     }
-    $('.modal').addClass('active');
-    $('.underlay').addClass('active');
+    $('.c_modal').addClass('c_active');
+    $('.c_underlay').addClass('c_active');
   });
 // Close modal
-  $('.underlay').on('click tap', function(){
-    $('body').removeAttr('style');
-    $('.modal').removeClass('active');
-    $('.underlay').removeClass('active');
+  $('.c_underlay, .c_close').on('click tap', function(){
+    $('body, html').removeAttr('style');
+    $('.c_modal').removeClass('c_active');
+    $('.c_underlay').removeClass('c_active');
   });
 </script>
 </body>

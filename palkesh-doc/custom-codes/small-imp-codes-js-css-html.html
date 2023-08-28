@@ -120,6 +120,7 @@ https://transfonter.org/ ----------------font face generator url
   object-fit: cover;
 }
 
+
 <!-- ------End absolute padding bottom image CSS -->
 
 <!-- ---------Start Custom Json page content------------ -->
@@ -641,3 +642,188 @@ https://codepen.io/paulyabsley/pen/nymvqj
 {% endfor %}
 
 <!-- ------------------- End For only Size variant value code ----------------------------------------------- -->
+
+
+<!-------------------- Start agree with the terms and conditions Checkbox above checkout button -------------------->
+ 
+<div class="cus_agree">
+          <p>
+            <input type="checkbox" class="agree" />
+            <label for="agree">
+              I agree with the <a href="https://thenaturalfaces.com/policies/shipping-policy">International shipping policy</a>.
+            </label>
+          </p>
+        </div>
+<script>
+$(document).ready(function() {
+    $('body').on('click', '[name="checkout"], [name="goto_pp"], [name="goto_gc"]', function() {
+      if ($('.agree').is(':checked')) {
+        $(this).submit();
+      }
+      else {
+        alert("You must agree with the terms and conditions of sales to check out.");
+        return false;
+      }
+    });
+  });
+</script>
+<style type="text/css">
+	div.cus_agree{
+  padding-bottom:1rem;
+}
+div.cus_agree p{
+  float: none;
+  text-align: right;
+  clear: both;
+  margin: 10px 0;
+}
+div.cus_agree input{
+  float:none;
+  vertical-align: middle;
+}
+div.cus_agree label{
+  display:inline;
+  float:none
+}
+div.cus_agree label a{
+  color: rgba(var(--color-foreground), 0.75);
+}
+</style>
+
+<!-------------------- End agree with the terms and conditions Checkbox above checkout button -------------------->
+
+
+
+
+<script>
+    document.querySelector(".product-page-info__title").insertAdjacentHTML("beforeend","<div class='mt-2 p-4 bg-gray-200 rounded-lg' style='font-size: var(--sc-fsize);'><div><ul><li><strong>Insurance</strong>. If it leaks - we replace.</li></ul><ol><li>Extra Protection Cap</li><li>Faster Shipping</li><li>Skip The Queue Priority Handling</li></ol></div></div>")
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ----------Start Collection products Saving percentage label --------------- -->
+
+  {%- capture product_labels -%}
+    {%- unless hide_labels -%}
+      {%- for tag in product.tags -%}
+        {%- if tag contains '__label:' -%}
+          <span class="product-label product-label--custom1">{{ tag | split: '__label:' | last }}</span>
+        {%- endif -%}
+
+        {%- if tag contains '__label1:' -%}
+          <span class="product-label product-label--custom1">{{ tag | split: '__label1:' | last }}</span>
+        {%- endif -%}
+
+        {%- if tag contains '__label2:' -%}
+          <span class="product-label product-label--custom2">{{ tag | split: '__label2:' | last }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if settings.show_discount and product.price < product.compare_at_price -%}
+        {%- if settings.discount_mode == 'percentage' -%}
+          {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '%' -%}
+        {%- else -%}
+          {%- capture savings -%}<span>{{ product.compare_at_price | minus: product.price | money }}</span>{%- endcapture -%}
+        {%- endif -%}
+
+        <span class="product-label product-label--on-sale">Save {{savings}}</span>
+      {%- endif -%}
+    {%- endunless -%}
+  {%- endcapture -%}
+
+  {%- if product_labels != blank -%}
+    <div class="product-item__label-list">
+      {{- product_labels -}}
+    </div>
+  {%- endif -%}
+
+  <!-- ----------End Collection products Saving percentage label --------------- -->
+
+
+
+
+
+ <!-- ----------Start Navigation Collection/products image --------------- -->
+
+ <li
+        class="navmenu-item navmenu-id-{{ menu_item.handle }}"
+      >
+
+        <a
+        class="cus_navmenu-link 
+          navmenu-link
+          navmenu-link-depth-{{ depth }}
+          {% if menu_item.active %}navmenu-link-active{% endif %}
+        "
+        href="{{ menu_item.url }}"
+        >
+       {% case menu_item.type %}
+        {% when 'collection_link' %}
+          {% if menu_item.object.image %}
+            {% assign menu_item_image = menu_item.object.image %}
+          {% else %}
+            {% assign menu_item_image = menu_item.object.products.first.featured_media.preview_image %}
+          {% endif %}
+        {% when 'product_link' %}
+          {% assign menu_item_image = menu_item.object.featured_media.preview_image %}
+        {% else %}
+          {% assign menu_item_image = blank %}
+      {% endcase %}
+      {% if menu_item_image != blank %}
+		<img crossorigin="anonymous" class="nav-child-link-image" src="{{ menu_item_image.src | img_url: 'small' }}" alt="{{menu_item.title}}"> 
+      {% endif %}
+          {{ menu_item_image_markup }}
+          {{ menu_item.title }}
+          {%- if product_count -%}
+            {{ product_count }}
+          {%- endif -%}
+        </a>
+      </li>
+
+<!-- ----------End Navigation Collection/products image --------------- -->
+
+
+
+<!-- ---------- Start variant products image set position Collection page --------------- -->
+
+  {% assign cus-colors = variant.options[index] | split: ", " %}
+	{% for cus-color in cus-colors %}
+	  {% case cus-color %}
+	    {% when 'Ceil Blue' %}
+	      {% assign order_value = 6 %}
+	    {% when 'Midnight Black' %}
+	      {% assign order_value = 5 %}
+	    {% when 'Slate Grey' %}
+	      {% assign order_value = 4 %}
+	    {% when 'Luminary Blue' %}
+	      {% assign order_value = 2 %}
+	    {% when 'Sage Green' %}
+	      {% assign order_value = 3 %}
+	    {% when 'Cardinal Red' %}
+	      {% assign order_value = 1 %}
+	    {% else %}
+	      {% assign order_value = 0 %}
+	  {% endcase %}
+
+	{% endfor %}
+
+	    
+	<div style="order:{{ order_value }};" class="cus_list_grid_view o-layout__item u-1/{{ section.settings.grid_mobile }} {{ grid_item_width }}">
+	{% render "product-grid-item-custom-variants", product: variant,  productcustom: product, page: 'collection', image_sizes: sizes %}      
+	</div>
+
+<!-- ----------End variant products image set position Collection page --------------- -->

@@ -1,0 +1,39 @@
+Do not add more than 2 products to the cart. And a variant should be added only once.
+
+- create hidden input feild above add to cart
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled class="product-variant-id">
+
+- paste this script theme.liquid above </body> tag
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var addedVariants = [];
+        
+        function checkCartAndUpdateButton() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ shop.url }}/cart.json',
+                dataType: 'jsonp',
+                success: function(data) {
+                    var item_count = data['item_count'];
+                    var variantIdsInCart = data['items'].map(function(item) {
+                        return item['variant_id'].toString();
+                    });
+                    var $submitButton = $('.product-form__submit');
+                    var variantId = $('.product-variant-id').val();
+                      var $InputQty = $('.quantity__input'); 
+                       $InputQty.prop('disabled', true);
+                    
+                    if (variantIdsInCart.includes(variantId) || item_count >= 2) {
+                        addedVariants.push(variantId);
+                        $submitButton.prop('disabled', true);
+                    } else {
+                        $submitButton.prop('disabled', false);
+                    }
+                }
+            });
+        }
+        
+        checkCartAndUpdateButton();
+        setInterval(checkCartAndUpdateButton, 200); 
+    </script>
